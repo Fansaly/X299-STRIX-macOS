@@ -1,0 +1,29 @@
+https://devicehunt.com/
+Find unknown devices using a vendor and device ID
+-------------------------------------------------
+
+ID Convert e.g.:
+=============================================================
+
+Windows device properties Details
+  Hardware Ids: PCI\VEN_10DE&DEV_1B80&SUBSYS_85AA1043&REV_A1
+
+  To find them just look for the four characters after either
+  VEN_ and DEV_ for PCI devices or
+  VID_ and PID_ for USB devices.
+
+macOS System Infomation
+  Vendor ID:            0x10de
+  Device ID:            0x1b80
+  Subsystem Vendor ID:  0x1043
+  Revision ID:          0x00a1
+
+IORegistryExplorer
+  device-id:            <80 1b 00 00>
+
+ASL or DSL
+  "device-id",
+  Buffer (0x04)
+  {
+       0x80, 0x1B, 0x00, 0x00
+  },

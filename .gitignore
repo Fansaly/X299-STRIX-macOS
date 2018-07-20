@@ -1,0 +1,6 @@
+.DS_Store
+Build/*.aml
+Downloads/Kexts
+Downloads/Tools
+Hotpatch/Downloads
+macos-tools
