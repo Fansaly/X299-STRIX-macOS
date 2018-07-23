@@ -805,7 +805,7 @@
 		<key>ShowOptimus</key>
 		<true/>
 		<key>Theme</key>
-		<string>Minimalism</string>
+		<string>random</string>
 	</dict>
 	<key>KernelAndKextPatches</key>
 	<dict>
