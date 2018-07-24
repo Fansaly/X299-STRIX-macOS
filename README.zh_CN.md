@@ -24,9 +24,9 @@ CPU | INTEL® CORE™ i7-7800X
 
 - **AI Tweaker**
   - ASUS MultiCore Enhancement: **Auto** *[optional "Disabled"]*
-  - AVX Instruction Core Ratio Negative Offset: **3** *[optional "Auto"]*
-  - AVX-512 Instruction Core Ratio Negative Offset: **2** *[optional "Auto"]*
-  - CPU Core Ratio: **Sync All Cores** *[optional "Auto"]*
+  - AVX Instruction Core Ratio Negative Offset: **Auto** *[optional "3"]*
+  - AVX-512 Instruction Core Ratio Negative Offset: **Auto** *[optional "2"]*
+  - CPU Core Ratio: **Auto** *[optional "Sync All Cores"]*
   - **CPU SVID Support: Enabled** *[fundamental for proper IPG CPU power consumption display]*
   - DRAM Frequency: **DDR4-2400MHz**
 
