@@ -57,9 +57,7 @@ case "$1" in
         $0 --install-tscadjustreset
     ;;
     --install-tscadjustreset)
-        threads=$(($(sysctl -n hw.ncpu) - 1))
-        TSCAdjustResetInfoPlist=Kexts/TSCAdjustReset.kext/Contents/Info.plist
-        plutil -replace IOKitPersonalities.TSCAdjustReset.IOPropertyMatch.IOCPUNumber -integer ${threads} "${TSCAdjustResetInfoPlist}"
+        ./TSCAdjustReset.sh --quiet
         macos-tools/install_kext.sh -i Kexts/TSCAdjustReset.kext
     ;;
     --install-config)

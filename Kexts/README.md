@@ -1,5 +1,5 @@
 ### TSCAdjustReset.kext
-> The kext here is compiled and the correct IOCPUNumber is set automatically by `X299-STRIX.sh`.  
+> The kext here is compiled and the correct IOCPUNumber is set automatically by `TSCAdjustReset.sh`.  
 > The following are the specific steps to compile and modify the source code for this kext.
 
 This kernel extension fixes the consequences of unsynchronized TSC when booting macOS on an X299 board with Skylake-X CPUs.
