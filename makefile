@@ -9,7 +9,7 @@ DOWNLOADS=./Downloads
 
 IASLOPTS=-vw 2095 -vw 2008 -vs
 IASLZIP=./$(shell find $(DOWNLOADS) -type f -name iasl.zip)
-$(shell macos-tools/unarchive_file.sh $(IASLZIP))
+$(shell macos-tools/unarchive.sh $(IASLZIP))
 IASL=./$(shell find $(DOWNLOADS) -type f -perm -u+x -name iasl)
 
 AML=$(BUILDDIR)/SSDT-STRIX.aml
