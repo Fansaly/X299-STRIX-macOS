@@ -45,7 +45,7 @@ case "$1" in
         macos-tools/hotpatch_download.sh -o $hotpatch_dir SSDT-XOSI.dsl
     ;;
     --unarchive-downloads)
-        macos-tools/unarchive_file.sh -d $downloads
+        macos-tools/unarchive.sh -d $downloads
     ;;
     --install-kexts)
         macos-tools/install_kext.sh -i $(findKext FakeSMC.kext)
