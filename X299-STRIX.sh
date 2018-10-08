@@ -24,20 +24,20 @@ case "$1" in
     --download-tools)
         rm -Rf $tools_dir && mkdir -p $tools_dir
 
-        macos-tools/bitbucket_download.sh -a RehabMan -n acpica -o $tools_dir
+        macos-tools/bitbucket_download.sh -a RehabMan -r acpica -o $tools_dir
     ;;
     --download-kexts)
         rm -Rf $kexts_dir && mkdir -p $kexts_dir
 
         # Bitbucket kexts
-        macos-tools/bitbucket_download.sh -a RehabMan -n os-x-fakesmc-kozlek -o $kexts_dir
-        macos-tools/bitbucket_download.sh -a RehabMan -n os-x-intel-network -o $kexts_dir
+        macos-tools/bitbucket_download.sh -a RehabMan -r os-x-fakesmc-kozlek -o $kexts_dir
+        macos-tools/bitbucket_download.sh -a RehabMan -r os-x-intel-network -o $kexts_dir
 
         # GitHub kexts
-        macos-tools/github_download.sh -u acidanthera -r Lilu -o $kexts_dir
-        macos-tools/github_download.sh -u acidanthera -r AppleALC -o $kexts_dir
-        macos-tools/github_download.sh -u lvs1974 -r HibernationFixup -o $kexts_dir
-        macos-tools/github_download.sh -u lvs1974 -r NvidiaGraphicsFixup -o $kexts_dir
+        macos-tools/github_download.sh -a acidanthera -r Lilu -o $kexts_dir
+        macos-tools/github_download.sh -a acidanthera -r AppleALC -o $kexts_dir
+        macos-tools/github_download.sh -a lvs1974 -r HibernationFixup -o $kexts_dir
+        macos-tools/github_download.sh -a lvs1974 -r NvidiaGraphicsFixup -o $kexts_dir
     ;;
     --download-hotpatch)
         rm -Rf $hotpatch_dir && mkdir -p $hotpatch_dir
