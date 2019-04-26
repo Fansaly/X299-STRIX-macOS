@@ -98,7 +98,7 @@ make install
 efi_dir=$(make mount)
 cp config.plist ${efi_dir}/EFI/ClOVER
 ```
-After the replacement, you should customize Serial Number, Board Serial Number, SmUUID in SMBIOS section.
+After the replacement, you should customize Serial Number, Board Serial Number, SmUUID in SMBIOS section.  
 7. other features:
 ```bash
 make check-kexts  # Check for updates for download kexts
