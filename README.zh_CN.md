@@ -94,7 +94,8 @@ make install
 efi_dir=$(make mount)
 cp config.plist ${efi_dir}/EFI/ClOVER
 ```
-替换完成后，应该自定义 SMBIOS 中的 Serial Number、Board Serial Number、SmUUID。  
+替换完成后，应该自定义 SMBIOS 中的 Serial Number、Board Serial Number、SmUUID。
+
 7. 其它功能：
 ```bash
 make check-kexts  # 检查下载 kexts 的更新
