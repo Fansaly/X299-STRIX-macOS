@@ -1,5 +1,5 @@
 ### TSCAdjustReset.kext
-> 此处的 kext 是已编译完成的，并由 `TSCAdjustReset.sh` 自动完成设置正确的 IOCPUNumber。  
+> 此处的 kext 是已编译完成的，并由 `Tools/TSCAdjustReset.sh` 自动完成设置正确的 IOCPUNumber。  
 > 以下只是对此 kext 的源码编译和修改的具体步骤。
 
 此内核扩展修复了在使用 Skylake-X CPU 的 X299 主板上启动 macOS 时 TSC 未同步的问题。

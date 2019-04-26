@@ -1,6 +1,7 @@
 .DS_Store
+
+Backup
 Build/*.aml
-Downloads/Kexts
-Downloads/Tools
+
+Downloads
 Hotpatch/Downloads
-macos-tools
