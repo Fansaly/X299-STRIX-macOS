@@ -27,7 +27,7 @@ CPU | INTEL® CORE™ i7-7800X
   - AVX Instruction Core Ratio Negative Offset: **Auto** *[optional "3"]*
   - AVX-512 Instruction Core Ratio Negative Offset: **Auto** *[optional "2"]*
   - CPU Core Ratio: **Auto** *[optional "Sync All Cores"]*
-  - **CPU SVID Support: Enabled** *[fundamental for proper IPG CPU power consumption display]*
+  - **CPU SVID Support: Enabled**
   - DRAM Frequency: **DDR4-2400MHz**
 
 - **Advanced/CPU Configuration**
@@ -40,7 +40,7 @@ CPU | INTEL® CORE™ i7-7800X
   - Enhanced Halt State (C1E): **Enabled**
   - CPU C6 report: **Enabled**
   - Package C-State: **C6(non retention) state**
-  - **Intel SpeedShift Technology: Enabled** *(crucial for native HWP Intel SpeedShift Technology CPU Power Management)*
+  - **Intel SpeedShift Technology: Enabled**
   - MFC Mode Override: **OS Native**
 
 - **Advanced/Platform Misc Configuration**
@@ -51,11 +51,11 @@ CPU | INTEL® CORE™ i7-7800X
   - PEG - ASMP: **Disabled**
 
 - **Advanced/System Agent Configuration**
-  - Intel VT for Directed I/O (VT-d): **Disabled**
+  - Intel VT for Directed I/O (VT-d): **Disabled/Enabled**
 
 - **Boot**
   - Fast Boot: **Disabled**
-  - Above 4G Decoding: **Off**
+  - Above 4G Decoding: **Off** (must be **ON** with BIOS firmware 1704 and WS X299 Sage 10G BIOS firmware 0905 in case of GPU firmware load and XHCI ACPI implementation issues. When employing WS X299 Sage 10G BIOS firmware 0905 and enabling Above 4G Decoding in the respective BIOS settings as required, _"First VGA 4G Decode"_ must be set to _"Auto"_, as both Windows 10 and macOS can become irresponsive with different _"First VGA 4G Decode"_ settings.)
 
 - **Boot/Boot Configuration**
   - Boot Logo Display: **Auto**
@@ -68,53 +68,49 @@ CPU | INTEL® CORE™ i7-7800X
 - **Boot/Secure Boot**
   - OS Type: **Other OS**
 
-
-### KEXT+ACPI
-下载此项目到本地：
+### 步骤
+1. 下载此项目：
 ```bash
 git clone https://github.com/Fansaly/X299-STRIX-macOS
 ```
-
-下载 kext 和 工具，并安装：
+2. 下载 工具、kext 和 hotpatch：
 ```bash
-cd X299-STRIX-macOS
-./X299-STRIX.sh --download
-./X299-STRIX.sh --install
+make download
 ```
-
-`--download` 从 Bitbucket、GitHub 下载最新的工具（iasl）和 kext（FakeSMC.kext、IntelMausiEthernet.kext，等等），以及所需的 hotpatch SSDTs。  
-`--install` 将它们安装到正确位置。
-
-编译 ACPI 补丁，并应用：
+3. 解压缩上一步下载的文件：
 ```bash
-cd X299-STRIX-macOS
-make
+make unarchive
+```
+4. 编译生成 DSDT/SSDT 的 aml 文件：
+```bash
+make build
+```
+5. 安装 DSDT/SSDT aml 和 kexts：
+```bash
 make install
 ```
-
-`make` 用来编译打好补丁的文件（需要 iasl），生成的文件位于目录 `./Build`。  
-`make install` 先挂载 EFI 分区，再复制编译生成的文件到 `EFI/CLOVER/ACPI/patched`。  
-`make clean` 删除位于 `./Build` 中的 AML 文件。
-
-### config.list
-替换 `EFI/CLOVER/config.plist` 为仓库中的 config.plist。
-
+6. 可手动替换 CLOVER 的 config.plist：
 ```bash
-cd X299-STRIX-macOS
-./X299-STRIX.sh --install-config
+efi_dir=$(make mount)
+cp config.plist ${efi_dir}/EFI/ClOVER
+```
+替换完成后，应该自定义 SMBIOS 中的 Serial Number、Board Serial Number、SmUUID。
+7. 其它功能：
+```bash
+make check-kexts  # 检查下载 kexts 的更新
+make backup       # 备份 EFI/CLOVER
+make update       # 更新本地项目库
 ```
 
-替换完成后，应该自定义 SMBIOS 中的 Serial Number、Board Serial Number、SmUUID。
-
-### EFI/CLOVER/drivers64UEFI
-  - [x] ApfsDriverLoader.efi
-  - [x] AppleImageCodec-64.efi
-  - [x] AppleKeyAggregator-64.efi
-  - [x] AppleUITheme-64.efi
-  - [x] AptioMemoryFix.efi
+### EFI/CLOVER/drivers64UEFI（CLOVER 默认安装的）
+  - [x] ApfsDriverLoader-64.efi
+  - [x] AppleImageLoader-64.efi
+  - [x] AptioMemoryFix-64.efi
+  - [x] AudioDxe-64.efi
   - [x] DataHubDxe-64.efi
-  - [x] FirmwareVolume-64.efi
   - [x] FSInject-64.efi
+  - [x] SMCHelper-64.efi
+  - [x] VBoxHfs-64.efi
 
 ### 其他
 如果 About This Mac->Processor 显示“未知”，可参考「[此项目](https://github.com/Fansaly/CosmetiCPUKind)」设置你所需的。

@@ -30,7 +30,7 @@ Case | JONSBO UMX4
   - AVX Instruction Core Ratio Negative Offset: **Auto** *[optional "3"]*
   - AVX-512 Instruction Core Ratio Negative Offset: **Auto** *[optional "2"]*
   - CPU Core Ratio: **Auto** *[optional "Sync All Cores"]*
-  - **CPU SVID Support: Enabled** *[fundamental for proper IPG CPU power consumption display]*
+  - **CPU SVID Support: Enabled**
   - DRAM Frequency: **DDR4-2400MHz**
 
 - **Advanced/CPU Configuration**
@@ -43,7 +43,7 @@ Case | JONSBO UMX4
   - Enhanced Halt State (C1E): **Enabled**
   - CPU C6 report: **Enabled**
   - Package C-State: **C6(non retention) state**
-  - **Intel SpeedShift Technology: Enabled** *(crucial for native HWP Intel SpeedShift Technology CPU Power Management)*
+  - **Intel SpeedShift Technology: Enabled**
   - MFC Mode Override: **OS Native**
 
 - **Advanced/Platform Misc Configuration**
@@ -54,11 +54,11 @@ Case | JONSBO UMX4
   - PEG - ASMP: **Disabled**
 
 - **Advanced/System Agent Configuration**
-  - Intel VT for Directed I/O (VT-d): **Disabled**
+  - Intel VT for Directed I/O (VT-d): **Disabled/Enabled**
 
 - **Boot**
   - Fast Boot: **Disabled**
-  - Above 4G Decoding: **Off**
+  - Above 4G Decoding: **Off** (must be **ON** with BIOS firmware 1704 and WS X299 Sage 10G BIOS firmware 0905 in case of GPU firmware load and XHCI ACPI implementation issues. When employing WS X299 Sage 10G BIOS firmware 0905 and enabling Above 4G Decoding in the respective BIOS settings as required, _"First VGA 4G Decode"_ must be set to _"Auto"_, as both Windows 10 and macOS can become irresponsive with different _"First VGA 4G Decode"_ settings.)
 
 - **Boot/Boot Configuration**
   - Boot Logo Display: **Auto**
@@ -71,53 +71,50 @@ Case | JONSBO UMX4
 - **Boot/Secure Boot**
   - OS Type: **Other OS**
 
-
-### KEXT+ACPI
-Download this repo to local:
+### SETUP
+1. clone this repo:
 ```bash
 git clone https://github.com/Fansaly/X299-STRIX-macOS
-```
-
-Download the kexts & tools and install:
-```bash
 cd X299-STRIX-macOS
-./X299-STRIX.sh --download
-./X299-STRIX.sh --install
 ```
-
-`--download` Download the latest of tools (iasl), kexts (FakeSMC.kext, IntelMausiEthernet.kext, etc), and the needed hotpatch SSDTs from Bitbucket and GitHub.  
-`--install` Install its to the proper location.
-
-Compile ACPI patches and install its:
+2. download tools, kexts, and hotpatch:
 ```bash
-cd X299-STRIX-macOS
-make
+make download
+```
+3. unzip files from previous step:
+```bash
+make unarchive
+```
+4. build DSDT/SSDT aml:
+```bash
+make build
+```
+5. install DSDT/SSDT aml and kexts:
+```bash
 make install
 ```
-
-`make` The patched files to be compiled (with iasl), the results placed in `./Build`.  
-`make install` Mounts the EFI partition, and copies the built files to `EFI/CLOVER/ACPI/patched`.  
-`make clean` Delete the AML file in `./Build`.
-
-### config.list
-Replace `EFI/CLOVER/config.plist` with config.plist from this repo.
-
+6. manually replace config.plist for CLOVER:
 ```bash
-cd X299-STRIX-macOS
-./X299-STRIX.sh --install-config
+efi_dir=$(make mount)
+cp config.plist ${efi_dir}/EFI/ClOVER
+```
+After the replacement, you should customize Serial Number, Board Serial Number, SmUUID in SMBIOS section.
+7. other features:
+```bash
+make check-kexts  # Check for updates for download kexts
+make backup       # Backup EFI/CLOVER
+make update       # Update local repo.
 ```
 
-After the replacement, you should customize Serial Number, Board Serial Number, SmUUID in SMBIOS section.
-
-### EFI/CLOVER/drivers64UEFI
-  - [x] ApfsDriverLoader.efi
-  - [x] AppleImageCodec-64.efi
-  - [x] AppleKeyAggregator-64.efi
-  - [x] AppleUITheme-64.efi
-  - [x] AptioMemoryFix.efi
+### EFI/CLOVER/drivers64UEFI (CLOVER installed by default)
+  - [x] ApfsDriverLoader-64.efi
+  - [x] AppleImageLoader-64.efi
+  - [x] AptioMemoryFix-64.efi
+  - [x] AudioDxe-64.efi
   - [x] DataHubDxe-64.efi
-  - [x] FirmwareVolume-64.efi
   - [x] FSInject-64.efi
+  - [x] SMCHelper-64.efi
+  - [x] VBoxHfs-64.efi
 
 ### Other
 If About This Mac->Processor displays "Unknown", you can refer to「[This Project](https://github.com/Fansaly/CosmetiCPUKind)」to set up what you need.
