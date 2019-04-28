@@ -80,23 +80,23 @@ function getValue() {
 }
 
 
-function cecho() {
+function fecho() {
   _format_="$1"
   UNKNOWN="$2"
   author="$3"
   name="$4"
-  local="$5"
+  curr="$5"
   remote="$6"
   _uChar_S_=✓ # ✓✔✗
   _uChar_F_=✗ # ✓✔✗
 
   if [[ ${remote} = ${UNKNOWN} ]]; then
     name="${name} ${_uChar_F_}"
-  elif [[ ${remote} != ${local} ]]; then
+  elif [[ ${remote} != ${curr} ]]; then
     name="${name} ${_uChar_S_}"
   fi
 
-  s="$(printf "${_format_}" "$name" "$author" "$remote" "$local")"
+  s="$(printf "${_format_}" "$name" "$author" "$remote" "$curr")"
   s=$(echo "${s}" | sed -e 's/'"${_uChar_S_}"'/\\033[0;92m'"${_uChar_S_}"'\\033[0m  /')
   s=$(echo "${s}" | sed -e 's/'"${_uChar_F_}"'/\\033[0;93m'"${_uChar_F_}"'\\033[0m  /')
 
@@ -123,11 +123,11 @@ function printKextsInfo() {
   len_author=$(( ${max_len[0]} + 5 ))
   len_repo=$((   ${max_len[1]} + 5 ))
   len_name=$((   ${max_len[2]} + 5 ))
-  len_local=$((  ${max_len[3]} + 5 ))
-  len_remote=${len_local}
-  len=$(( $len_author + $len_name + $len_local + $len_remote ))
+  len_curr=$((   ${max_len[3]} + 5 ))
+  len_remote=${len_curr}
+  len=$(( $len_author + $len_name + $len_curr + $len_remote ))
 
-  _format_="%-${len_name}s %-${len_author}s %-${len_remote}s %-${len_local}s"
+  _format_="%-${len_name}s %-${len_author}s %-${len_remote}s %-${len_curr}s"
 
   pad=$(printf '%*s' "$len")
   pad=${pad// /-}
@@ -144,23 +144,23 @@ function printKextsInfo() {
     author="${arr[0]}"
     repo="${arr[1]}"
     name="${arr[2]}"
-    command="${arr[3]}"
-    localVersion="${arr[4]}"
+    curr="${arr[3]}"
+    command="${arr[4]}"
 
     echo -ne "\033[0;37m${name} ... \033[0m"
 
-    remoteVersion=$($command "${author}" "${repo}")
-    remoteVersion=$(echo "${remoteVersion}" | sed -e 's/[[:alpha:]]*//')
+    remote=$($command "${author}" "${repo}")
+    remote=$(echo "${remote}" | sed -e 's/[[:alpha:]]*//')
 
-    if [[ ! -n ${remoteVersion} ]]; then
-      remoteVersion=${UNKNOWN}
+    if [[ ! -n ${remote} ]]; then
+      remote=${UNKNOWN}
     fi
 
-    cecho "${_format_}" "${UNKNOWN}" "${author}" "${name}" "${localVersion}" "${remoteVersion}"
+    fecho "${_format_}" "${UNKNOWN}" "${author}" "${name}" "${curr}" "${remote}"
   done
 }
 
-function getKexts() {
+function getKextsInfo() {
   config_plist="$1"
   kexts_dir="$2"
   kextsInfo=()
@@ -196,21 +196,21 @@ function getKexts() {
         infoPlist=${kext}/Contents/Info.plist
 
         if [[ "${_repo_}" == "GitHub" ]]; then
-          localVersion=$(getValue "${infoPlist}" "CFBundleVersion")
+          curr=$(getValue "${infoPlist}" "CFBundleVersion")
         else
-          localVersion=$(echo "${infoPlist}" | perl -pe 's/.*-(\d*-\d*)\/.*/\1/')
+          curr=$(echo "${infoPlist}" | perl -pe 's/.*-(\d*-\d*)\/.*/\1/')
         fi
 
-        [[ ${#author} -gt ${max_len[0]} ]] && max_len[0]=${#author}
-        [[ ${#repo}   -gt ${max_len[1]} ]] && max_len[1]=${#repo}
-        [[ ${#name}   -gt ${max_len[2]} ]] && max_len[2]=${#name}
-        [[ ${#localVersion} -gt ${max_len[3]} ]] && max_len[3]=${#localVersion}
+        [[ ${max_len[0]} -lt ${#author} ]] && max_len[0]=${#author}
+        [[ ${max_len[1]} -lt ${#repo}   ]] && max_len[1]=${#repo}
+        [[ ${max_len[2]} -lt ${#name}   ]] && max_len[2]=${#name}
+        [[ ${max_len[3]} -lt ${#curr}   ]] && max_len[3]=${#curr}
 
         kextsInfo[$idx]+=$author
         kextsInfo[$idx]+=\|$repo
         kextsInfo[$idx]+=\|$name
+        kextsInfo[$idx]+=\|$curr
         kextsInfo[$idx]+=\|$command
-        kextsInfo[$idx]+=\|$localVersion
 
         (( idx++ ))
       done
@@ -220,4 +220,4 @@ function getKexts() {
   printKextsInfo ${#max_len[@]} "${max_len[@]}" "${kextsInfo[@]}"
 }
 
-getKexts "${config_plist}" "${kexts_dir}"
+getKextsInfo "${config_plist}" "${kexts_dir}"

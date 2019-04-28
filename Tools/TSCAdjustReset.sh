@@ -37,7 +37,7 @@ fi
 
 
 function getCPUKind() {
-  PROCESSOR=$@
+  PROCESSOR=$(sysctl -n machdep.cpu.brand_string)
 
   PROCESSOR=$(printf "${PROCESSOR}" | perl -pe 's/\s+cpu//i')
   PROCESSOR=$(printf "${PROCESSOR}" | perl -pe 's/\(R\)//g and s/\(TM\)//ig')
@@ -47,13 +47,15 @@ function getCPUKind() {
   echo "${CPUKind}"
 }
 
-CPUKind=$(getCPUKind $(sysctl -n machdep.cpu.brand_string))
-cores=$(sysctl -n hw.physicalcpu)
 threads=$(sysctl -n hw.ncpu)
 IOCPUNumber=$((${threads} - 1))
 
 plutil -replace IOKitPersonalities.TSCAdjustReset.IOPropertyMatch.IOCPUNumber -integer ${IOCPUNumber} "${TSCAdjustResetInfoPlist}"
 
+
 if [[ ${display} ]]; then
+  CPUKind=$(getCPUKind)
+  cores=$(sysctl -n hw.physicalcpu)
+
   echo -e "${CPUKind}  (${cores} cores, ${threads} threads)"
 fi
