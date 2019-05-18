@@ -68,7 +68,7 @@ CPU | INTEL® CORE™ i7-7800X
 - **Boot/Secure Boot**
   - OS Type: **Other OS**
 
-### 步骤
+### 安装完成后
 1. 下载此项目：
 ```bash
 git clone https://github.com/Fansaly/X299-STRIX-macOS
@@ -103,15 +103,8 @@ make backup       # 备份 EFI/CLOVER
 make update       # 更新本地项目库
 ```
 
-### EFI/CLOVER/drivers64UEFI（CLOVER 默认安装的）
-  - [x] ApfsDriverLoader-64.efi
-  - [x] AppleImageLoader-64.efi
-  - [x] AptioMemoryFix-64.efi
-  - [x] AudioDxe-64.efi
-  - [x] DataHubDxe-64.efi
-  - [x] FSInject-64.efi
-  - [x] SMCHelper-64.efi
-  - [x] VBoxHfs-64.efi
+### CLOVER
+`EFI/CLOVER/drivers64UEFI` 使用 CLOVER 默认安装的驱动
 
 ### 其他
 如果 About This Mac->Processor 显示“未知”，可参考「[此项目](https://github.com/Fansaly/CosmetiCPUKind)」设置你所需的。

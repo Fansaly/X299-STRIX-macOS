@@ -71,7 +71,7 @@ Case | JONSBO UMX4
 - **Boot/Secure Boot**
   - OS Type: **Other OS**
 
-### SETUP
+### POST INSTALLATION
 1. clone this repo:
 ```bash
 git clone https://github.com/Fansaly/X299-STRIX-macOS
@@ -107,15 +107,8 @@ make backup       # Backup EFI/CLOVER
 make update       # Update local repo.
 ```
 
-### EFI/CLOVER/drivers64UEFI (CLOVER installed by default)
-  - [x] ApfsDriverLoader-64.efi
-  - [x] AppleImageLoader-64.efi
-  - [x] AptioMemoryFix-64.efi
-  - [x] AudioDxe-64.efi
-  - [x] DataHubDxe-64.efi
-  - [x] FSInject-64.efi
-  - [x] SMCHelper-64.efi
-  - [x] VBoxHfs-64.efi
+### CLOVER
+`EFI/CLOVER/drivers64UEFI` use CLOVER installed drivers by default
 
 ### Other
 If About This Mac->Processor displays "Unknown", you can refer to「[This Project](https://github.com/Fansaly/CosmetiCPUKind)」to set up what you need.
