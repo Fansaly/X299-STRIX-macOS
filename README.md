@@ -107,8 +107,15 @@ make backup       # Backup EFI/CLOVER
 make update       # Update local repo.
 ```
 
-### CLOVER
-`EFI/CLOVER/drivers64UEFI` use CLOVER installed drivers by default
+### EFI/CLOVER/drivers/UEFI
+  - ApfsDriverLoader.efi
+  - AppleImageLoader.efi
+  - AptioMemoryFix.efi
+  - AudioDxe.efi
+  - DataHubDxe.efi
+  - FSInject.efi
+  - SMCHelper.efi
+  - VBoxHfs.efi
 
 ### Other
 If About This Mac->Processor displays "Unknown", you can refer to「[This Project](https://github.com/Fansaly/CosmetiCPUKind)」to set up what you need.

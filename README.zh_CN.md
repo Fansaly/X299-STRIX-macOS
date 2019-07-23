@@ -103,8 +103,15 @@ make backup       # 备份 EFI/CLOVER
 make update       # 更新本地项目库
 ```
 
-### CLOVER
-`EFI/CLOVER/drivers64UEFI` 使用 CLOVER 默认安装的驱动
+### EFI/CLOVER/drivers/UEFI
+  - ApfsDriverLoader.efi
+  - AppleImageLoader.efi
+  - AptioMemoryFix.efi
+  - AudioDxe.efi
+  - DataHubDxe.efi
+  - FSInject.efi
+  - SMCHelper.efi
+  - VBoxHfs.efi
 
 ### 其他
 如果 About This Mac->Processor 显示“未知”，可参考「[此项目](https://github.com/Fansaly/CosmetiCPUKind)」设置你所需的。
