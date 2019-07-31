@@ -1,4 +1,4 @@
-本指南是在使用 ROG STRIX X299-E GAMING 主板的 PC 上安装 macOS High Sierra。
+本指南旨在完善已安装在 **ROG STRIX X299-E GAMING** 主板的 PC 上的 **macOS High Sierra**。
 
 &nbsp;
 
@@ -55,7 +55,7 @@ CPU | INTEL® CORE™ i7-7800X
 
 - **Boot**
   - Fast Boot: **Disabled**
-  - Above 4G Decoding: **Off** (must be **ON** with BIOS firmware 1704 and WS X299 Sage 10G BIOS firmware 0905 in case of GPU firmware load and XHCI ACPI implementation issues. When employing WS X299 Sage 10G BIOS firmware 0905 and enabling Above 4G Decoding in the respective BIOS settings as required, _"First VGA 4G Decode"_ must be set to _"Auto"_, as both Windows 10 and macOS can become irresponsive with different _"First VGA 4G Decode"_ settings.)
+  - Above 4G Decoding: **Off** (Prime X299 Deluxe BIOS 和 Strix X299-E Gaming BIOS 的 1704 版本固件，以及 WS X299 Sage/10G BIOS 的 0905 版本固件，会在加载 GPU 和 XHCI ACPI 过程发生故障，必须设置为 **ON**。在使用 WS X299 Sage/10G BIOS 的 0905 版本固件时，在 BIOS 中启用 Above 4G Decoding，并按需设置其他项目，此外还必须将 _"First VGA 4G Decode"_ 设置为 _"Auto"_，因为 Windows 10 和 macOS 都不能正确响应不同的 _"First VGA 4G Decode"_ 设置。)
 
 - **Boot/Boot Configuration**
   - Boot Logo Display: **Auto**
@@ -72,6 +72,7 @@ CPU | INTEL® CORE™ i7-7800X
 1. 下载此项目：
 ```bash
 git clone https://github.com/Fansaly/X299-STRIX-macOS
+cd X299-STRIX-macOS
 ```
 2. 下载 工具、kext 和 hotpatch：
 ```bash
@@ -81,7 +82,7 @@ make download
 ```bash
 make unarchive
 ```
-4. 编译生成 DSDT/SSDT 的 aml 文件：
+4. 编译生成 DSDT/SSDT aml 文件：
 ```bash
 make build
 ```
@@ -89,18 +90,21 @@ make build
 ```bash
 make install
 ```
-6. 可手动替换 CLOVER 的 config.plist：
+6. 手动替换 CLOVER 的 config.plist：
 ```bash
 efi_dir=$(make mount)
 cp config.plist ${efi_dir}/EFI/ClOVER
 ```
-替换完成后，应该自定义 SMBIOS 中的 Serial Number、Board Serial Number、SmUUID。
+替换完成后，应该自定义 SMBIOS 中的 Serial Number、Board Serial Number、SmUUID，等等。
 
 7. 其它功能：
 ```bash
 make check-kexts  # 检查下载 kexts 的更新
 make backup       # 备份 EFI/CLOVER
 make update       # 更新本地项目库
+
+make list-WebDriver n   # 获取最新的 n 个 NVIDIA Web Driver 信息
+make download-WebDriver # 下载最新的 NVIDIA Web Driver
 ```
 
 ### EFI/CLOVER/drivers/UEFI
@@ -114,7 +118,7 @@ make update       # 更新本地项目库
   - VBoxHfs.efi
 
 ### 其他
-如果 About This Mac->Processor 显示“未知”，可参考「[此项目](https://github.com/Fansaly/CosmetiCPUKind)」设置你所需的。
+如果 ->关于本机->处理器 显示“未知”，可参考「[此项目](https://github.com/Fansaly/CosmetiCPUKind)」设置你所需的。
 
 &nbsp;
 

@@ -1,4 +1,4 @@
-This guide is to install macOS High Sierra on a PC that uses the ROG STRIX X299-E GAMING motherboard.
+The purpose of this guide is to improve **macOS High Sierra** that has been installed on PC of **ROG STRIX X299-E GAMING** motherboard.
 
 ### Translations
 - [简体中文](README.zh_CN.md)
@@ -58,7 +58,7 @@ Case | JONSBO UMX4
 
 - **Boot**
   - Fast Boot: **Disabled**
-  - Above 4G Decoding: **Off** (must be **ON** with BIOS firmware 1704 and WS X299 Sage 10G BIOS firmware 0905 in case of GPU firmware load and XHCI ACPI implementation issues. When employing WS X299 Sage 10G BIOS firmware 0905 and enabling Above 4G Decoding in the respective BIOS settings as required, _"First VGA 4G Decode"_ must be set to _"Auto"_, as both Windows 10 and macOS can become irresponsive with different _"First VGA 4G Decode"_ settings.)
+  - Above 4G Decoding: **Off** (must be **ON** with Prime X299 Deluxe BIOS firmware 1704, Strix X299-E Gaming BIOS firmware 1704 and WS X299 Sage/10G BIOS firmware 0905 in case of GPU firmware load and XHCI ACPI implementation issues. When employing WS X299 Sage/10G BIOS firmware 0905 and enabling Above 4G Decoding in the respective BIOS settings as required, _"First VGA 4G Decode"_ must be set to _"Auto"_, as both Windows 10 and macOS can become irresponsive with different _"First VGA 4G Decode"_ settings.)
 
 - **Boot/Boot Configuration**
   - Boot Logo Display: **Auto**
@@ -98,13 +98,16 @@ make install
 efi_dir=$(make mount)
 cp config.plist ${efi_dir}/EFI/ClOVER
 ```
-After the replacement, you should customize Serial Number, Board Serial Number, SmUUID in SMBIOS section.
+After the replacement, you should customize Serial Number, Board Serial Number, SmUUID in SMBIOS section, and etc.
 
 7. other features:
 ```bash
 make check-kexts  # Check for updates for download kexts
 make backup       # Backup EFI/CLOVER
 make update       # Update local repo.
+
+make list-WebDriver n   # Print the latest first n of NVIDIA Web Driver info.
+make download-WebDriver # Download the latest NVIDIA Web Driver
 ```
 
 ### EFI/CLOVER/drivers/UEFI
@@ -118,7 +121,7 @@ make update       # Update local repo.
   - VBoxHfs.efi
 
 ### Other
-If About This Mac->Processor displays "Unknown", you can refer to「[This Project](https://github.com/Fansaly/CosmetiCPUKind)」to set up what you need.
+If ->About This Mac->Processor displays "Unknown", you can refer to「[This Project](https://github.com/Fansaly/CosmetiCPUKind)」to set up what you need.
 
 &nbsp;
 
