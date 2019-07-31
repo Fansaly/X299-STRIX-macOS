@@ -58,7 +58,9 @@ download-WebDriver:
 list-WebDriver:
 	@ # How to pass argument to Makefile from command line
 	@ # Learn more: https://stackoverflow.com/questions/6273608
-	@ $(L_TOOLSDIR)/web_driver.sh -n $(filter-out $@,$(MAKECMDGOALS))
+	@ total=$(firstword $(filter-out $@,$(MAKECMDGOALS))); \
+	if [[ ! "$$total" =~ ^[0-9]+$$ ]]; then total=1; fi; \
+	$(L_TOOLSDIR)/web_driver.sh -n $$total
 
 
 # unarchive
