@@ -139,6 +139,21 @@
 						</dict>
 					</array>
 				</dict>
+				<dict>
+					<key>Author</key>
+					<string>apfelnico</string>
+					<key>Repo</key>
+					<string>None</string>
+					<key>Repo-type</key>
+					<string>None</string>
+					<key>Installations</key>
+					<array>
+						<dict>
+							<key>Name</key>
+							<string>AGPMEnabler.kext</string>
+						</dict>
+					</array>
+				</dict>
 			</array>
 		</dict>
 		<key>Deprecated</key>
