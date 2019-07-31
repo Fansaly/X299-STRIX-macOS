@@ -89,7 +89,6 @@ function printWebDriverList() {
 }
 
 function getWebDriverList() {
-  local total=$1
   local source_url=https://gfe.nvidia.com/mac-update
   local xml=$(curl -kfsSL "${source_url}")
 
