@@ -6,6 +6,7 @@ CONFIGPLIST=$(CONFIGDIR)/config.plist
 DOWNLOADSDIR=./Downloads
 D_KEXTSDIR=$(DOWNLOADSDIR)/Kexts
 D_TOOLSDIR=$(DOWNLOADSDIR)/Tools
+D_WebDriver=$(DOWNLOADSDIR)/WebDriver
 L_KEXTSDIR=./Kexts
 L_TOOLSDIR=./Tools
 
@@ -46,6 +47,18 @@ download-kexts:
 .PHONY: download-hotpatch
 download-hotpatch:
 	$(L_TOOLSDIR)/download.sh -c "$(CONFIGPLIST)" -d "$(D_HOTPATCH)" -t "Hotpatch"
+
+
+# NVIDIA Web Driver
+.PHONY: download-WebDriver
+download-WebDriver:
+	@ $(L_TOOLSDIR)/web_driver.sh -o "$(D_WebDriver)"
+
+.PHONY: list-WebDriver
+list-WebDriver:
+	@ # How to pass argument to Makefile from command line
+	@ # Learn more: https://stackoverflow.com/questions/6273608
+	@ $(L_TOOLSDIR)/web_driver.sh -n $(filter-out $@,$(MAKECMDGOALS))
 
 
 # unarchive
@@ -96,3 +109,6 @@ update:
 backup:
 	$(eval EFIDIR:=$(shell make mount))
 	$(L_TOOLSDIR)/backup_clover.sh -d "$(EFIDIR)/EFI" -o "$(BACKUPDIR)"
+
+%:
+	@:
