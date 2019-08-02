@@ -104,7 +104,7 @@ check-kexts:
 # update this pro.
 .PHONY: update
 update:
-	git pull --rebase --stat origin master
+	@ git pull --rebase --stat origin master
 
 # Backup EFI/CLOVER
 .PHONY: backup
