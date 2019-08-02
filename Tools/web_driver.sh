@@ -53,7 +53,11 @@ function downloadWebDriver() {
   file_url=$(getValue "$xml" "0.downloadURL")
   output_file=$(echo "$file_url" | perl -pe 's/.*\/(.*)/\1/')
 
-  curl -kfSLSL "${file_url}" -o "${output_dir}/${output_file}"
+  curl -kfSL "${file_url}" -o "${output_dir}/${output_file}"
+
+  if [[ $? -eq 0 ]]; then
+    echo -e "\nDownload to: \033[0;96m${output_dir}\033[0m\n"
+  fi
 }
 
 function printMessage() {
