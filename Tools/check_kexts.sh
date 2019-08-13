@@ -115,11 +115,6 @@ function printKextsInfo() {
   max_len=(${@:$a:$b})
   kextsInfo="${@:$c}"
 
-  if [[ ${#kextsInfo[@]} -eq 0 ]]; then
-    echo "No kexts."
-    exit 0
-  fi
-
   len_author=$(( ${max_len[0]} + 5 ))
   len_repo=$((   ${max_len[1]} + 5 ))
   len_name=$((   ${max_len[2]} + 5 ))
@@ -192,6 +187,8 @@ function getKextsInfo() {
         name=$(getValue "$_xmlCtx" "$j.Name")
         kext=$(findKext "${name}" "${kexts_dir}")
 
+        if [[ -z "${kext}" ]]; then continue; fi
+
         name=$(basename "${kext}" | sed -e 's/\.kext//')
         infoPlist=${kext}/Contents/Info.plist
 
@@ -217,7 +214,11 @@ function getKextsInfo() {
     done
   done
 
-  printKextsInfo ${#max_len[@]} "${max_len[@]}" "${kextsInfo[@]}"
+  if [[ ${#kextsInfo[@]} -eq 0 ]]; then
+    echo -e "\033[0;31mNo kexts\033[0m in directory \033[0;33m${kexts_dir}.\033[0m"
+  else
+    printKextsInfo ${#max_len[@]} "${max_len[@]}" "${kextsInfo[@]}"
+  fi
 }
 
 getKextsInfo "${config_plist}" "${kexts_dir}"
