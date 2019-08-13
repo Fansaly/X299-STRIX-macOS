@@ -68,6 +68,19 @@
 				</dict>
 				<dict>
 					<key>Author</key>
+					<string>acidanthera</string>
+					<key>Repo</key>
+					<string>WhateverGreen</string>
+					<key>Installations</key>
+					<array>
+						<dict>
+							<key>Name</key>
+							<string>WhateverGreen.kext</string>
+						</dict>
+					</array>
+				</dict>
+				<dict>
+					<key>Author</key>
 					<string>lvs1974</string>
 					<key>Repo</key>
 					<string>HibernationFixup</string>
@@ -76,19 +89,6 @@
 						<dict>
 							<key>Name</key>
 							<string>HibernationFixup.kext</string>
-						</dict>
-					</array>
-				</dict>
-				<dict>
-					<key>Author</key>
-					<string>lvs1974</string>
-					<key>Repo</key>
-					<string>NvidiaGraphicsFixup</string>
-					<key>Installations</key>
-					<array>
-						<dict>
-							<key>Name</key>
-							<string>NvidiaGraphicsFixup.kext</string>
 						</dict>
 					</array>
 				</dict>
