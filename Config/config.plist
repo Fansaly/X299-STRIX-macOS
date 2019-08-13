@@ -44,6 +44,19 @@
 					<key>Author</key>
 					<string>acidanthera</string>
 					<key>Repo</key>
+					<string>VirtualSMC</string>
+					<key>Installations</key>
+					<array>
+						<dict>
+							<key>Name</key>
+							<string>VirtualSMC.kext</string>
+						</dict>
+					</array>
+				</dict>
+				<dict>
+					<key>Author</key>
+					<string>acidanthera</string>
+					<key>Repo</key>
 					<string>Lilu</string>
 					<key>Installations</key>
 					<array>
@@ -95,19 +108,6 @@
 			</array>
 			<key>Bitbucket</key>
 			<array>
-				<dict>
-					<key>Author</key>
-					<string>RehabMan</string>
-					<key>Repo</key>
-					<string>os-x-fakesmc-kozlek</string>
-					<key>Installations</key>
-					<array>
-						<dict>
-							<key>Name</key>
-							<string>FakeSMC.kext</string>
-						</dict>
-					</array>
-				</dict>
 				<dict>
 					<key>Author</key>
 					<string>RehabMan</string>
