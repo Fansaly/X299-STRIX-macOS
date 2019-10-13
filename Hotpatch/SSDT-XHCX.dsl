@@ -6,11 +6,11 @@
 DefinitionBlock("", "SSDT", 2, "hack", "_XHCX", 0)
 {
 #endif
-    External (_SB_.PCI0.RP05, DeviceObj)    // (from opcode)
-    External (_SB_.PCI0.RP05.PXSX, DeviceObj)    // (from opcode)
-    External (_SB_.PCI0.RP07, DeviceObj)    // (from opcode)
-    External (_SB_.PCI0.RP07.PXSX, DeviceObj)    // (from opcode)
-    External (DTGP, MethodObj)    // 5 Arguments (from opcode)
+    External (_SB_.PCI0.RP05, DeviceObj)
+    External (_SB_.PCI0.RP05.PXSX, DeviceObj)
+    External (_SB_.PCI0.RP07, DeviceObj)
+    External (_SB_.PCI0.RP07.PXSX, DeviceObj)
+    External (DTGP, MethodObj)    // 5 Arguments
 
     Scope (\_SB.PCI0.RP05)
     {

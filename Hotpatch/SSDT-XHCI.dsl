@@ -4,8 +4,8 @@
 DefinitionBlock("", "SSDT", 2, "hack", "_XHCI", 0)
 {
 #endif
-    External (_SB_.PCI0.XHCI, DeviceObj)    // (from opcode)
-    External (DTGP, MethodObj)    // 5 Arguments (from opcode)
+    External (_SB_.PCI0.XHCI, DeviceObj)
+    External (DTGP, MethodObj)    // 5 Arguments
 
     Scope (\_SB.PCI0.XHCI)
     {

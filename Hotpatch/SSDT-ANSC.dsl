@@ -5,9 +5,9 @@
 DefinitionBlock("", "SSDT", 2, "hack", "_ANSC", 0)
 {
 #endif
-    External (_SB_.PCI0.RP09, DeviceObj)    // (from opcode)
-    External (_SB_.PCI0.RP09.PXSX, DeviceObj)    // (from opcode)
-    External (DTGP, MethodObj)    // 5 Arguments (from opcode)
+    External (_SB_.PCI0.RP09, DeviceObj)
+    External (_SB_.PCI0.RP09.PXSX, DeviceObj)
+    External (DTGP, MethodObj)    // 5 Arguments
 
     Scope (\_SB.PCI0.RP09)
     {

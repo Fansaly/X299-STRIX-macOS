@@ -5,8 +5,8 @@
 DefinitionBlock("", "SSDT", 2, "hack", "_HDEF", 0)
 {
 #endif
-    External (_SB_.PCI0, DeviceObj)    // (from opcode)
-    External (_SB_.PCI0.CAVS, DeviceObj)    // (from opcode)
+    External (_SB_.PCI0, DeviceObj)
+    External (_SB_.PCI0.CAVS, DeviceObj)
 
     Scope (\_SB.PCI0)
     {

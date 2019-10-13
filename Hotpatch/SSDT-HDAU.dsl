@@ -6,10 +6,10 @@
 DefinitionBlock("", "SSDT", 2, "hack", "_HDAU", 0)
 {
 #endif
-    External (_SB_.PC02.BR2A, DeviceObj)    // (from opcode)
-    External (_SB_.PC02.BR2A.SL05, DeviceObj)    // (from opcode)
-    External (_SB_.PC02.BR2A.PEGP, DeviceObj)    // (from opcode)
-    External (DTGP, MethodObj)    // 5 Arguments (from opcode)
+    External (_SB_.PC02.BR2A, DeviceObj)
+    External (_SB_.PC02.BR2A.SL05, DeviceObj)
+    External (_SB_.PC02.BR2A.PEGP, DeviceObj)
+    External (DTGP, MethodObj)    // 5 Arguments
 
     Scope (_SB.PC02.BR2A)
     {

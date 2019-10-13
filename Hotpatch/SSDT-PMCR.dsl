@@ -5,10 +5,10 @@
 DefinitionBlock("", "SSDT", 2, "hack", "_PMCR", 0)
 {
 #endif
-    External (_SB_.PCI0, DeviceObj)    // (from opcode)
-    External (_SB_.PCI0.PMC1, DeviceObj)    // (from opcode)
-    External (_SB_.PCI0.PMCR, DeviceObj)    // (from opcode)
-    External (DTGP, MethodObj)    // 5 Arguments (from opcode)
+    External (_SB_.PCI0, DeviceObj)
+    External (_SB_.PCI0.PMC1, DeviceObj)
+    External (_SB_.PCI0.PMCR, DeviceObj)
+    External (DTGP, MethodObj)    // 5 Arguments
 
     Scope (\_SB.PCI0)
     {
