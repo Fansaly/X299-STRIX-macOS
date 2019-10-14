@@ -11,6 +11,14 @@ DefinitionBlock("", "SSDT", 2, "hack", "_XHCI", 0)
     {
         Method (_DSM, 4, NotSerialized)  // _DSM: Device-Specific Method
         {
+            If (LEqual (Arg2, Zero))
+            {
+                Return (Buffer (One)
+                {
+                     0x03
+                })
+            }
+
             Store (Package (0x1B)
                 {
                     "AAPL,slot-name",
