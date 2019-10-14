@@ -38,13 +38,13 @@ DefinitionBlock("", "SSDT", 2, "hack", "_LANC", 0)
                         "name",
                         Buffer (0x16)
                         {
-                            "Intel I219V2 Ethernet"
+                            "Intel I219-V Ethernet"
                         },
 
                         "model",
                         Buffer (0x2A)
                         {
-                            "Intel I219V2 PCI Express Gigabit Ethernet"
+                            "Intel I219-V PCI Express Gigabit Ethernet"
                         },
 
                         "location",

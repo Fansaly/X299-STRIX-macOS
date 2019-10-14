@@ -61,7 +61,7 @@ DefinitionBlock("", "SSDT", 2, "hack", "_XHCX", 0)
                         "model",
                         Buffer (0x2E)
                         {
-                            "ASMedia ASM2142 #1 1x USB 3.1 Type-C External"
+                            "ASMedia ASM2142 #1 x1 USB 3.1 Type-A External"
                         },
 
                         "AAPL,current-available",
@@ -144,7 +144,7 @@ DefinitionBlock("", "SSDT", 2, "hack", "_XHCX", 0)
                         "model",
                         Buffer (0x2E)
                         {
-                            "ASMedia ASM2142 #2 3x USB 3.1 Type-A External"
+                            "ASMedia ASM2142 #2 x1 USB 3.1 Type-C External"
                         },
 
                         "AAPL,current-available",

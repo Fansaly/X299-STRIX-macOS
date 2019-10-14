@@ -32,15 +32,15 @@ DefinitionBlock("", "SSDT", 2, "hack", "_XHCI", 0)
                     },
 
                     "name",
-                    Buffer (0x2B)
+                    Buffer (0x34)
                     {
-                        "Intel X299 Series Chipset XHCI Controller"
+                        "ASMedia / Intel X299 Series Chipset XHCI Controller"
                     },
 
                     "model",
-                    Buffer (0x22)
+                    Buffer (0x34)
                     {
-                        "Intel X299 Series Chipset USB 3.0"
+                        "ASMedia ASM2142 / Intel X299 Series Chipset USB 3.0"
                     },
 
                     "AAPL,current-available",
