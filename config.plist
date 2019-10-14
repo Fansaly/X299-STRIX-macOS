@@ -60,7 +60,7 @@
 				</dict>
 				<dict>
 					<key>Comment</key>
-					<string>IDER-&gt;MEID</string>
+					<string>IDER -&gt; MEID</string>
 					<key>Disabled</key>
 					<false/>
 					<key>Find</key>
@@ -110,16 +110,6 @@
 				</dict>
 				<dict>
 					<key>Comment</key>
-					<string>SMBS._ADR -&gt; XSBU.XADR</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>U01CUwhfQURS</data>
-					<key>Replace</key>
-					<data>WFNCVQhYQURS</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
 					<string>_DSM -&gt; XDSM</string>
 					<key>Disabled</key>
 					<false/>
@@ -127,6 +117,16 @@
 					<data>X0RTTQ==</data>
 					<key>Replace</key>
 					<data>WERTTQ==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>SMBS._ADR -&gt; XSBU.XADR</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>U01CUwhfQURS</data>
+					<key>Replace</key>
+					<data>WFNCVQhYQURS</data>
 				</dict>
 				<dict>
 					<key>Comment</key>
@@ -230,401 +230,401 @@
 				</dict>
 				<dict>
 					<key>Comment</key>
-					<string>CP0E -&gt; PR10</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AwRQ==</data>
-					<key>Replace</key>
-					<data>UFIxMA==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP0F -&gt; PR11</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AwRg==</data>
-					<key>Replace</key>
-					<data>UFIxMQ==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP10 -&gt; PR12</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AxMA==</data>
-					<key>Replace</key>
-					<data>UFIxMg==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP11 -&gt; PR13</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AxMQ==</data>
-					<key>Replace</key>
-					<data>UFIxMw==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP12 -&gt; PR14</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AxMg==</data>
-					<key>Replace</key>
-					<data>UFIxNA==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP13 -&gt; PR15</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AxMw==</data>
-					<key>Replace</key>
-					<data>UFIxNQ==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP14 -&gt; PR16</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AxNA==</data>
-					<key>Replace</key>
-					<data>UFIxNg==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP15 -&gt; PR17</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AxNQ==</data>
-					<key>Replace</key>
-					<data>UFIxNw==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP1C -&gt; PR18</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AxQw==</data>
-					<key>Replace</key>
-					<data>UFIxOA==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP1D -&gt; PR19</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AxRA==</data>
-					<key>Replace</key>
-					<data>UFIxOQ==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP1E -&gt; PR20</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AxRQ==</data>
-					<key>Replace</key>
-					<data>UFIyMA==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP1F -&gt; PR21</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AxRg==</data>
-					<key>Replace</key>
-					<data>UFIyMQ==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP20 -&gt; PR22</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AyMA==</data>
-					<key>Replace</key>
-					<data>UFIyMg==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP21 -&gt; PR23</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AyMQ==</data>
-					<key>Replace</key>
-					<data>UFIyMw==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP22 -&gt; PR24</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AyMg==</data>
-					<key>Replace</key>
-					<data>UFIyNA==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP23 -&gt;PR25</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AyMw==</data>
-					<key>Replace</key>
-					<data>UFIyNQ==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP24 -&gt; PR26</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AyNA==</data>
-					<key>Replace</key>
-					<data>UFIyNg==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP25 -&gt; PR27</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AyNQ==</data>
-					<key>Replace</key>
-					<data>UFIyNw==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP2A -&gt; PR28</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AyQQ==</data>
-					<key>Replace</key>
-					<data>UFIyOA==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP2B -&gt; PR29</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AyQg==</data>
-					<key>Replace</key>
-					<data>UFIyOQ==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP2C -&gt; PR30</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AyQw==</data>
-					<key>Replace</key>
-					<data>UFIzMA==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP2D -&gt; PR31</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AyRA==</data>
-					<key>Replace</key>
-					<data>UFIzMQ==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP2E -&gt; PR32</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AyRQ==</data>
-					<key>Replace</key>
-					<data>UFIzMg==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP2F -&gt; PR33</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AyRg==</data>
-					<key>Replace</key>
-					<data>UFIzMw==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP30 -&gt; PR34</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AzMA==</data>
-					<key>Replace</key>
-					<data>UFIzNA==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP31 -&gt; PR35</string>
-					<key>Disabled</key>
-					<false/>
-					<key>Find</key>
-					<data>Q1AzMQ==</data>
-					<key>Replace</key>
-					<data>UFIzNQ==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CP0A -&gt; PR36</string>
+					<string>CP0A -&gt; PR10</string>
 					<key>Disabled</key>
 					<false/>
 					<key>Find</key>
 					<data>Q1AwQQ==</data>
 					<key>Replace</key>
-					<data>UFIzNg==</data>
+					<data>UFIxMA==</data>
 				</dict>
 				<dict>
 					<key>Comment</key>
-					<string>CP0B -&gt; PR37</string>
+					<string>CP0B -&gt; PR11</string>
 					<key>Disabled</key>
 					<false/>
 					<key>Find</key>
 					<data>Q1AwQg==</data>
 					<key>Replace</key>
-					<data>UFIzNw==</data>
+					<data>UFIxMQ==</data>
 				</dict>
 				<dict>
 					<key>Comment</key>
-					<string>CP0C -&gt; PR38</string>
+					<string>CP0C -&gt; PR12</string>
 					<key>Disabled</key>
 					<false/>
 					<key>Find</key>
 					<data>Q1AwQw==</data>
 					<key>Replace</key>
-					<data>UFIzOA==</data>
+					<data>UFIxMg==</data>
 				</dict>
 				<dict>
 					<key>Comment</key>
-					<string>CP0D -&gt; PR39</string>
+					<string>CP0D -&gt; PR13</string>
 					<key>Disabled</key>
 					<false/>
 					<key>Find</key>
 					<data>Q1AwRA==</data>
 					<key>Replace</key>
-					<data>UFIzOQ==</data>
+					<data>UFIxMw==</data>
 				</dict>
 				<dict>
 					<key>Comment</key>
-					<string>CP16 -&gt; PR40</string>
+					<string>CP0E -&gt; PR14</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AwRQ==</data>
+					<key>Replace</key>
+					<data>UFIxNA==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP0F -&gt; PR15</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AwRg==</data>
+					<key>Replace</key>
+					<data>UFIxNQ==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP10 -&gt; PR16</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AxMA==</data>
+					<key>Replace</key>
+					<data>UFIxNg==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP11 -&gt; PR17</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AxMQ==</data>
+					<key>Replace</key>
+					<data>UFIxNw==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP12 -&gt; PR18</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AxMg==</data>
+					<key>Replace</key>
+					<data>UFIxOA==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP13 -&gt; PR19</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AxMw==</data>
+					<key>Replace</key>
+					<data>UFIxOQ==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP14 -&gt; PR20</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AxNA==</data>
+					<key>Replace</key>
+					<data>UFIyMA==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP15 -&gt; PR21</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AxNQ==</data>
+					<key>Replace</key>
+					<data>UFIyMQ==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP16 -&gt; PR22</string>
 					<key>Disabled</key>
 					<false/>
 					<key>Find</key>
 					<data>Q1AxNg==</data>
 					<key>Replace</key>
-					<data>UFI0MA==</data>
+					<data>UFIyMg==</data>
 				</dict>
 				<dict>
 					<key>Comment</key>
-					<string>CP17 -&gt; PR41</string>
+					<string>CP17 -&gt; PR23</string>
 					<key>Disabled</key>
 					<false/>
 					<key>Find</key>
 					<data>Q1AxNw==</data>
 					<key>Replace</key>
-					<data>UFI0MQ==</data>
+					<data>UFIyMw==</data>
 				</dict>
 				<dict>
 					<key>Comment</key>
-					<string>CP18 -&gt; PR42</string>
+					<string>CP18 -&gt; PR24</string>
 					<key>Disabled</key>
 					<false/>
 					<key>Find</key>
 					<data>Q1AxOA==</data>
 					<key>Replace</key>
-					<data>UFI0Mg==</data>
+					<data>UFIyNA==</data>
 				</dict>
 				<dict>
 					<key>Comment</key>
-					<string>CP19 -&gt; PR43</string>
+					<string>CP19 -&gt; PR25</string>
 					<key>Disabled</key>
 					<false/>
 					<key>Find</key>
 					<data>Q1AxOQ==</data>
 					<key>Replace</key>
-					<data>UFI0Mw==</data>
+					<data>UFIyNQ==</data>
 				</dict>
 				<dict>
 					<key>Comment</key>
-					<string>CP1A -&gt; PR44</string>
+					<string>CP1A -&gt; PR26</string>
 					<key>Disabled</key>
 					<false/>
 					<key>Find</key>
 					<data>Q1AxQQ==</data>
 					<key>Replace</key>
-					<data>UFI0NA==</data>
+					<data>UFIyNg==</data>
 				</dict>
 				<dict>
 					<key>Comment</key>
-					<string>CP1B -&gt; PR45</string>
+					<string>CP1B -&gt; PR27</string>
 					<key>Disabled</key>
 					<false/>
 					<key>Find</key>
 					<data>Q1AxQg==</data>
 					<key>Replace</key>
-					<data>UFI0NQ==</data>
+					<data>UFIyNw==</data>
 				</dict>
 				<dict>
 					<key>Comment</key>
-					<string>CP26 -&gt; PR46</string>
+					<string>CP1C -&gt; PR28</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AxQw==</data>
+					<key>Replace</key>
+					<data>UFIyOA==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP1D -&gt; PR29</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AxRA==</data>
+					<key>Replace</key>
+					<data>UFIyOQ==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP1E -&gt; PR30</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AxRQ==</data>
+					<key>Replace</key>
+					<data>UFIzMA==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP1F -&gt; PR31</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AxRg==</data>
+					<key>Replace</key>
+					<data>UFIzMQ==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP20 -&gt; PR32</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AyMA==</data>
+					<key>Replace</key>
+					<data>UFIzMg==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP21 -&gt; PR33</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AyMQ==</data>
+					<key>Replace</key>
+					<data>UFIzMw==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP22 -&gt; PR34</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AyMg==</data>
+					<key>Replace</key>
+					<data>UFIzNA==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP23 -&gt; PR35</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AyMw==</data>
+					<key>Replace</key>
+					<data>UFIzNQ==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP24 -&gt; PR36</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AyNA==</data>
+					<key>Replace</key>
+					<data>UFIzNg==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP25 -&gt; PR37</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AyNQ==</data>
+					<key>Replace</key>
+					<data>UFIzNw==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP26 -&gt; PR38</string>
 					<key>Disabled</key>
 					<false/>
 					<key>Find</key>
 					<data>Q1AyNg==</data>
 					<key>Replace</key>
-					<data>UFI0Ng==</data>
+					<data>UFIzOA==</data>
 				</dict>
 				<dict>
 					<key>Comment</key>
-					<string>CP27 -&gt; PR47</string>
+					<string>CP27 -&gt; PR39</string>
 					<key>Disabled</key>
 					<false/>
 					<key>Find</key>
 					<data>Q1AyNw==</data>
 					<key>Replace</key>
-					<data>UFI0Nw==</data>
+					<data>UFIzOQ==</data>
 				</dict>
 				<dict>
 					<key>Comment</key>
-					<string>CP28 -&gt; PR48</string>
+					<string>CP28 -&gt; PR40</string>
 					<key>Disabled</key>
 					<false/>
 					<key>Find</key>
 					<data>Q1AyOA==</data>
 					<key>Replace</key>
-					<data>UFI0OA==</data>
+					<data>UFI0MA==</data>
 				</dict>
 				<dict>
 					<key>Comment</key>
-					<string>CP29 -&gt; PR49</string>
+					<string>CP29 -&gt; PR41</string>
 					<key>Disabled</key>
 					<false/>
 					<key>Find</key>
 					<data>Q1AyOQ==</data>
+					<key>Replace</key>
+					<data>UFI0MQ==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP2A -&gt; PR42</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AyQQ==</data>
+					<key>Replace</key>
+					<data>UFI0Mg==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP2B -&gt; PR43</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AyQg==</data>
+					<key>Replace</key>
+					<data>UFI0Mw==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP2C -&gt; PR44</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AyQw==</data>
+					<key>Replace</key>
+					<data>UFI0NA==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP2D -&gt; PR45</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AyRA==</data>
+					<key>Replace</key>
+					<data>UFI0NQ==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP2E -&gt; PR46</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AyRQ==</data>
+					<key>Replace</key>
+					<data>UFI0Ng==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP2F -&gt; PR47</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AyRg==</data>
+					<key>Replace</key>
+					<data>UFI0Nw==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP30 -&gt; PR48</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AzMA==</data>
+					<key>Replace</key>
+					<data>UFI0OA==</data>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>CP31 -&gt; PR49</string>
+					<key>Disabled</key>
+					<false/>
+					<key>Find</key>
+					<data>Q1AzMQ==</data>
 					<key>Replace</key>
 					<data>UFI0OQ==</data>
 				</dict>
@@ -687,46 +687,6 @@
 					<data>Q1AzNw==</data>
 					<key>Replace</key>
 					<data>UFI1NQ==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>CAVS -&gt; HDEF</string>
-					<key>Disabled</key>
-					<true/>
-					<key>Find</key>
-					<data>Q0FWUw==</data>
-					<key>Replace</key>
-					<data>SERFRg==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>SL05 -&gt; GFX0</string>
-					<key>Disabled</key>
-					<true/>
-					<key>Find</key>
-					<data>U0wwNQ==</data>
-					<key>Replace</key>
-					<data>R0ZYMA==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>PMC1 -&gt; PMCR</string>
-					<key>Disabled</key>
-					<true/>
-					<key>Find</key>
-					<data>UE1DMQ==</data>
-					<key>Replace</key>
-					<data>UE1DUg==</data>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>GBE1 -&gt; ETH0</string>
-					<key>Disabled</key>
-					<true/>
-					<key>Find</key>
-					<data>R0JFMQ==</data>
-					<key>Replace</key>
-					<data>RVRIMA==</data>
 				</dict>
 			</array>
 		</dict>
