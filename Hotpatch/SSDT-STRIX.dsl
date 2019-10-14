@@ -11,6 +11,7 @@ DefinitionBlock("", "SSDT", 2, "hack", "_STRIX", 0)
     #include "SSDT-HDAU.dsl"
 
     #include "SSDT-PMCR.dsl"
+    #include "SSDT-THSS.dsl"
 
     #include "SSDT-USBX.dsl"
     #include "SSDT-XHCI.dsl"
