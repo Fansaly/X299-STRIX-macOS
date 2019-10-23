@@ -75,6 +75,13 @@ function getDownloads() {
   xmlRoot=$(plutil -extract $entry xml1 -o - "$config_plist")
 
   total=$(echo "$xmlRoot" | xpath "count(//array/dict/array)" 2>/dev/null)
+  total_local=$( \
+    echo "$xmlRoot" | \
+    plutil -extract Local xml1 -o - - | \
+    xpath "count(//array/dict/array)" 2>/dev/null \
+  )
+  [[ ! "$total_local" =~ ^[0-9]+$ ]] && total_local=0
+  total=$(($total - $total_local))
   index=1
 
   webSites=(
