@@ -44,6 +44,19 @@
 					<key>Author</key>
 					<string>acidanthera</string>
 					<key>Repo</key>
+					<string>Lilu</string>
+					<key>Installations</key>
+					<array>
+						<dict>
+							<key>Name</key>
+							<string>Lilu.kext</string>
+						</dict>
+					</array>
+				</dict>
+				<dict>
+					<key>Author</key>
+					<string>acidanthera</string>
+					<key>Repo</key>
 					<string>VirtualSMC</string>
 					<key>Installations</key>
 					<array>
@@ -57,12 +70,12 @@
 					<key>Author</key>
 					<string>acidanthera</string>
 					<key>Repo</key>
-					<string>Lilu</string>
+					<string>WhateverGreen</string>
 					<key>Installations</key>
 					<array>
 						<dict>
 							<key>Name</key>
-							<string>Lilu.kext</string>
+							<string>WhateverGreen.kext</string>
 						</dict>
 					</array>
 				</dict>
@@ -83,18 +96,18 @@
 					<key>Author</key>
 					<string>acidanthera</string>
 					<key>Repo</key>
-					<string>WhateverGreen</string>
+					<string>IntelMausi</string>
 					<key>Installations</key>
 					<array>
 						<dict>
 							<key>Name</key>
-							<string>WhateverGreen.kext</string>
+							<string>IntelMausi.kext</string>
 						</dict>
 					</array>
 				</dict>
 				<dict>
 					<key>Author</key>
-					<string>lvs1974</string>
+					<string>acidanthera</string>
 					<key>Repo</key>
 					<string>HibernationFixup</string>
 					<key>Installations</key>
@@ -107,21 +120,7 @@
 				</dict>
 			</array>
 			<key>Bitbucket</key>
-			<array>
-				<dict>
-					<key>Author</key>
-					<string>RehabMan</string>
-					<key>Repo</key>
-					<string>os-x-intel-network</string>
-					<key>Installations</key>
-					<array>
-						<dict>
-							<key>Name</key>
-							<string>IntelMausiEthernet.kext</string>
-						</dict>
-					</array>
-				</dict>
-			</array>
+			<array/>
 			<key>Local</key>
 			<array>
 				<dict>
