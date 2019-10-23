@@ -1,6 +1,6 @@
 #!/bin/bash
 
-efi_dir=/Volumes/EFI/EFI
+efi_dir=/Volumes/EFI
 
 function help() {
   echo "-d,  EFI directory (default: $efi_dir)."
@@ -30,35 +30,38 @@ done
 shift $((OPTIND-1))
 
 
-if [[ ! -d ${efi_dir} ]]; then
-  echo "${efi_dir} doesn't exist."
+if [[ ! -d $efi_dir ]]; then
+  echo "$efi_dir doesn't exist."
   exit 1
 fi
 
-if [[ ! -d ${output_dir} ]]; then
-  mkdir -p "${output_dir}"
+if [[ ! -d $output_dir ]]; then
+  mkdir -p "$output_dir"
 fi
 
 
-rm -Rf "${output_dir}"/*
-find "${efi_dir}" \( -iname "CLOVER*" -depth 1 \) -exec bash -c "cp -Rf \"\$1\" \"${output_dir}\"" _ {} \;
-find "${output_dir}" -type f -exec chmod a-x {} \;
+efi_dir+=/EFI
+
+rm -Rf "$output_dir"/*
+find "$efi_dir" \( -iname "CLOVER*" -depth 1 \) -exec bash -c "cp -Rf \"\$1\" \"${output_dir}\"" _ {} \;
+find "$output_dir" -type f -exec chmod a-x {} \;
 
 
-pushd "${output_dir}" > /dev/null
+pushd "$output_dir" > /dev/null
 
 clover_dir=CLOVER
 clover_log=Clover_Install_log.txt
-zip_archives=${clover_dir}
+zip_archives=$clover_dir
 
-if [[ -f "${clover_log}" ]]; then
-  zip_archives+=" ${clover_log}"
+if [[ -f "$clover_log" ]]; then
+  zip_archives+=" $clover_log"
 fi
 
 hostname=$(sysctl -n kern.hostname | sed -n 's/\(.*\)\..*/\1/p')
 outpt_file=CLOVER_${hostname}_$(date '+%Y-%m-%d_%H-%M-%S').zip
 
-zip -r -X -q "${outpt_file}" ${zip_archives}
-echo "EFI/CLOVER zip created: ${output_dir}/${outpt_file}."
+zip -r -X -q "$outpt_file" $zip_archives
+echo -e "CLOVER \033[0;35mInput\033[0;37m:  \033[0;96m${efi_dir}/CLOVER\033[0m"
+echo -e "CLOVER \033[0;35mBackup\033[0;37m: \033[0;96m${output_dir}/${outpt_file}\033[0m"
 
 popd > /dev/null

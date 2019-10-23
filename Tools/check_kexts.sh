@@ -1,5 +1,13 @@
 #!/bin/bash
 
+DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+UtilsDIR=${DIR}/Utils
+
+source "${UtilsDIR}/getStringValue.sh"
+source "${UtilsDIR}/findKext.sh"
+source "${UtilsDIR}/getRemoteVersion.sh"
+
+
 function help() {
   echo "-c,  Config file."
   echo "-d,  Download kexts directory."
@@ -28,56 +36,10 @@ done
 shift $((OPTIND-1))
 
 
-if [[ ! -f "${config_plist}" ]]; then
-  echo "${config_plist} doesn't exist."
+if [[ ! -f "$config_plist" ]]; then
+  echo "$config_plist doesn't exist."
   exit 1
 fi
-
-
-function getGitHubRemoteVersion() {
-  curl --silent --location "https://github.com/$1/$2/releases" --output "/tmp/org.$2.download.txt"
-  scrape=$(grep -o -m 1 "/.*RELEASE.*\.zip" "/tmp/org.$2.download.txt" 2>/dev/null)
-  version=$(echo "${scrape}" | perl -pe 's/.*\/(.*)\/.*/\1/')
-
-  echo "${version}"
-}
-
-function getBitbucketRemoteVersion() {
-  curl --silent --location "https://bitbucket.org/${1}/${2}/downloads/" --output "/tmp/org.$2.download.txt"
-  scrape=$(grep -o -m 1 "${1}/${2}/downloads/.*\.zip" "/tmp/org.$2.download.txt" 2>/dev/null | sed 's/".*//')
-  version=$(echo "${scrape}" | perl -pe 's/.*-(\d*-\d*)\..*/\1/')
-
-  echo "${version}"
-}
-
-function findKext() {
-# $1: Kext
-# $2: Directory
-  find "${@:2}" -name "$1" -not -path \*/PlugIns/* -not -path \*/Debug/*
-}
-
-function getValue() {
-  xml="$1"
-  entry="$2"
-
-  if [[ -f "${xml}" ]]; then
-    value=$(plutil -extract "${entry}" xml1 -o - "${xml}")
-  else
-    value=$(echo "${xml}" | plutil -extract "${entry}" xml1 -o - -)
-  fi
-
-  if [[ $? -eq 0 ]]; then
-    result=$( \
-      echo "${value}" | \
-      plutil -p - | \
-      sed -e 's/"//g' \
-    )
-  else
-    result=
-  fi
-
-  echo "${result}"
-}
 
 
 function fecho() {
@@ -90,15 +52,15 @@ function fecho() {
   _uChar_S_=✓ # ✓✔✗
   _uChar_F_=✗ # ✓✔✗
 
-  if [[ ${remote} = ${UNKNOWN} ]]; then
-    name="${name} ${_uChar_F_}"
-  elif [[ ${remote} != ${curr} ]]; then
-    name="${name} ${_uChar_S_}"
+  if [[ $remote = $UNKNOWN ]]; then
+    name="$name $_uChar_F_"
+  elif [[ $remote != $curr ]]; then
+    name="$name $_uChar_S_"
   fi
 
-  s="$(printf "${_format_}" "$name" "$author" "$remote" "$curr")"
-  s=$(echo "${s}" | sed -e 's/'"${_uChar_S_}"'/\\033[0;92m'"${_uChar_S_}"'\\033[0m  /')
-  s=$(echo "${s}" | sed -e 's/'"${_uChar_F_}"'/\\033[0;93m'"${_uChar_F_}"'\\033[0m  /')
+  s="$(printf "$_format_" "$name" "$author" "$remote" "$curr")"
+  s=$(echo "$s" | sed -e 's/'"$_uChar_S_"'/\\033[0;92m'"$_uChar_S_"'\\033[0m  /')
+  s=$(echo "$s" | sed -e 's/'"$_uChar_F_"'/\\033[0;93m'"$_uChar_F_"'\\033[0m  /')
 
   echo -ne "\r${s}\n"
 }
@@ -128,30 +90,30 @@ function printKextsInfo() {
   pad=${pad// /-}
   _line_=$(printf '%*.*s' 0 $len "$pad")
 
-  echo -e "kexts \033[0;32m=> \033[0;96m${kexts_dir}\033[0m"
+  echo -e "\033[0;94mkexts \033[0;37m=> \033[0;96m${kexts_dir}\033[0m"
   echo -e "\033[0;37m${_line_}\033[0m"
   echo -e "$(printf "${_format_}" "Kexts" "Author" "Remote" "Local")"
   echo -e "\033[0;37m${_line_}\033[0m"
 
   for info in "${kextsInfo[@]}"; do
-    arr=($(echo "${info}" | sed -e 's/|/ /g'))
+    arr=($(echo "$info" | sed -e 's/|/ /g'))
 
     author="${arr[0]}"
     repo="${arr[1]}"
     name="${arr[2]}"
     curr="${arr[3]}"
-    command="${arr[4]}"
+    webSite="${arr[4]}"
 
     echo -ne "\033[0;37m${name} ... \033[0m"
 
-    remote=$($command "${author}" "${repo}")
-    remote=$(echo "${remote}" | sed -e 's/[[:alpha:]]*//')
+    remote=$(getRemoteVersion "$webSite" "$author" "$repo")
+    remote=$(echo "$remote" | sed -e 's/[[:alpha:]]*//')
 
-    if [[ ! -n ${remote} ]]; then
-      remote=${UNKNOWN}
+    if [[ ! -n $remote ]]; then
+      remote=$UNKNOWN
     fi
 
-    fecho "${_format_}" "${UNKNOWN}" "${author}" "${name}" "${curr}" "${remote}"
+    fecho "$_format_" "$UNKNOWN" "$author" "$name" "$curr" "$remote"
   done
 }
 
@@ -161,41 +123,39 @@ function getKextsInfo() {
   kextsInfo=()
   max_len=()
 
-  options=(
-    "GitHub, getGitHubRemoteVersion"
-    "Bitbucket, getBitbucketRemoteVersion"
+  xmlRoot=$(plutil -extract Kexts.Install xml1 -o - "$config_plist")
+
+  webSites=(
+    "GitHub"
+    "Bitbucket"
   )
 
-  for option in "${options[@]}"; do
-    option=$(echo "${option}" | sed -e 's/[[:space:]]//g')
-    _repo_=$(echo "${option}" | awk -F, '{ print $1 }')
-    command=$(echo "${option}" | awk -F, '{ print $2 }')
-
-    xmlCtx=$(plutil -extract Kexts.Install.${_repo_} xml1 -o - "$config_plist")
+  for webSite in "${webSites[@]}"; do
+    xmlCtx=$(echo "$xmlRoot" | plutil -extract $webSite xml1 -o - -)
     count=$(echo "$xmlCtx" | xpath "count(//array/dict/array)" 2>/dev/null)
     [[ ! "$count" =~ ^[0-9]+$ ]] && count=0
 
     for (( i = 0; i < $count; i++ )); do
-      author=$(getValue "$xmlCtx" "$i.Author")
-      repo=$(getValue "$xmlCtx" "$i.Repo")
+      author=$(getStringValue "$xmlCtx" "${i}.Author")
+      repo=$(getStringValue "$xmlCtx" "${i}.Repo")
 
-      _xmlCtx=$(echo "$xmlCtx" | plutil -extract $i.Installations xml1 -o - -)
+      _xmlCtx=$(echo "$xmlCtx" | plutil -extract ${i}.Installations xml1 -o - -)
       _count=$(echo "$_xmlCtx" | xpath "count(//array/dict)" 2>/dev/null)
       [[ ! "$_count" =~ ^[0-9]+$ ]] && _count=0
 
       for (( j = 0; j < $_count; j++ )); do
-        name=$(getValue "$_xmlCtx" "$j.Name")
-        kext=$(findKext "${name}" "${kexts_dir}")
+        name=$(getStringValue "$_xmlCtx" "${j}.Name")
+        kext=$(findKext "$name" "$kexts_dir")
 
-        if [[ -z "${kext}" ]]; then continue; fi
+        if [[ $j -gt 0 || -z "$kext" ]]; then continue; fi
 
-        name=$(basename "${kext}" | sed -e 's/\.kext//')
+        name=$(basename "$kext" | sed -e 's/\.kext//')
         infoPlist=${kext}/Contents/Info.plist
 
-        if [[ "${_repo_}" == "GitHub" ]]; then
-          curr=$(getValue "${infoPlist}" "CFBundleVersion")
+        if [[ "$webSite" == "GitHub" ]]; then
+          curr=$(getStringValue "$infoPlist" "CFBundleVersion")
         else
-          curr=$(echo "${infoPlist}" | perl -pe 's/.*-(\d*-\d*)\/.*/\1/')
+          curr=$(echo "$infoPlist" | perl -pe 's/.*-(\d*-\d*)\/.*/\1/')
         fi
 
         [[ ${max_len[0]} -lt ${#author} ]] && max_len[0]=${#author}
@@ -207,7 +167,7 @@ function getKextsInfo() {
         kextsInfo[$idx]+=\|$repo
         kextsInfo[$idx]+=\|$name
         kextsInfo[$idx]+=\|$curr
-        kextsInfo[$idx]+=\|$command
+        kextsInfo[$idx]+=\|$webSite
 
         (( idx++ ))
       done
@@ -221,4 +181,4 @@ function getKextsInfo() {
   fi
 }
 
-getKextsInfo "${config_plist}" "${kexts_dir}"
+getKextsInfo "$config_plist" "$kexts_dir"

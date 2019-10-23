@@ -30,7 +30,7 @@ shift $((OPTIND-1))
 
 TSCAdjustResetInfoPlist=${TSCAdjustResetKextDIR}/Contents/Info.plist
 
-if [[ ! -f "${TSCAdjustResetInfoPlist}" ]]; then
+if [[ ! -f "$TSCAdjustResetInfoPlist" ]]; then
   echo "The TSCAdjustReset Info.plist file doesn't exist."
   exit 1
 fi
@@ -39,23 +39,23 @@ fi
 function getCPUKind() {
   PROCESSOR=$(sysctl -n machdep.cpu.brand_string)
 
-  PROCESSOR=$(printf "${PROCESSOR}" | perl -pe 's/\s+cpu//i')
-  PROCESSOR=$(printf "${PROCESSOR}" | perl -pe 's/\(R\)//g and s/\(TM\)//ig')
+  PROCESSOR=$(printf "$PROCESSOR" | perl -pe 's/\s+cpu//i')
+  PROCESSOR=$(printf "$PROCESSOR" | perl -pe 's/\(R\)//g and s/\(TM\)//ig')
 
-  CPUKind=$(printf "${PROCESSOR}" | perl -pe 's/\s+@.*//')
+  CPUKind=$(printf "$PROCESSOR" | perl -pe 's/\s+@.*//')
 
-  echo "${CPUKind}"
+  echo "$CPUKind"
 }
 
 threads=$(sysctl -n hw.ncpu)
-IOCPUNumber=$((${threads} - 1))
+IOCPUNumber=$(($threads - 1))
 
-plutil -replace IOKitPersonalities.TSCAdjustReset.IOPropertyMatch.IOCPUNumber -integer ${IOCPUNumber} "${TSCAdjustResetInfoPlist}"
+plutil -replace IOKitPersonalities.TSCAdjustReset.IOPropertyMatch.IOCPUNumber -integer $IOCPUNumber "$TSCAdjustResetInfoPlist"
 
 
-if [[ ${display} ]]; then
+if [[ $display ]]; then
   CPUKind=$(getCPUKind)
   cores=$(sysctl -n hw.physicalcpu)
 
-  echo -e "${CPUKind}  (${cores} cores, ${threads} threads)"
+  echo "$CPUKind  ($cores cores, $threads threads)"
 fi

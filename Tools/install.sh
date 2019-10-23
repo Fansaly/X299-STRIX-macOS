@@ -1,5 +1,13 @@
 #!/bin/bash
 
+DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+UtilsDIR=${DIR}/Utils
+
+source "${UtilsDIR}/getStringValue.sh"
+source "${UtilsDIR}/findKext.sh"
+source "${UtilsDIR}/installKext.sh"
+
+
 function help() {
   echo "-c,  Config file."
   echo "-k,  Install kexts directory."
@@ -36,44 +44,10 @@ done
 shift $((OPTIND-1))
 
 
-if [[ ! -f "${config_plist}" ]]; then
-  echo "${config_plist} doesn't exist."
+if [[ ! -f "$config_plist" ]]; then
+  echo "$config_plist doesn't exist."
   exit 1
 fi
-
-
-function findKext() {
-# $1: Kext
-# $2: Directory
-  find "${@:2}" -name "$1" -not -path \*/PlugIns/* -not -path \*/Debug/*
-}
-
-function installKext() {
-# $1: Kext to install
-# $2: Destination (default: /Library/Extensions)
-  if [[ -d "$2" ]]; then local kexts_dest="$2"; fi
-  kextName=$(basename $1)
-  echo Installing $kextName to $kexts_dest
-  rm -Rf $kexts_dest/$kextName
-  cp -Rf $1 $kexts_dest
-}
-
-
-function getValue() {
-  value=$(echo "$1" | plutil -extract "$2" xml1 -o - -)
-
-  if [[ $? -eq 0 ]]; then
-    result=$( \
-      echo "${value}" | \
-      plutil -p - | \
-      sed -e 's/"//g' \
-    )
-  else
-    result=
-  fi
-
-  echo "${result}"
-}
 
 
 function install() {
@@ -82,6 +56,8 @@ function install() {
   d_kexts_dir="$3"
   l_kexts_dir="$4"
 
+  xmlRoot=$(plutil -extract Kexts.Install xml1 -o - "$config_plist")
+
   entries=(
     "GitHub"
     "Bitbucket"
@@ -89,27 +65,39 @@ function install() {
   )
 
   for entry in "${entries[@]}"; do
-    xmlCtx=$(plutil -extract Kexts.Install.${entry} xml1 -o - "$config_plist")
+    xmlCtx=$(echo "$xmlRoot" | plutil -extract $entry xml1 -o - -)
     count=$(echo "$xmlCtx" | xpath "count(//array/dict/array)" 2>/dev/null)
     [[ ! "$count" =~ ^[0-9]+$ ]] && count=0
 
     for (( i = 0; i < $count; i++ )); do
-      _xmlCtx=$(echo "$xmlCtx" | plutil -extract $i.Installations xml1 -o - -)
+      _xmlCtx=$(echo "$xmlCtx" | plutil -extract ${i}.Installations xml1 -o - -)
       _count=$(echo "$_xmlCtx" | xpath "count(//array/dict)" 2>/dev/null)
       [[ ! "$_count" =~ ^[0-9]+$ ]] && _count=0
 
       for (( j = 0; j < $_count; j++ )); do
-        name=$(getValue "$_xmlCtx" "$j.Name")
-        kext=$(findKext "${name}" "${d_kexts_dir}" "${l_kexts_dir}")
+        name=$(getStringValue "$_xmlCtx" "${j}.Name")
+        kext=$(findKext "$name" "$d_kexts_dir" "$l_kexts_dir")
+        essential=$( \
+          echo "$_xmlCtx" | \
+          plutil -extract ${j}.Essential xml1 -o - - | \
+          grep -o -i -E "true|false" | \
+          awk '{ print tolower($0) }' \
+        )
 
-        installKext "${kext}" "${install_dir}"
+        if [[ -z "$kext" ]]; then continue; fi
+
+        installKext "$kext" "$install_dir"
+
+        if [[ "$essential" = "true" ]]; then
+          installKext "$kext"
+        fi
       done
     done
   done
 }
 
 # if [[ "${install_dir}" =~ ^/Volumes/[a-zA-Z_\-]+/EFI/CLOVER/kexts/Other$ ]]; then
-#   rm -Rf "${install_dir}"/*
+#   rm -Rf "$install_dir"/*
 # fi
 
-install "${config_plist}" "${install_dir}" "${d_kexts_dir}" "${l_kexts_dir}"
+install "$config_plist" "$install_dir" "$d_kexts_dir" "$l_kexts_dir"
