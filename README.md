@@ -104,7 +104,7 @@ After the replacement, you should customize Serial Number, Board Serial Number, 
 ```bash
 make check-kexts  # Check for updates for download kexts
 make backup       # Backup EFI/CLOVER
-make update       # Update local repo.
+make update-repo  # Update local repo.
 
 make list-WebDriver n   # Print the latest first n of NVIDIA Web Driver info.
 make download-WebDriver # Download the latest NVIDIA Web Driver
@@ -119,9 +119,6 @@ make download-WebDriver # Download the latest NVIDIA Web Driver
   - FSInject.efi
   - SMCHelper.efi
   - VBoxHfs.efi
-
-### Other
-If ->About This Mac->Processor displays "Unknown", you can refer to「[This Project](https://github.com/Fansaly/CosmetiCPUKind)」to set up what you need.
 
 &nbsp;
 

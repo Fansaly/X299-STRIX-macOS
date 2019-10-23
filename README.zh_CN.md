@@ -101,7 +101,7 @@ cp config.plist ${efi_dir}/EFI/ClOVER
 ```bash
 make check-kexts  # 检查下载 kexts 的更新
 make backup       # 备份 EFI/CLOVER
-make update       # 更新本地项目库
+make update-repo  # 更新本地项目库
 
 make list-WebDriver n   # 获取最新的 n 个 NVIDIA Web Driver 信息
 make download-WebDriver # 下载最新的 NVIDIA Web Driver
@@ -116,9 +116,6 @@ make download-WebDriver # 下载最新的 NVIDIA Web Driver
   - FSInject.efi
   - SMCHelper.efi
   - VBoxHfs.efi
-
-### 其他
-如果 ->关于本机->处理器 显示“未知”，可参考「[此项目](https://github.com/Fansaly/CosmetiCPUKind)」设置你所需的。
 
 &nbsp;
 
