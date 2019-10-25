@@ -89,7 +89,7 @@ function install() {
         installKext "$kext" "$install_dir"
 
         if [[ "$essential" = "true" ]]; then
-          sudo installKext "$kext"
+          installKext "$kext"
         fi
       done
     done
