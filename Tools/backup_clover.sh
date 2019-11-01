@@ -45,7 +45,7 @@ efi_dir+=/EFI
 rm -Rf "$output_dir"/*
 find "$efi_dir" \( -iname "CLOVER*" -depth 1 \) -exec bash -c "cp -Rf \"\$1\" \"${output_dir}\"" _ {} \;
 find "$output_dir" \( -type f -iname ".empty" \) -exec rm -Rf {} \;
-find "$output_dir" -type f -exec chmod a-x {} \;
+find "$output_dir" \( -type f -not -path \*/MacOS/* \) -exec chmod a-x {} \;
 
 
 pushd "$output_dir" > /dev/null
