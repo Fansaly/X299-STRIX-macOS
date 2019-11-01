@@ -3,7 +3,8 @@
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 UtilsDIR=${DIR}/Utils
 
-source "${UtilsDIR}/getStringValue.sh"
+source "${UtilsDIR}/count.sh"
+source "${UtilsDIR}/getValue.sh"
 source "${UtilsDIR}/findKext.sh"
 source "${UtilsDIR}/installKext.sh"
 
@@ -56,7 +57,7 @@ function install() {
   d_kexts_dir="$3"
   l_kexts_dir="$4"
 
-  xmlRoot=$(plutil -extract Kexts.Install xml1 -o - "$config_plist")
+  xmlRoot=$(getValue "$config_plist" "Kexts.Install")
 
   entries=(
     "GitHub"
@@ -65,21 +66,18 @@ function install() {
   )
 
   for entry in "${entries[@]}"; do
-    xmlCtx=$(echo "$xmlRoot" | plutil -extract $entry xml1 -o - -)
-    count=$(echo "$xmlCtx" | xpath "count(//array/dict/array)" 2>/dev/null)
-    [[ ! "$count" =~ ^[0-9]+$ ]] && count=0
+    total=$(getValue "$xmlRoot" "$entry" | count "//array/dict/array")
 
-    for (( i = 0; i < $count; i++ )); do
-      _xmlCtx=$(echo "$xmlCtx" | plutil -extract ${i}.Installations xml1 -o - -)
-      _count=$(echo "$_xmlCtx" | xpath "count(//array/dict)" 2>/dev/null)
-      [[ ! "$_count" =~ ^[0-9]+$ ]] && _count=0
+    for (( i = 0; i < $total; i++ )); do
+      kext_entry="${entry}.${i}"
+      _total=$(getValue "$xmlRoot" "$kext_entry.Installations" | count "//array/dict")
 
-      for (( j = 0; j < $_count; j++ )); do
-        name=$(getStringValue "$_xmlCtx" "${j}.Name")
+      for (( j = 0; j < $_total; j++ )); do
+        xmlCtx=$(getValue "$xmlRoot" "$kext_entry.Installations.${j}")
+        name=$(getSpecificValue "$xmlCtx" "Name")
         kext=$(findKext "$name" "$d_kexts_dir" "$l_kexts_dir")
         essential=$( \
-          echo "$_xmlCtx" | \
-          plutil -extract ${j}.Essential xml1 -o - - | \
+          getValue "$xmlCtx" "Essential" | \
           grep -o -i -E "true|false" | \
           awk '{ print tolower($0) }' \
         )

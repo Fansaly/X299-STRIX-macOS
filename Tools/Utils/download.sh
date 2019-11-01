@@ -12,7 +12,7 @@ function download() {
 # $4: Repo
 # $5: Output directory (optional)
 # $6: Partial file name to look for (optional)
-  local webSite=$(echo "$1" | awk '{ print tolower($0) }')
+  local web_site=$(echo "$1" | awk '{ print tolower($0) }')
   local index="$2"
   local author="$3"
   local repo="$4"
@@ -31,7 +31,7 @@ function download() {
 
   tmpfile="/tmp/org.${author}.download.txt"
 
-  if [[ "$webSite" = "github" ]]; then
+  if [[ "$web_site" = "github" ]]; then
     curl -sL "https://github.com/${author}/${repo}/releases" -o "$tmpfile"
 
     if [[ -n "$partial_name" ]]; then
@@ -41,7 +41,7 @@ function download() {
       scrape=$(cat "$tmpfile" | grep -o "/.*\.zip" | grep -m 1 -i -v "debug")
     fi
 
-  elif [[ "$webSite" = "bitbucket" ]]; then
+  elif [[ "$web_site" = "bitbucket" ]]; then
     curl -sL "https://bitbucket.org/${author}/${repo}/downloads/" -o "$tmpfile"
 
     scrape=$( \
@@ -60,11 +60,11 @@ function download() {
 
   local url fileName
 
-  if [[ "$webSite" = "github" ]]; then
+  if [[ "$web_site" = "github" ]]; then
     url="https://github.com/$scrape"
     fileName="${author}-${repo}.zip"
 
-  elif [[ "$webSite" = "bitbucket" ]]; then
+  elif [[ "$web_site" = "bitbucket" ]]; then
     url="https://bitbucket.org/$scrape"
     fileName=$(basename "$scrape")
   fi

@@ -15,6 +15,7 @@ BUILD_DIR = ./Build
 BACKUP_DIR = ./Backup
 CONFIG_DIR = ./Config
 CONFIG_PLIST = $(CONFIG_DIR)/config.plist
+UPDATES_PLIST = /tmp/kexts.updates.plist
 
 IASL_OPTS = -vs -ve
 IASL_ZIP = $(shell find $(D_TOOLS_DIR) -type f -name iasl.zip)
@@ -83,10 +84,16 @@ set-tsc:
 	@ $(L_TOOLS_DIR)/set_tsc.sh -k "$(L_KEXTS_DIR)/TSCAdjustReset.kext"
 
 
-# Check update for download kexts
-.PHONY: check-kexts
-check-kexts:
-	@ $(L_TOOLS_DIR)/check_kexts.sh -c "$(CONFIG_PLIST)" -d "$(D_KEXTS_DIR)"
+# Check kexts updates
+.PHONY: update-kexts
+update-kexts:
+	@ $(L_TOOLS_DIR)/update_kexts.sh -c "$(CONFIG_PLIST)" -d "$(D_KEXTS_DIR)" -o "$(UPDATES_PLIST)"
+
+# Upgrade kexts
+.PHONY: upgrade-kexts
+upgrade-kexts:
+	$(eval EFI_DIR := $(shell make mount))
+	@ $(L_TOOLS_DIR)/upgrade_kexts.sh -c "$(UPDATES_PLIST)" -k "$(EFI_DIR)/EFI/CLOVER/kexts/Other" -d "$(D_KEXTS_DIR)"
 
 
 # Unarchive

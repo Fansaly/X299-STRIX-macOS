@@ -102,23 +102,26 @@ After the replacement, you should customize Serial Number, Board Serial Number, 
 
 7. other features:
 ```bash
-make check-kexts  # Check for updates for download kexts
-make backup       # Backup EFI/CLOVER
-make update-repo  # Update local repo.
+make update-kexts  # Check kexts updates
+make upgrade-kexts # Upgrade kexts
+make backup        # Backup EFI/CLOVER
+make update-repo   # Update local repo.
 
 make list-WebDriver n   # Print the latest first n of NVIDIA Web Driver info.
 make download-WebDriver # Download the latest NVIDIA Web Driver
 ```
 
 ### EFI/CLOVER/drivers/UEFI
-  - ApfsDriverLoader.efi
-  - AppleImageLoader.efi
-  - AptioMemoryFix.efi
-  - AudioDxe.efi
-  - DataHubDxe.efi
-  - FSInject.efi
-  - SMCHelper.efi
-  - VBoxHfs.efi
+  - Recommended
+    - AudioDxe.efi
+    - DataHubDxe.efi
+    - FSInject.efi
+    - SMCHelper.efi
+  - File System
+    - ApfsDriverLoader.efi
+    - VBoxHfs.efi
+  - Memory fix
+    - AptioMemoryFix.efi
 
 &nbsp;
 

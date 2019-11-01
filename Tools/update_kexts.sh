@@ -3,7 +3,8 @@
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 UtilsDIR=${DIR}/Utils
 
-source "${UtilsDIR}/getStringValue.sh"
+source "${UtilsDIR}/count.sh"
+source "${UtilsDIR}/getValue.sh"
 source "${UtilsDIR}/findKext.sh"
 source "${UtilsDIR}/getRemoteVersion.sh"
 
@@ -11,20 +12,24 @@ source "${UtilsDIR}/getRemoteVersion.sh"
 function help() {
   echo "-c,  Config file."
   echo "-d,  Download kexts directory."
+  echo "-o,  The file that check updates."
   echo "-h,  Show this help message."
   echo
-  echo "Usage: $(basename $0) [-c <config file>] [-d <download directory>]"
-  echo "Example: $(basename $0) -c config.plist -d ~/Downloads/Kexts"
+  echo "Usage: $(basename $0) [-c <config file>] [-d <download directory>] [-o <file>]"
+  echo "Example: $(basename $0) -c config.plist -d ~/Downloads/Kexts -o /tmp/updates.plist"
   echo
 }
 
-while getopts c:d:h option; do
+while getopts c:d:o:h option; do
   case $option in
     c )
       config_plist=$OPTARG
       ;;
     d )
       kexts_dir=$OPTARG
+      ;;
+    o )
+      updates_plist=$OPTARG
       ;;
     h )
       help
@@ -42,7 +47,7 @@ if [[ ! -f "$config_plist" ]]; then
 fi
 
 
-function fecho() {
+function printKextInfo() {
   _format_="$1"
   UNKNOWN="$2"
   author="$3"
@@ -65,7 +70,7 @@ function fecho() {
   echo -ne "\r${s}\n"
 }
 
-function printKextsInfo() {
+function getRemoteKextsInfo() {
   UNKNOWN="<unknown>"
   _format_=
   _line_=
@@ -95,6 +100,12 @@ function printKextsInfo() {
   echo -e "$(printf "${_format_}" "Kexts" "Author" "Remote" "Local")"
   echo -e "\033[0;37m${_line_}\033[0m"
 
+  xmlRoot=$( \
+    getValue "$config_plist" "Kexts.Install" | \
+    plutil -remove "Local" -o - - \
+  )
+  total=0
+
   for info in "${kextsInfo[@]}"; do
     arr=($(echo "$info" | sed -e 's/|/ /g'))
 
@@ -102,49 +113,62 @@ function printKextsInfo() {
     repo="${arr[1]}"
     name="${arr[2]}"
     curr="${arr[3]}"
-    webSite="${arr[4]}"
+    web_site="${arr[4]}"
+    kext_entry="${arr[5]}"
 
     echo -ne "\033[0;37m${name} ... \033[0m"
 
-    remote=$(getRemoteVersion "$webSite" "$author" "$repo")
+    remote=$(getRemoteVersion "$web_site" "$author" "$repo")
     remote=$(echo "$remote" | sed -e 's/[[:alpha:]]*//')
 
     if [[ ! -n $remote ]]; then
       remote=$UNKNOWN
     fi
 
-    fecho "$_format_" "$UNKNOWN" "$author" "$name" "$curr" "$remote"
+    if [[ $remote != $UNKNOWN && $remote != $curr ]]; then
+      xmlCtx=$( \
+        getValue "$xmlRoot" "$kext_entry" | \
+        plutil -replace "Updates" -string "avaliable" -o - - \
+      )
+      xmlRoot=$( \
+        echo "$xmlRoot" | \
+        plutil -remove "$kext_entry" -o - - | \
+        plutil -insert "$kext_entry" -xml "$xmlCtx" -o - - \
+      )
+      (( total++ ))
+    fi
+
+    printKextInfo "$_format_" "$UNKNOWN" "$author" "$name" "$curr" "$remote"
   done
+
+  echo "$xmlRoot" | plutil -insert "Total" -integer $total -o "$updates_plist" -
 }
 
-function getKextsInfo() {
-  config_plist="$1"
-  kexts_dir="$2"
+function getLocalKextsInfo() {
   kextsInfo=()
   max_len=()
 
-  xmlRoot=$(plutil -extract Kexts.Install xml1 -o - "$config_plist")
+  xmlRoot=$(getValue "$config_plist" "Kexts.Install")
 
-  webSites=(
+  web_sites=(
     "GitHub"
     "Bitbucket"
   )
 
-  for webSite in "${webSites[@]}"; do
-    xmlCtx=$(echo "$xmlRoot" | plutil -extract $webSite xml1 -o - -)
-    count=$(echo "$xmlCtx" | xpath "count(//array/dict/array)" 2>/dev/null)
-    [[ ! "$count" =~ ^[0-9]+$ ]] && count=0
+  for web_site in "${web_sites[@]}"; do
+    total=$(getValue "$xmlRoot" "$web_site" | count "//array/dict/array")
 
-    for (( i = 0; i < $count; i++ )); do
-      author=$(getStringValue "$xmlCtx" "${i}.Author")
-      repo=$(getStringValue "$xmlCtx" "${i}.Repo")
+    for (( i = 0; i < $total; i++ )); do
+      kext_entry="${web_site}.${i}"
+      xmlCtx=$(getValue "$xmlRoot" "$kext_entry")
+      author=$(getSpecificValue "$xmlCtx" "Author")
+      repo=$(getSpecificValue "$xmlCtx" "Repo")
 
-      _xmlCtx=$(echo "$xmlCtx" | plutil -extract ${i}.Installations xml1 -o - -)
-      _count=$(echo "$_xmlCtx" | xpath "count(//array/dict)" 2>/dev/null)
-      [[ ! "$_count" =~ ^[0-9]+$ ]] && _count=0
+      _total=$(getValue "$xmlCtx" "Installations" | count "//array/dict")
 
-      for (( j = 0; j < $_count; j++ )); do
-        name=$(getStringValue "$_xmlCtx" "${j}.Name")
+      for (( j = 0; j < $_total; j++ )); do
+        _xmlCtx=$(getValue "$xmlCtx" "Installations.${j}")
+        name=$(getSpecificValue "$_xmlCtx" "Name")
         kext=$(findKext "$name" "$kexts_dir")
 
         if [[ $j -gt 0 || -z "$kext" ]]; then continue; fi
@@ -152,8 +176,8 @@ function getKextsInfo() {
         name=$(basename "$kext" | sed -e 's/\.kext//')
         infoPlist=${kext}/Contents/Info.plist
 
-        if [[ "$webSite" == "GitHub" ]]; then
-          curr=$(getStringValue "$infoPlist" "CFBundleVersion")
+        if [[ "$web_site" == "GitHub" ]]; then
+          curr=$(getSpecificValue "$infoPlist" "CFBundleVersion")
         else
           curr=$(echo "$infoPlist" | perl -pe 's/.*-(\d*-\d*)\/.*/\1/')
         fi
@@ -167,7 +191,8 @@ function getKextsInfo() {
         kextsInfo[$idx]+=\|$repo
         kextsInfo[$idx]+=\|$name
         kextsInfo[$idx]+=\|$curr
-        kextsInfo[$idx]+=\|$webSite
+        kextsInfo[$idx]+=\|$web_site
+        kextsInfo[$idx]+=\|$kext_entry
 
         (( idx++ ))
       done
@@ -175,10 +200,10 @@ function getKextsInfo() {
   done
 
   if [[ ${#kextsInfo[@]} -eq 0 ]]; then
-    echo -e "\033[0;31mNo kexts\033[0m in directory \033[0;33m${kexts_dir}.\033[0m"
+    echo -e "\033[0;95mNo kexts \033[0;37min \033[0;96m${kexts_dir}\033[0m"
   else
-    printKextsInfo ${#max_len[@]} "${max_len[@]}" "${kextsInfo[@]}"
+    getRemoteKextsInfo ${#max_len[@]} "${max_len[@]}" "${kextsInfo[@]}"
   fi
 }
 
-getKextsInfo "$config_plist" "$kexts_dir"
+getLocalKextsInfo

@@ -44,6 +44,7 @@ efi_dir+=/EFI
 
 rm -Rf "$output_dir"/*
 find "$efi_dir" \( -iname "CLOVER*" -depth 1 \) -exec bash -c "cp -Rf \"\$1\" \"${output_dir}\"" _ {} \;
+find "$output_dir" \( -type f -iname ".empty" \) -exec rm -Rf {} \;
 find "$output_dir" -type f -exec chmod a-x {} \;
 
 
@@ -61,7 +62,7 @@ hostname=$(sysctl -n kern.hostname | sed -n 's/\(.*\)\..*/\1/p')
 outpt_file=CLOVER_${hostname}_$(date '+%Y-%m-%d_%H-%M-%S').zip
 
 zip -r -X -q "$outpt_file" $zip_archives
-echo -e "CLOVER \033[0;35mInput\033[0;37m:  \033[0;96m${efi_dir}/CLOVER\033[0m"
-echo -e "CLOVER \033[0;35mBackup\033[0;37m: \033[0;96m${output_dir}/${outpt_file}\033[0m"
+echo -e "CLOVER \033[38;5;135mInput\033[0;37m:  \033[0;96m${efi_dir}/CLOVER\033[0m"
+echo -e "CLOVER \033[38;5;135mBackup\033[0;37m: \033[0;96m${output_dir}/${outpt_file}\033[0m"
 
 popd > /dev/null

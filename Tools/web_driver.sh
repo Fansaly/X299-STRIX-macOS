@@ -3,7 +3,8 @@
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 UtilsDIR=${DIR}/Utils
 
-source "${UtilsDIR}/getStringValue.sh"
+source "${UtilsDIR}/count.sh"
+source "${UtilsDIR}/getValue.sh"
 
 
 function help() {
@@ -37,9 +38,10 @@ shift $((OPTIND-1))
 
 function downloadWebDriver() {
   local xml="$1"
+  local output_dir="$2"
   local file_url output_file
 
-  file_url=$(getStringValue "$xml" "0.downloadURL")
+  file_url=$(getSpecificValue "$xml" "0.downloadURL")
   output_file=$(echo "$file_url" | perl -pe 's/.*\/(.*)/\1/')
 
   curl -kfSL "$file_url" -o "${output_dir}/${output_file}"
@@ -59,18 +61,19 @@ function printMessage() {
 function printWebDriverList() {
   local xml="$1"
   local total=$2
-  local count OS version size downloadURL checksum
+  local _total xmlCtx OS version size downloadURL checksum
 
-  count=$(echo "$xml" | xpath "count(//array/dict)" 2>/dev/null)
-  [[ ! "$count" =~ ^[0-9]+$ ]] && count=0
-  [[ $total -gt $count ]] && total=$count
+  _total=$(count "$xml" "//array/dict")
+  [[ $total -gt $_total ]] && total=$_total
 
   for (( i = 0; i < $total; i++ )); do
-             OS=$(getStringValue "$xml" "${i}.OS")
-        version=$(getStringValue "$xml" "${i}.version")
-    downloadURL=$(getStringValue "$xml" "${i}.downloadURL")
-           size=$(getStringValue "$xml" "${i}.size" | awk '{printf ("%.2f", $1 / 1024 / 1024)}')
-       checksum=$(getStringValue "$xml" "${i}.checksum")
+    xmlCtx=$(getValue "$xml" $i)
+
+             OS=$(getSpecificValue "$xmlCtx" "OS")
+        version=$(getSpecificValue "$xmlCtx" "version")
+    downloadURL=$(getSpecificValue "$xmlCtx" "downloadURL")
+           size=$(getSpecificValue "$xmlCtx" "size" | awk '{printf ("%.2f", $1 / 1024 / 1024)}')
+       checksum=$(getSpecificValue "$xmlCtx" "checksum")
 
     [[ $i -gt 0 ]] && echo -en "\n"
     printMessage "macOS Version" "$OS"
@@ -86,7 +89,7 @@ function getWebDriverList() {
   local xml=$(curl -kfsSL "$source_url")
 
   if [[ $? -eq 0 ]]; then
-    echo "$xml" | plutil -extract updates xml1 -o - -
+    echo "$(getValue "$xml" "updates")"
   fi
 }
 

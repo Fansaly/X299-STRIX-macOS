@@ -3,7 +3,8 @@
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 UtilsDIR=${DIR}/Utils
 
-source "${UtilsDIR}/getStringValue.sh"
+source "${UtilsDIR}/count.sh"
+source "${UtilsDIR}/getValue.sh"
 source "${UtilsDIR}/download.sh"
 source "${UtilsDIR}/downloadSSDT.sh"
 
@@ -51,13 +52,12 @@ function downloadHotpatch() {
   output_dir="$2"
   type=$3
 
-  xmlCtx=$(plutil -extract ${type}.SSDT xml1 -o - "$config_plist")
-  count=$(echo "$xmlCtx" | xpath "count(//array/string)" 2>/dev/null)
-  [[ ! "$count" =~ ^[0-9]+$ ]] && count=0
+  xmlCtx=$(getValue "$config_plist" "${type}.SSDT")
+  total=$(count "$xmlCtx" "//array/string")
 
-  for (( i = 0; i < $count; i++ )); do
-    ssdt=$(getStringValue "$xmlCtx" "$i")
-    downloadSSDT "$((i+1)),$count" "$ssdt" "$output_dir"
+  for (( i = 0; i < $total; i++ )); do
+    ssdt=$(getSpecificValue "$xmlCtx" "$i")
+    downloadSSDT "$((i+1)),$total" "$ssdt" "$output_dir"
   done
 }
 
@@ -66,40 +66,38 @@ function getDownloads() {
   output_dir="$2"
   type=$3
 
-  if [[ "${type}" == "Kexts" ]]; then
+  if [[ "$type" == "Kexts" ]]; then
     entry=${type}.Install
   else
-    entry=${type}
+    entry=$type
   fi
 
-  xmlRoot=$(plutil -extract $entry xml1 -o - "$config_plist")
+  xmlRoot=$(getValue "$config_plist" "$entry")
 
-  total=$(echo "$xmlRoot" | xpath "count(//array/dict/array)" 2>/dev/null)
+  total=$(count "$xmlRoot" "//array/dict/array")
   total_local=$( \
-    echo "$xmlRoot" | \
-    plutil -extract Local xml1 -o - - | \
-    xpath "count(//array/dict/array)" 2>/dev/null \
+    getValue "$xmlRoot" "Local" | \
+    count "//array/dict/array" \
   )
-  [[ ! "$total_local" =~ ^[0-9]+$ ]] && total_local=0
   total=$(($total - $total_local))
   index=1
 
-  webSites=(
+  web_sites=(
     "GitHub"
     "Bitbucket"
   )
 
-  for webSite in "${webSites[@]}"; do
-    xmlCtx=$(echo "$xmlRoot" | plutil -extract $webSite xml1 -o - -)
-    count=$(echo "$xmlCtx" | xpath "count(//array/dict/array)" 2>/dev/null)
-    [[ ! "$count" =~ ^[0-9]+$ ]] && count=0
+  for web_site in "${web_sites[@]}"; do
+    _total=$(getValue "$xmlRoot" "$web_site" | count "//array/dict/array")
 
-    for (( i = 0; i < $count; i++ )); do
-      author=$(getStringValue "$xmlCtx" "${i}.Author")
-      repo=$(getStringValue "$xmlCtx" "${i}.Repo")
-      name=$(getStringValue "$xmlCtx" "${i}.Name")
+    for (( i = 0; i < $_total; i++ )); do
+      kext_entry="${web_site}.${i}"
+      xmlCtx=$(getValue "$xmlRoot" "$kext_entry")
+      author=$(getSpecificValue "$xmlCtx" "Author")
+      repo=$(getSpecificValue "$xmlCtx" "Repo")
+      name=$(getSpecificValue "$xmlCtx" "Name")
 
-      download "$webSite" "$((index++)),$total" "$author" "$repo" "$output_dir" "$name"
+      download "$web_site" "$((index++)),$total" "$author" "$repo" "$output_dir" "$name"
     done
   done
 }

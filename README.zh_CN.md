@@ -99,23 +99,27 @@ cp config.plist ${efi_dir}/EFI/ClOVER
 
 7. 其它功能：
 ```bash
-make check-kexts  # 检查下载 kexts 的更新
-make backup       # 备份 EFI/CLOVER
-make update-repo  # 更新本地项目库
+make update-kexts  # 检查 kexts 的更新
+make upgrade-kexts # 升级 kexts
+make backup        # 备份 EFI/CLOVER
+make update-repo   # 更新本地项目库
 
 make list-WebDriver n   # 获取最新的 n 个 NVIDIA Web Driver 信息
 make download-WebDriver # 下载最新的 NVIDIA Web Driver
 ```
 
 ### EFI/CLOVER/drivers/UEFI
-  - ApfsDriverLoader.efi
-  - AppleImageLoader.efi
-  - AptioMemoryFix.efi
-  - AudioDxe.efi
-  - DataHubDxe.efi
-  - FSInject.efi
-  - SMCHelper.efi
-  - VBoxHfs.efi
+  - Recommended
+    - AudioDxe.efi
+    - DataHubDxe.efi
+    - FSInject.efi
+    - SMCHelper.efi
+  - File System
+    - ApfsDriverLoader.efi
+    - VBoxHfs.efi
+  - Memory fix
+    - AptioMemoryFix.efi
+
 
 &nbsp;
 
