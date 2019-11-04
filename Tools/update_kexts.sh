@@ -6,13 +6,13 @@ UtilsDIR=${DIR}/Utils
 source "${UtilsDIR}/count.sh"
 source "${UtilsDIR}/getValue.sh"
 source "${UtilsDIR}/findKext.sh"
-source "${UtilsDIR}/getRemoteVersion.sh"
+source "${UtilsDIR}/getRemoteKextInfo.sh"
 
 
 function help() {
-  echo "-c,  Config file."
+  echo "-c,  Kexts config file."
   echo "-d,  Download kexts directory."
-  echo "-o,  The file that check updates."
+  echo "-o,  Output file that check updates."
   echo "-h,  Show this help message."
   echo
   echo "Usage: $(basename $0) [-c <config file>] [-d <download directory>] [-o <file>]"
@@ -109,16 +109,17 @@ function getRemoteKextsInfo() {
   for info in "${kextsInfo[@]}"; do
     arr=($(echo "$info" | sed -e 's/|/ /g'))
 
-    author="${arr[0]}"
-    repo="${arr[1]}"
-    name="${arr[2]}"
-    curr="${arr[3]}"
-    web_site="${arr[4]}"
-    kext_entry="${arr[5]}"
+    web_site="${arr[0]}"
+    author="${arr[1]}"
+    repo="${arr[2]}"
+    partial_name=$(echo "${arr[3]}" | awk -F/ '{ print $1 }')
+    name="${arr[4]}"
+    curr="${arr[5]}"
+    kext_entry="${arr[6]}"
 
     echo -ne "\033[0;37m${name} ... \033[0m"
 
-    remote=$(getRemoteVersion "$web_site" "$author" "$repo")
+    remote=$(getRemoteVersion "$web_site" "$author" "$repo" "$partial_name")
     remote=$(echo "$remote" | sed -e 's/[[:alpha:]]*//')
 
     if [[ ! -n $remote ]]; then
@@ -163,6 +164,7 @@ function getLocalKextsInfo() {
       xmlCtx=$(getValue "$xmlRoot" "$kext_entry")
       author=$(getSpecificValue "$xmlCtx" "Author")
       repo=$(getSpecificValue "$xmlCtx" "Repo")
+      partial_name=$(getSpecificValue "$xmlCtx" "Name")
 
       _total=$(getValue "$xmlCtx" "Installations" | count "//array/dict")
 
@@ -174,12 +176,12 @@ function getLocalKextsInfo() {
         if [[ $j -gt 0 || -z "$kext" ]]; then continue; fi
 
         name=$(basename "$kext" | sed -e 's/\.kext//')
-        infoPlist=${kext}/Contents/Info.plist
+        info_plist=${kext}/Contents/Info.plist
 
         if [[ "$web_site" == "GitHub" ]]; then
-          curr=$(getSpecificValue "$infoPlist" "CFBundleVersion")
+          curr=$(getSpecificValue "$info_plist" "CFBundleVersion")
         else
-          curr=$(echo "$infoPlist" | perl -pe 's/.*-(\d*-\d*)\/.*/\1/')
+          curr=$(echo "$info_plist" | perl -pe 's/.*-(\d*-\d*)\/.*/\1/')
         fi
 
         [[ ${max_len[0]} -lt ${#author} ]] && max_len[0]=${#author}
@@ -187,11 +189,12 @@ function getLocalKextsInfo() {
         [[ ${max_len[2]} -lt ${#name}   ]] && max_len[2]=${#name}
         [[ ${max_len[3]} -lt ${#curr}   ]] && max_len[3]=${#curr}
 
-        kextsInfo[$idx]+=$author
+        kextsInfo[$idx]+=$web_site
+        kextsInfo[$idx]+=\|$author
         kextsInfo[$idx]+=\|$repo
+        kextsInfo[$idx]+=\|$partial_name/
         kextsInfo[$idx]+=\|$name
         kextsInfo[$idx]+=\|$curr
-        kextsInfo[$idx]+=\|$web_site
         kextsInfo[$idx]+=\|$kext_entry
 
         (( idx++ ))

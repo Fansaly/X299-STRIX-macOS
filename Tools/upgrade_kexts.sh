@@ -4,15 +4,16 @@ DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 UtilsDIR=${DIR}/Utils
 
 source "${UtilsDIR}/count.sh"
+source "${UtilsDIR}/tolower.sh"
 source "${UtilsDIR}/getValue.sh"
-source "${UtilsDIR}/getFileRex.sh"
+source "${UtilsDIR}/getRemoteKextInfo.sh"
 source "${UtilsDIR}/download.sh"
 source "${UtilsDIR}/findKext.sh"
 source "${UtilsDIR}/installKext.sh"
 
 
 function help() {
-  echo "-c,  Updates file."
+  echo "-c,  Kexts updates file."
   echo "-k,  Install kexts directory."
   echo "-d,  Download directory."
   echo "-h,  Show this help message."
@@ -22,7 +23,7 @@ function help() {
   echo
 }
 
-while getopts c:k:d:t:h option; do
+while getopts c:k:d:h option; do
   case $option in
     c )
       updates_plist=$OPTARG
@@ -50,11 +51,11 @@ fi
 
 
 function unarchive() {
-  local file_rex="$1"
-  local d_kexts_dir="$2"
+  local kext_dir="$1"
+  local file_regex="$2"
   local zip_file file_path
 
-  zip_file=$(find "$d_kexts_dir" \( -maxdepth 1 -iname "$file_rex*\.zip" \))
+  zip_file=$(find "$kext_dir" \( -maxdepth 1 -iname "$file_regex*\.zip" \))
   file_path=${zip_file/.zip/}
 
   unzip -q "$zip_file" -d "$file_path"
@@ -87,16 +88,16 @@ function getUpgrades() {
       xmlCtx=$(getValue "$xmlRoot" "$kext_entry")
       author=$(getSpecificValue "$xmlCtx" "Author")
       repo=$(getSpecificValue "$xmlCtx" "Repo")
-      name=$(getSpecificValue "$xmlCtx" "Name")
+      partial_name=$(getSpecificValue "$xmlCtx" "Name")
       updates=$(getSpecificValue "$xmlCtx" "Updates")
 
       if [[ "$updates" = "avaliable" ]]; then
-        file_rex=$(getFileRex "$web_site" "$author" "$repo")
-        find "$d_kexts_dir" \( -maxdepth 1 -iname "$file_rex*" \) -exec rm -Rf {} \;
+        file_regex=$(getFileRegex "$web_site" "$author" "$repo" "$partial_name")
+        find "$d_kexts_dir" \( -maxdepth 1 -iname "$file_regex*" \) -exec rm -Rf {} \;
 
         [[ $index -gt 1 ]] && echo -en "\n"
-        download "$web_site" "$((index++)),$total" "$author" "$repo" "$d_kexts_dir" "$name"
-        unarchive "$file_rex" "$d_kexts_dir"
+        download "$((index++)),$total" "$web_site" "$author" "$repo" "$d_kexts_dir" "$partial_name"
+        unarchive "$d_kexts_dir" "$file_regex"
 
         __total=$(getValue "$xmlCtx" "Installations" | count "//array/dict")
 
@@ -107,7 +108,7 @@ function getUpgrades() {
           essential=$( \
             getValue "$_xmlCtx" "Essential" | \
             grep -o -i -E "true|false" | \
-            awk '{ print tolower($0) }' \
+            tolower \
           )
 
           if [[ -z "$kext" ]]; then continue; fi

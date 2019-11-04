@@ -15,7 +15,7 @@ BUILD_DIR = ./Build
 BACKUP_DIR = ./Backup
 CONFIG_DIR = ./Config
 CONFIG_PLIST = $(CONFIG_DIR)/config.plist
-UPDATES_PLIST = /tmp/kexts.updates.plist
+UPDATES_PLIST = /tmp/kexts.updates.STRIX.plist
 
 IASL_OPTS = -vs -ve
 IASL_ZIP = $(shell find $(D_TOOLS_DIR) -type f -name iasl.zip)

@@ -59,10 +59,10 @@ if [[ -f "$clover_log" ]]; then
 fi
 
 hostname=$(sysctl -n kern.hostname | sed -n 's/\(.*\)\..*/\1/p')
-outpt_file=CLOVER_${hostname}_$(date '+%Y-%m-%d_%H-%M-%S').zip
+output_file=CLOVER_${hostname}_$(date '+%Y-%m-%d_%H-%M-%S').zip
 
-zip -r -X -q "$outpt_file" $zip_archives
+zip -q -r -X "$output_file" $zip_archives
 echo -e "CLOVER \033[38;5;135mInput\033[0;37m:  \033[0;96m${efi_dir}/CLOVER\033[0m"
-echo -e "CLOVER \033[38;5;135mBackup\033[0;37m: \033[0;96m${output_dir}/${outpt_file}\033[0m"
+echo -e "CLOVER \033[38;5;135mBackup\033[0;37m: \033[0;96m${output_dir}/${output_file}\033[0m"
 
 popd > /dev/null

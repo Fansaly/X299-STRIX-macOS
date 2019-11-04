@@ -2,7 +2,7 @@
 
 function printMsg() {
   local index="$1"
-  local fileName="$2"
+  local file_name="$2"
   local output_dir="$3"
   local status="$4"
 
@@ -19,5 +19,5 @@ function printMsg() {
     status=" \\033[0;31mfailed\\033[0m"
   fi
 
-  echo -e "${sign}\033[0;37mDownloading \033[0;35m${fileName} \033[0;37mto \033[0;96m${output_dir}\033[0m${status}"
+  echo -e "${sign}\033[0;37mDownloading \033[0;35m${file_name} \033[0;37mto \033[0;96m${output_dir}\033[0m${status}"
 }

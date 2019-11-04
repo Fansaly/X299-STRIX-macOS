@@ -10,7 +10,7 @@ source "${UtilsDIR}/downloadSSDT.sh"
 
 
 function help() {
-  echo "-c,  Config file."
+  echo "-c,  Kexts config file."
   echo "-d,  Download directory."
   echo "-t,  Download type, oneof Tools, Kexts, Hotpatch."
   echo "-h,  Show this help message."
@@ -95,9 +95,9 @@ function getDownloads() {
       xmlCtx=$(getValue "$xmlRoot" "$kext_entry")
       author=$(getSpecificValue "$xmlCtx" "Author")
       repo=$(getSpecificValue "$xmlCtx" "Repo")
-      name=$(getSpecificValue "$xmlCtx" "Name")
+      partial_name=$(getSpecificValue "$xmlCtx" "Name")
 
-      download "$web_site" "$((index++)),$total" "$author" "$repo" "$output_dir" "$name"
+      download "$((index++)),$total" "$web_site" "$author" "$repo" "$output_dir" "$partial_name"
     done
   done
 }

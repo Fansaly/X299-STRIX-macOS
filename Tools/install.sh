@@ -4,13 +4,14 @@ DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 UtilsDIR=${DIR}/Utils
 
 source "${UtilsDIR}/count.sh"
+source "${UtilsDIR}/tolower.sh"
 source "${UtilsDIR}/getValue.sh"
 source "${UtilsDIR}/findKext.sh"
 source "${UtilsDIR}/installKext.sh"
 
 
 function help() {
-  echo "-c,  Config file."
+  echo "-c,  Kexts config file."
   echo "-k,  Install kexts directory."
   echo "-d,  Download kexts directory."
   echo "-l,  Local kexts directory."
@@ -79,7 +80,7 @@ function install() {
         essential=$( \
           getValue "$xmlCtx" "Essential" | \
           grep -o -i -E "true|false" | \
-          awk '{ print tolower($0) }' \
+          tolower \
         )
 
         if [[ -z "$kext" ]]; then continue; fi
