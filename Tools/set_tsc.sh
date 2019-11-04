@@ -1,5 +1,11 @@
 #!/bin/bash
 
+DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+UtilsDIR=${DIR}/Utils
+
+source "${UtilsDIR}/getValue.sh"
+
+
 function help() {
   echo "-k,  TSCAdjustReset.kext directory."
   echo "-p,  Print CPU Info."
@@ -50,7 +56,12 @@ function getCPUKind() {
 threads=$(sysctl -n hw.ncpu)
 IOCPUNumber=$(($threads - 1))
 
-plutil -replace IOKitPersonalities.TSCAdjustReset.IOPropertyMatch.IOCPUNumber -integer $IOCPUNumber "$TSCAdjustResetInfoPlist"
+entry=IOKitPersonalities.TSCAdjustReset.IOPropertyMatch.IOCPUNumber
+value=$(getSpecificValue "$TSCAdjustResetInfoPlist" "$entry")
+
+if [[ $value -ne $IOCPUNumber ]]; then
+  plutil -replace "$entry" -integer $IOCPUNumber "$TSCAdjustResetInfoPlist"
+fi
 
 
 if [[ $display ]]; then
