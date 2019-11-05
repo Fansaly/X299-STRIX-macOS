@@ -19,6 +19,6 @@ function downloadSSDT() {
     output_dir="$3"
   fi
 
-  printMsg "$index" "$name" "$output_dir"
+  printDownloadMsg "$index" "$name" "$output_dir"
   curl -#L "${hotpatch_url}/${name}" -o "${output_dir}/${name}"
 }

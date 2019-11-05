@@ -92,8 +92,7 @@ update-kexts:
 # Upgrade kexts
 .PHONY: upgrade-kexts
 upgrade-kexts:
-	$(eval EFI_DIR := $(shell make mount))
-	@ $(L_TOOLS_DIR)/upgrade_kexts.sh -c "$(UPDATES_PLIST)" -k "$(EFI_DIR)/EFI/CLOVER/kexts/Other" -d "$(D_KEXTS_DIR)"
+	@ $(L_TOOLS_DIR)/upgrade_kexts.sh -c "$(UPDATES_PLIST)" -d "$(D_KEXTS_DIR)"
 
 
 # Unarchive

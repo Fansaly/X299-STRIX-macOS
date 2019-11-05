@@ -2,22 +2,40 @@
 
 function printMsg() {
   local index="$1"
-  local file_name="$2"
-  local output_dir="$3"
-  local status="$4"
+  local action="$2"
+  local text_prev="$3"
+  local text_next="$4"
+  local status="$5"
+  local text_lead idx total sign
 
-  local idx total sign
   idx=$(echo "$index" | awk -F, '{ print $1 }')
   total=$(echo "$index" | awk -F, '{ print $2 }' | bc)
 
   if [[ $total -gt 1 ]]; then
     sign="\\033[0;32m[${idx}/${total}]\\033[0m "
+
+    if [[ -n "$status" ]]; then
+      sign="\\033[0;31m[${idx}/${total}]\\033[0m "
+    fi
   fi
 
   if [[ -n "$status" ]]; then
-    sign="\\033[0;31m[${idx}/${total}]\\033[0m "
     status=" \\033[0;31mfailed\\033[0m"
   fi
 
-  echo -e "${sign}\033[0;37mDownloading \033[0;35m${file_name} \033[0;37mto \033[0;96m${output_dir}\033[0m${status}"
+  if [[ "$action" = "download" ]]; then
+    text_lead=Downloading
+  else
+    text_lead=Installing
+  fi
+
+  echo -e "${sign}\033[0;37m${text_lead} \033[0;35m${text_prev} \033[0;37mto \033[0;96m${text_next}\033[0m${status}"
+}
+
+function printDownloadMsg() {
+  printMsg "$1" "download" "$2" "$3" "$4"
+}
+
+function printInstallMsg() {
+  printMsg "0,-1" "install" "$1" "$2" "$3"
 }

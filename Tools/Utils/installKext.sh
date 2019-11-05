@@ -1,5 +1,10 @@
 #!/bin/bash
 
+UtilsDIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+
+source "${UtilsDIR}/printMsg.sh"
+
+
 function installKext() {
 # $1: Kext to install
 # $2: Destination (default: /Library/Extensions)
@@ -8,16 +13,19 @@ function installKext() {
   local kext_name=$(basename "$kext")
   local default_dest=/Library/Extensions
 
-  if [[ ! -d "$kext_dest" ]]; then
+  if [[ $# -eq 1 ]]; then
     kext_dest=$default_dest;
+  elif [[ ! -d "$kext_dest" ]]; then
+    printInstallMsg "$kext_name" "$kext_dest" "ERROR"
+    return 1
   fi
 
-  echo -e "\033[0;37mInstalling \033[0;35m${kext_name} \033[0;37mto \033[0;96m${kext_dest}\033[0m"
+  printInstallMsg "$kext_name" "$kext_dest"
 
   if test "$kext_dest" = "$default_dest" && sudo -v; then
     sudo rm -Rf "${kext_dest}/${kext_name}"
     sudo cp -Rf "$kext" "$kext_dest"
-    return
+    return $?
   fi
 
   rm -Rf "${kext_dest}/${kext_name}"

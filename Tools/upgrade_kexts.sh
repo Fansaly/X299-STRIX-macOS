@@ -14,22 +14,18 @@ source "${UtilsDIR}/installKext.sh"
 
 function help() {
   echo "-c,  Kexts updates file."
-  echo "-k,  Install kexts directory."
   echo "-d,  Download directory."
   echo "-h,  Show this help message."
   echo
-  echo "Usage: $(basename $0) [-c <file>] [-k <path/to/CLOVER/kexts>] [-d <download directory>]"
-  echo "Example: $(basename $0) -c updates.plist -k /Volumes/EFI/EFI/CLOVER/kexts/Other -d ~/Downloads"
+  echo "Usage: $(basename $0) [-c <file>] [-d <download directory>]"
+  echo "Example: $(basename $0) -c updates.plist -d ~/Downloads"
   echo
 }
 
-while getopts c:k:d:h option; do
+while getopts c:d:h option; do
   case $option in
     c )
       updates_plist=$OPTARG
-      ;;
-    k )
-      install_dir=$OPTARG
       ;;
     d )
       d_kexts_dir=$OPTARG
@@ -64,12 +60,12 @@ function unarchive() {
 
 function getUpgrades() {
   updates_plist="$1"
-  install_dir="$2"
-  d_kexts_dir="$3"
+  d_kexts_dir="$2"
 
   xmlRoot=$(cat "$updates_plist")
 
   total=$(getSpecificValue "$xmlRoot" "Total")
+  unupgraded_total=$total
   index=1
   web_sites=(
     "GitHub"
@@ -91,46 +87,73 @@ function getUpgrades() {
       partial_name=$(getSpecificValue "$xmlCtx" "Name")
       updates=$(getSpecificValue "$xmlCtx" "Updates")
 
-      if [[ "$updates" = "avaliable" ]]; then
-        file_regex=$(getFileRegex "$web_site" "$author" "$repo" "$partial_name")
-        find "$d_kexts_dir" \( -maxdepth 1 -iname "$file_regex*" \) -exec rm -Rf {} \;
+      if [[ ! "$updates" = "avaliable" ]]; then continue; fi
 
-        [[ $index -gt 1 ]] && echo -en "\n"
-        download "$((index++)),$total" "$web_site" "$author" "$repo" "$d_kexts_dir" "$partial_name"
-        unarchive "$d_kexts_dir" "$file_regex"
+      [[ $index -gt 1 ]] && echo -en "\n"
 
-        __total=$(getValue "$xmlCtx" "Installations" | count "//array/dict")
+      file_regex=$(getFileRegex "$web_site" "$author" "$repo" "$partial_name")
+      find "$d_kexts_dir" \( -maxdepth 1 -iname "$file_regex*" \) -exec rm -Rf {} \;
 
-        for (( j = 0; j < $__total; j++ )); do
-          _xmlCtx=$(getValue "$xmlCtx" "Installations.${j}")
-          name=$(getSpecificValue "$_xmlCtx" "Name")
-          kext=$(findKext "$name" "$d_kexts_dir")
-          essential=$( \
-            getValue "$_xmlCtx" "Essential" | \
-            grep -o -i -E "true|false" | \
-            tolower \
-          )
+      download "$((index++)),$total" "$web_site" "$author" "$repo" "$d_kexts_dir" "$partial_name"
+      unarchive "$d_kexts_dir" "$file_regex"
 
-          if [[ -z "$kext" ]]; then continue; fi
+      STATUS=none
+      __total=$(getValue "$xmlCtx" "Installations" | count "//array/dict")
 
-          installKext "$kext" "$install_dir"
-
-          if [[ "$essential" = "true" ]]; then
-            installKext "$kext"
-          fi
-        done
-
-        xmlCtx=$(echo "$xmlCtx" | plutil -replace "Updates" -string "upgraded" -o - -)
-        xmlRoot=$( \
-          echo "$xmlRoot" | \
-          plutil -remove "$kext_entry" -o - - | \
-          plutil -insert "$kext_entry" -xml "$xmlCtx" -o - - \
+      for (( j = 0; j < $__total; j++ )); do
+        _xmlCtx=$(getValue "$xmlCtx" "Installations.${j}")
+        name=$(getSpecificValue "$_xmlCtx" "Name")
+        kext=$(findKext "$name" "$d_kexts_dir")
+        essential=$( \
+          getValue "$_xmlCtx" "Essential" | \
+          grep -o -i -E "true|false" | \
+          tolower \
         )
-      fi
+
+        if [[ -z "$kext" ]]; then continue; fi
+
+        if [[ ! -d "$install_dir" ]]; then
+          EFI_DIR=$("${UtilsDIR}/mount_efi.sh")
+          install_dir=${EFI_DIR}/EFI/CLOVER/kexts/Other
+        fi
+
+        installKext "$kext" "$install_dir"
+        _code_=$?
+
+        if [[ "$essential" = "true" ]]; then
+          installKext "$kext"
+          _code_=$?
+        fi
+
+        if [[ $_code_ -ne 0 ]]; then
+          STATUS=error
+        elif [[ "$essential" = "true" ]]; then
+          UPDATE_KERNELCACHE=true
+        fi
+
+        if [[ "$STATUS" = "none" && $((j + 1)) -eq $__total ]]; then
+          STATUS=success
+        fi
+      done
+
+      if [[ ! "$STATUS" = "success" ]]; then continue; fi
+
+      (( unupgraded_total-- ))
+      xmlCtx=$(echo "$xmlCtx" | plutil -replace "Updates" -string "upgraded" -o - -)
+
+      echo "$xmlRoot" | \
+      plutil -remove "$kext_entry" -o - - | \
+      plutil -insert "$kext_entry" -xml "$xmlCtx" -o - - | \
+      plutil -replace "Total" -integer $unupgraded_total -o "$updates_plist" -
     done
   done
-
-  echo "$xmlRoot" > "$updates_plist"
 }
 
-getUpgrades "$updates_plist" "$install_dir" "$d_kexts_dir"
+UPDATE_KERNELCACHE=false
+
+getUpgrades "$updates_plist" "$d_kexts_dir"
+
+if [[ "$UPDATE_KERNELCACHE" = "true" ]]; then
+  echo -e "\n\033[38;5;90;48;5;248m Rebuild kextcache ... \033[0m"
+  sudo kextcache -i /
+fi

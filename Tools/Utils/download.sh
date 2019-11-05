@@ -32,7 +32,7 @@ function download() {
   scrape_url=$(getScrapeURL "$web_site" "$author" "$repo" "$partial_name")
 
   if [[ -z "$scrape_url" ]]; then
-    printMsg "$index" "${author}/${repo}" "$output_dir" "ERROR"
+    printDownloadMsg "$index" "${author}/${repo}" "$output_dir" "ERROR"
     return
   fi
 
@@ -47,6 +47,6 @@ function download() {
     file_name=$(basename "$scrape_url")
   fi
 
-  printMsg "$index" "$file_name" "$output_dir"
+  printDownloadMsg "$index" "$file_name" "$output_dir"
   curl -#L "$url" -o "${output_dir}/${file_name}"
 }
