@@ -8,6 +8,7 @@ source "${UtilsDIR}/tolower.sh"
 source "${UtilsDIR}/getValue.sh"
 source "${UtilsDIR}/findKext.sh"
 source "${UtilsDIR}/installKext.sh"
+source "${UtilsDIR}/updateKextCache.sh"
 
 
 function help() {
@@ -89,6 +90,10 @@ function install() {
 
         if [[ "$essential" = "true" ]]; then
           installKext "$kext"
+
+          if [[ $? -eq 0 ]]; then
+            UPDATE_KERNELCACHE=true
+          fi
         fi
       done
     done
@@ -99,4 +104,10 @@ function install() {
 #   rm -Rf "$install_dir"/*
 # fi
 
+UPDATE_KERNELCACHE=false
+
 install "$config_plist" "$install_dir" "$d_kexts_dir" "$l_kexts_dir"
+
+if [[ "$UPDATE_KERNELCACHE" = "true" ]]; then
+  updateKextCache
+fi

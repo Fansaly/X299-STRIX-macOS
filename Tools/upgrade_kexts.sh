@@ -10,6 +10,7 @@ source "${UtilsDIR}/getRemoteKextInfo.sh"
 source "${UtilsDIR}/download.sh"
 source "${UtilsDIR}/findKext.sh"
 source "${UtilsDIR}/installKext.sh"
+source "${UtilsDIR}/updateKextCache.sh"
 
 
 function help() {
@@ -154,6 +155,5 @@ UPDATE_KERNELCACHE=false
 getUpgrades "$updates_plist" "$d_kexts_dir"
 
 if [[ "$UPDATE_KERNELCACHE" = "true" ]]; then
-  echo -e "\n\033[38;5;90;48;5;248m Rebuild kextcache ... \033[0m"
-  sudo kextcache -i /
+  updateKextCache
 fi

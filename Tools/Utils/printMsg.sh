@@ -20,7 +20,7 @@ function printMsg() {
   fi
 
   if [[ -n "$status" ]]; then
-    status=" \\033[0;31mfailed\\033[0m"
+    status=" \\033[0;31mFAILED\\033[0m"
   fi
 
   if [[ "$action" = "download" ]]; then
