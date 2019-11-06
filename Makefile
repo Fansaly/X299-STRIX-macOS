@@ -74,14 +74,10 @@ install-aml: $(AML)
 
 .PHONY: install-kexts
 install-kexts:
-	@ make set-tsc
+	@ # Set TSCAdjustReset CPU threads
+	@ $(L_TOOLS_DIR)/set_tsc.sh -k "$(L_KEXTS_DIR)/TSCAdjustReset.kext"
 	$(eval EFI_DIR := $(shell make mount))
 	@ $(L_TOOLS_DIR)/install.sh -c "$(CONFIG_PLIST)" -k "$(EFI_DIR)/EFI/CLOVER/kexts/Other" -d "$(D_KEXTS_DIR)" -l "$(L_KEXTS_DIR)"
-
-# Set TSCAdjustReset CPU threads
-.PHONY: set-tsc
-set-tsc:
-	@ $(L_TOOLS_DIR)/set_tsc.sh -k "$(L_KEXTS_DIR)/TSCAdjustReset.kext"
 
 
 # Check kexts updates
@@ -101,20 +97,6 @@ unarchive:
 	@ $(UTILS_DIR)/unarchive.sh -d "$(DOWNLOADS_DIR)"
 
 
-# NVIDIA Web Driver
-.PHONY: list-WebDriver
-list-WebDriver:
-	@ # How to pass argument to Makefile from command line
-	@ # Learn more: https://stackoverflow.com/questions/6273608
-	@ total=$(firstword $(filter-out $@,$(MAKECMDGOALS))); \
-	if [[ ! "$$total" =~ ^[0-9]+$$ ]]; then total=1; fi; \
-	$(L_TOOLS_DIR)/web_driver.sh -n $$total
-
-.PHONY: download-WebDriver
-download-WebDriver:
-	@ $(L_TOOLS_DIR)/web_driver.sh -o "$(WEBDRIVER_DIR)"
-
-
 # Backup CLOVER
 .PHONY: backup
 backup:
@@ -128,10 +110,30 @@ mount:
 	@ $(UTILS_DIR)/mount_efi.sh
 
 
+# Update system kext caches
+.PHONY: update-kextcache
+update-kextcache:
+	@ sudo kextcache -i /
+
+
 # Update this repo.
 .PHONY: update-repo
 update-repo:
 	@ git pull --rebase --stat origin master
+
+
+# NVIDIA Web Driver
+.PHONY: list-WebDriver
+list-WebDriver:
+	@ # How to pass argument to Makefile from command line
+	@ # Learn more: https://stackoverflow.com/questions/6273608
+	@ total=$(firstword $(filter-out $@,$(MAKECMDGOALS))); \
+	if [[ ! "$$total" =~ ^[0-9]+$$ ]]; then total=1; fi; \
+	$(L_TOOLS_DIR)/web_driver.sh -n $$total
+
+.PHONY: download-WebDriver
+download-WebDriver:
+	@ $(L_TOOLS_DIR)/web_driver.sh -o "$(WEBDRIVER_DIR)"
 
 
 # Do nothing when get a job that doesn't
