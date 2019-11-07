@@ -27,3 +27,10 @@ So, the correct IOCPUNumber for the 6-core i7-7800X should be 11 (12 threads -1)
 <key>IOCPUNumber</key>
 <integer>11</integer>
 ```
+
+### AGPMEnabler.kext
+Enable AGPM, Learn more (tonymacx86): https://bit.ly/2yo8oBb
+
+> "AppleGraphicsPowerManagement.kext" is unchanged, plus the "AGPMEnabler.kext" in Clover.  
+> Inspired by the iMacPro and Toleda, actually no big deal.  
+> No "device-id", no "vendor-id", just graphics card is "GFX0" in "Mac-7BA5B2D9E42DDD94" (iMac Pro).

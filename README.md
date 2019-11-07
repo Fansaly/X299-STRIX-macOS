@@ -133,4 +133,4 @@ make download-WebDriver # Download the latest NVIDIA Web Driver
 &nbsp;
 
 ### Credits
-acidanthera, interferenc, kgp, lvs1974, RehabMan, the-braveknight, vit9696, etc.
+acidanthera, apfelnico, interferenc, kgp, lvs1974, RehabMan, the-braveknight, vit9696, etc.

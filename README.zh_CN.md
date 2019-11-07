@@ -131,4 +131,4 @@ make download-WebDriver # 下载最新的 NVIDIA Web Driver
 &nbsp;
 
 ### 致谢
-acidanthera, interferenc, kgp, lvs1974, RehabMan, the-braveknight, vit9696, etc.
+acidanthera, apfelnico, interferenc, kgp, lvs1974, RehabMan, the-braveknight, vit9696, etc.

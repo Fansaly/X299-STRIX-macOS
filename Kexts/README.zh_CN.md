@@ -27,3 +27,10 @@ xcodebuild
 <key>IOCPUNumber</key>
 <integer>11</integer>
 ```
+
+### AGPMEnabler.kext
+启用 AGPM，前往查看（tonymacx86）https://bit.ly/2yo8oBb
+
+> AppleGraphicsPowerManagement.kext 无需修改，将 AGPMEnabler.kext 放至 Clover。  
+> 受 iMacPro 和 Toleda 的启发，实际并没有很大帮助。  
+> 不需要 device-id、vendor-id，仅仅需要显卡在 Mac-7BA5B2D9E42DDD94（iMac Pro）下 GFX0 的位置。
