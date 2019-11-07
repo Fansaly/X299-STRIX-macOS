@@ -73,39 +73,43 @@ Case | JONSBO UMX4
 
 ### POST INSTALLATION
 1. clone this repo:
-```bash
+```sh
 git clone https://github.com/Fansaly/X299-STRIX-macOS
 cd X299-STRIX-macOS
 ```
 2. download tools, kexts, and hotpatch:
-```bash
+```sh
 make download
 ```
-3. unzip files from previous step:
-```bash
+> type `make download-tools` `make download-kexts` `make download-hotpatch` to download separately
+3. uncompress files of previous step:
+```sh
 make unarchive
 ```
 4. build DSDT/SSDT aml:
-```bash
-make build
+```sh
+make
 ```
 5. install DSDT/SSDT aml and kexts:
-```bash
+```sh
 make install
 ```
-6. manually replace config.plist for CLOVER:
-```bash
+> type `make install-aml` `make install-kexts` to install separately
+6. manually replace config.plist for CLOVER (optional):
+```sh
 efi_dir=$(make mount)
 cp config.plist ${efi_dir}/EFI/ClOVER
 ```
-After the replacement, you should customize Serial Number, Board Serial Number, SmUUID in SMBIOS section, and etc.
+> after the replacement, you should customize **Serial Number**, **Board Serial Number**, **SmUUID** in **SMBIOS** section, and etc.
 
-7. other features:
-```bash
+### Other features of Makefile:
+```sh
+make mount  # Mount EFI partition
+make backup # Backup EFI/CLOVER
 make update-kexts  # Check kexts updates
-make upgrade-kexts # Upgrade kexts
-make backup        # Backup EFI/CLOVER
-make update-repo   # Update local repo.
+make upgrade-kexts # Upgrade kexts (Download/Install)
+make update-kextcache # Update system kext caches
+make update-repo      # Update local repo.
 
 make list-WebDriver n   # Print the latest first n of NVIDIA Web Driver info.
 make download-WebDriver # Download the latest NVIDIA Web Driver
@@ -113,15 +117,15 @@ make download-WebDriver # Download the latest NVIDIA Web Driver
 
 ### EFI/CLOVER/drivers/UEFI
   - Recommended
-    - AudioDxe.efi
-    - DataHubDxe.efi
-    - FSInject.efi
-    - SMCHelper.efi
+    - **AudioDxe.efi**
+    - **DataHubDxe.efi**
+    - **FSInject.efi**
+    - **SMCHelper.efi**
   - File System
-    - ApfsDriverLoader.efi
-    - VBoxHfs.efi
+    - **ApfsDriverLoader.efi**
+    - **VBoxHfs.efi**
   - Memory fix
-    - AptioMemoryFix.efi
+    - **AptioMemoryFix.efi**
 
 &nbsp;
 

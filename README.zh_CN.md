@@ -70,39 +70,43 @@ CPU | INTEL® CORE™ i7-7800X
 
 ### 安装完成后
 1. 下载此项目：
-```bash
+```sh
 git clone https://github.com/Fansaly/X299-STRIX-macOS
 cd X299-STRIX-macOS
 ```
 2. 下载 工具、kext 和 hotpatch：
-```bash
+```sh
 make download
 ```
+> 可键入 `make download-tools` `make download-kexts` `make download-hotpatch` 分别单独下载
 3. 解压缩上一步下载的文件：
-```bash
+```sh
 make unarchive
 ```
 4. 编译生成 DSDT/SSDT aml 文件：
-```bash
-make build
+```sh
+make
 ```
 5. 安装 DSDT/SSDT aml 和 kexts：
-```bash
+```sh
 make install
 ```
-6. 手动替换 CLOVER 的 config.plist：
-```bash
+> 可键入 `make install-aml` `make install-kexts` 分别单独安装
+6. 手动替换 CLOVER 的 config.plist（可选）：
+```sh
 efi_dir=$(make mount)
 cp config.plist ${efi_dir}/EFI/ClOVER
 ```
-替换完成后，应该自定义 SMBIOS 中的 Serial Number、Board Serial Number、SmUUID，等等。
+> 替换完成后，应该自定义 **SMBIOS** 中的 **Serial Number**、**Board Serial Number**、**SmUUID**，等等。
 
-7. 其它功能：
-```bash
+### Makefile 其它功能：
+```sh
+make mount  # 挂载 EFI 分区
+make backup # 备份 EFI/CLOVER
 make update-kexts  # 检查 kexts 的更新
-make upgrade-kexts # 升级 kexts
-make backup        # 备份 EFI/CLOVER
-make update-repo   # 更新本地项目库
+make upgrade-kexts # 升级 kexts（下载/安装）
+make update-kextcache # 更新系统 kext 缓存
+make update-repo      # 更新本地项目
 
 make list-WebDriver n   # 获取最新的 n 个 NVIDIA Web Driver 信息
 make download-WebDriver # 下载最新的 NVIDIA Web Driver
@@ -110,16 +114,15 @@ make download-WebDriver # 下载最新的 NVIDIA Web Driver
 
 ### EFI/CLOVER/drivers/UEFI
   - Recommended
-    - AudioDxe.efi
-    - DataHubDxe.efi
-    - FSInject.efi
-    - SMCHelper.efi
+    - **AudioDxe.efi**
+    - **DataHubDxe.efi**
+    - **FSInject.efi**
+    - **SMCHelper.efi**
   - File System
-    - ApfsDriverLoader.efi
-    - VBoxHfs.efi
+    - **ApfsDriverLoader.efi**
+    - **VBoxHfs.efi**
   - Memory fix
-    - AptioMemoryFix.efi
-
+    - **AptioMemoryFix.efi**
 
 &nbsp;
 
