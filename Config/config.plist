@@ -64,6 +64,10 @@
 							<key>Name</key>
 							<string>VirtualSMC.kext</string>
 						</dict>
+						<dict>
+							<key>Name</key>
+							<string>VirtualSmc.efi</string>
+						</dict>
 					</array>
 				</dict>
 				<dict>
