@@ -5,7 +5,7 @@ UtilsDIR=${DIR}/Utils
 
 source "${UtilsDIR}/count.sh"
 source "${UtilsDIR}/getValue.sh"
-source "${UtilsDIR}/findKext.sh"
+source "${UtilsDIR}/findItem.sh"
 source "${UtilsDIR}/getRemoteKextInfo.sh"
 
 
@@ -171,7 +171,7 @@ function getLocalKextsInfo() {
       for (( j = 0; j < $_total; j++ )); do
         _xmlCtx=$(getValue "$xmlCtx" "Installations.${j}")
         name=$(getSpecificValue "$_xmlCtx" "Name")
-        kext=$(findKext "$name" "$kexts_dir")
+        kext=$(findItem "$name" "$kexts_dir")
 
         if [[ $j -gt 0 || -z "$kext" ]]; then continue; fi
 

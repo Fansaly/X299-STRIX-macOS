@@ -6,8 +6,8 @@ UtilsDIR=${DIR}/Utils
 source "${UtilsDIR}/count.sh"
 source "${UtilsDIR}/tolower.sh"
 source "${UtilsDIR}/getValue.sh"
-source "${UtilsDIR}/findKext.sh"
-source "${UtilsDIR}/installKext.sh"
+source "${UtilsDIR}/findItem.sh"
+source "${UtilsDIR}/installItem.sh"
 source "${UtilsDIR}/updateKextCache.sh"
 
 
@@ -77,19 +77,27 @@ function install() {
       for (( j = 0; j < $_total; j++ )); do
         xmlCtx=$(getValue "$xmlRoot" "$kext_entry.Installations.${j}")
         name=$(getSpecificValue "$xmlCtx" "Name")
-        kext=$(findKext "$name" "$d_kexts_dir" "$l_kexts_dir")
+        item=$(findItem "$name" "$d_kexts_dir" "$l_kexts_dir")
+        extension=".$(tolower "${item##*.}")"
         essential=$( \
           getValue "$xmlCtx" "Essential" | \
           grep -o -i -E "true|false" | \
           tolower \
         )
 
-        if [[ -z "$kext" ]]; then continue; fi
+        if [[ -z "$item" ]]; then continue; fi
 
-        installKext "$kext" "$install_dir"
+        unset _install_dir_
+        if [[ "$extension" = ".kext" ]]; then
+          _install_dir_="$install_dir"
+        elif [[ "$extension" = ".efi" ]]; then
+          _install_dir_="${install_dir/\/kexts\/Other//drivers/UEFI}"
+        fi
 
-        if [[ "$essential" = "true" ]]; then
-          installKext "$kext"
+        installItem "$item" "$_install_dir_"
+
+        if [[ "$extension" = ".kext" && "$essential" = "true" ]]; then
+          installItem "$item"
 
           if [[ $? -eq 0 ]]; then
             UPDATE_KERNELCACHE=true
