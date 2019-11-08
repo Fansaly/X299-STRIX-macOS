@@ -114,15 +114,15 @@ make download-WebDriver # 下载最新的 NVIDIA Web Driver
 
 ### EFI/CLOVER/drivers/UEFI
   - Recommended
-    - **AudioDxe.efi**
     - **DataHubDxe.efi**
     - **FSInject.efi**
-    - **SMCHelper.efi**
   - File System
     - **ApfsDriverLoader.efi**
     - **VBoxHfs.efi**
   - Memory fix
     - **AptioMemoryFix.efi**
+  - Custom
+    - **VirtualSmc.efi**
 
 &nbsp;
 
