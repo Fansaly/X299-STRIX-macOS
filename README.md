@@ -95,7 +95,7 @@ make
 make install
 ```
 > type `make install-aml` `make install-kexts` to install separately
-6. manually replace config.plist for CLOVER (optional):
+6. manually replace config.plist for Clover (optional):
 ```sh
 efi_dir=$(make mount)
 cp config.plist ${efi_dir}/EFI/ClOVER
@@ -104,12 +104,12 @@ cp config.plist ${efi_dir}/EFI/ClOVER
 
 ### Other features of Makefile:
 ```sh
-make mount  # Mount EFI partition
-make backup # Backup EFI/CLOVER
-make update-kexts  # Check kexts updates
-make upgrade-kexts # Upgrade kexts (Download/Install)
-make update-kextcache # Update system kext caches
-make update-repo      # Update local repo.
+make mount              # Mount EFI partition
+make backup             # Backup EFI/CLOVER
+make update-kexts       # Check kexts updates
+make upgrade-kexts      # Upgrade kexts (Download/Install)
+make update-kextcache   # Update system kext caches
+make update-repo        # Update local repo.
 
 make list-WebDriver n   # Print the latest first n of NVIDIA Web Driver info.
 make download-WebDriver # Download the latest NVIDIA Web Driver
@@ -117,7 +117,6 @@ make download-WebDriver # Download the latest NVIDIA Web Driver
 
 ### EFI/CLOVER/drivers/UEFI
   - Recommended
-    - **DataHubDxe.efi**
     - **FSInject.efi**
   - File System
     - **ApfsDriverLoader.efi**
@@ -125,7 +124,7 @@ make download-WebDriver # Download the latest NVIDIA Web Driver
   - Memory fix
     - **AptioMemoryFix.efi**
   - Custom
-    - **VirtualSmc.efi**
+    - **VirtualSmc.efi** `by Makefile commands install and update`
 
 &nbsp;
 
