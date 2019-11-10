@@ -30,9 +30,9 @@ function __getValue() {
 }
 
 function getSpecificValue() {
-  echo "$(__getValue "$1" "$2")"
+  __getValue "$1" "$2"
 }
 
 function getValue() {
-  echo "$(__getValue "$1" "$2" "default")"
+  __getValue "$1" "$2" "default"
 }

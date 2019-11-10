@@ -89,7 +89,7 @@ function getWebDriverList() {
   local xml=$(curl -kfsSL "$source_url")
 
   if [[ $? -eq 0 ]]; then
-    echo "$(getValue "$xml" "updates")"
+    getValue "$xml" "updates"
   fi
 }
 
