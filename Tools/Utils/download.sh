@@ -33,7 +33,7 @@ function download() {
 
   if [[ -z "$scrape_url" ]]; then
     printDownloadMsg "$index" "${author}/${repo}" "$output_dir" "ERROR"
-    return
+    return 100 # CURL code is one of 0~96
   fi
 
 
