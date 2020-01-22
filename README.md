@@ -66,7 +66,7 @@ Case | JONSBO UMX4
   - Setup Mode: **Advanced**
 
 - **Boot/Compatibility Support Module**
-  - Launch CSM: **Disabled**
+  - Launch CSM: **Disabled/Auto**
 
 - **Boot/Secure Boot**
   - OS Type: **Other OS**
@@ -124,7 +124,7 @@ make download-WebDriver # Download the latest NVIDIA Web Driver
   - Memory fix
     - **AptioMemoryFix.efi**
   - Custom
-    - **VirtualSmc.efi** `by Makefile commands install and update`
+    - **VirtualSmc.efi** `by Makefile commands automatically install and update (No need to worry)`
 
 &nbsp;
 

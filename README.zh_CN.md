@@ -63,7 +63,7 @@ CPU | INTEL® CORE™ i7-7800X
   - Setup Mode: **Advanced**
 
 - **Boot/Compatibility Support Module**
-  - Launch CSM: **Disabled**
+  - Launch CSM: **Disabled/Auto**
 
 - **Boot/Secure Boot**
   - OS Type: **Other OS**
@@ -121,7 +121,7 @@ make download-WebDriver # 下载最新的 NVIDIA Web Driver
   - Memory fix
     - **AptioMemoryFix.efi**
   - Custom
-    - **VirtualSmc.efi** `由 Makefile commands 安装和更新`
+    - **VirtualSmc.efi** `由 Makefile commands 自动安装和更新（无需额外操作）`
 
 &nbsp;
 
