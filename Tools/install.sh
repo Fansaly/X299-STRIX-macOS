@@ -12,30 +12,34 @@ source "${UtilsDIR}/updateKextCache.sh"
 
 
 function help() {
-  echo "-c,  Kexts config file."
-  echo "-k,  Install kexts directory."
-  echo "-d,  Download kexts directory."
-  echo "-l,  Local kexts directory."
+  echo "-c,  Config file."
+  echo "-t,  Install type, default value kext. One of [kext, driver]"
+  echo "-i,  Install kexts/drivers directory."
+  echo "-d,  Download kexts/drivers directory."
+  echo "-l,  Local kexts/drivers directory."
   echo "-h,  Show this help message."
   echo
   echo "Usage: $(basename $0) [Options] [Config file] [Kexts directory]"
-  echo "Example: $(basename $0) -c config.plist -k /Volumes/EFI/EFI/CLOVER/kexts/Other -d ./Downloads/Kexts"
+  echo "Example: $(basename $0) -c config.plist -i /Volumes/EFI/EFI/CLOVER/kexts/Other -d ./Downloads/Kexts"
   echo
 }
 
-while getopts c:k:d:l:h option; do
+while getopts c:t:i:d:l:h option; do
   case $option in
     c )
       config_plist=$OPTARG
       ;;
-    k )
+    t )
+      install_type=$OPTARG
+      ;;
+    i )
       install_dir=$OPTARG
       ;;
     d )
-      d_kexts_dir=$OPTARG
+      d_dir=$OPTARG
       ;;
     l )
-      l_kexts_dir=$OPTARG
+      l_dir=$OPTARG
       ;;
     h )
       help
@@ -52,14 +56,30 @@ if [[ ! -f "$config_plist" ]]; then
   exit 1
 fi
 
+if [[ -z "$install_type" ]]; then
+  install_type=kext
+fi
+
+if [[ ! "$install_type" =~ ^(kext|driver)$ ]]; then
+  echo "Installation type must be one of [kext, driver]."
+  exit 1
+fi
+
 
 function install() {
   config_plist="$1"
-  install_dir="$2"
-  d_kexts_dir="$3"
-  l_kexts_dir="$4"
+  install_type="$2"
+  install_dir="$3"
+  d_dir="$4"
+  l_dir="$5"
 
-  xmlRoot=$(getValue "$config_plist" "Kexts.Install")
+  if [[ "$install_type" = "kext" ]]; then
+    type_entry=Kexts
+  elif [[ "$install_type" = "driver" ]]; then
+    type_entry=Drivers
+  fi
+
+  xmlRoot=$(getValue "$config_plist" "${type_entry}.Install")
 
   entries=(
     "GitHub"
@@ -77,7 +97,7 @@ function install() {
       for (( j = 0; j < $_total; j++ )); do
         xmlCtx=$(getValue "$xmlRoot" "$kext_entry.Installations.${j}")
         name=$(getSpecificValue "$xmlCtx" "Name")
-        item=$(findItem "$name" "$d_kexts_dir" "$l_kexts_dir")
+        item=$(findItem "$name" "$d_dir" "$l_dir")
         extension=".$(tolower "${item##*.}")"
         essential=$( \
           getValue "$xmlCtx" "Essential" | \
@@ -114,7 +134,7 @@ function install() {
 
 UPDATE_KERNELCACHE=false
 
-install "$config_plist" "$install_dir" "$d_kexts_dir" "$l_kexts_dir"
+install "$config_plist" "$install_type" "$install_dir" "$d_dir" "$l_dir"
 
 if [[ "$UPDATE_KERNELCACHE" = "true" ]]; then
   updateKextCache

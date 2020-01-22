@@ -5,6 +5,7 @@ D_KEXTS_DIR = $(DOWNLOADS_DIR)/Kexts
 D_TOOLS_DIR = $(DOWNLOADS_DIR)/Tools
 L_KEXTS_DIR = ./Kexts
 L_TOOLS_DIR = ./Tools
+L_DRIVERS_DIR = ./Drivers
 UTILS_DIR = $(L_TOOLS_DIR)/Utils
 WEBDRIVER_DIR=$(DOWNLOADS_DIR)/WebDriver
 
@@ -58,13 +59,15 @@ download-hotpatch:
 	@ $(L_TOOLS_DIR)/download.sh -c "$(CONFIG_PLIST)" -d "$(D_HOTPATCH)" -t "Hotpatch"
 
 
-# Install AML/Kexts
+# Install AML/Kexts/Drivers
 .PHONY: install
 install:
 	@ echo "\\033[38;5;52;48;5;248m Installing AML: \\033[0m"
 	@ make install-aml
 	@ echo "\n\\033[38;5;128;48;5;248m Installing Kexts: \\033[0m"
 	@ make install-kexts
+	@ echo "\n\\033[38;5;128;48;5;248m Installing Drivers: \\033[0m"
+	@ make install-drivers
 
 .PHONY: install-aml
 install-aml: $(AML)
@@ -77,7 +80,12 @@ install-kexts:
 	@ # Set TSCAdjustReset CPU threads
 	@ $(L_TOOLS_DIR)/set_tsc.sh -k "$(L_KEXTS_DIR)/TSCAdjustReset.kext"
 	$(eval EFI_DIR := $(shell make mount))
-	@ $(L_TOOLS_DIR)/install.sh -c "$(CONFIG_PLIST)" -k "$(EFI_DIR)/EFI/CLOVER/kexts/Other" -d "$(D_KEXTS_DIR)" -l "$(L_KEXTS_DIR)"
+	@ $(L_TOOLS_DIR)/install.sh -c "$(CONFIG_PLIST)" -i "$(EFI_DIR)/EFI/CLOVER/kexts/Other" -d "$(D_KEXTS_DIR)" -l "$(L_KEXTS_DIR)"
+
+.PHONY: install-drivers
+install-drivers:
+	$(eval EFI_DIR := $(shell make mount))
+	@ $(L_TOOLS_DIR)/install.sh -c "$(CONFIG_PLIST)" -t "driver" -i "$(EFI_DIR)/EFI/CLOVER/drivers/UEFI" -l "$(L_DRIVERS_DIR)"
 
 
 # Check kexts updates
