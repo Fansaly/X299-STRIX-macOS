@@ -64,10 +64,6 @@
 							<key>Name</key>
 							<string>VirtualSMC.kext</string>
 						</dict>
-						<dict>
-							<key>Name</key>
-							<string>VirtualSmc.efi</string>
-						</dict>
 					</array>
 				</dict>
 				<dict>
@@ -154,6 +150,32 @@
 						<dict>
 							<key>Name</key>
 							<string>AGPMEnabler.kext</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<key>Deprecated</key>
+		<array/>
+	</dict>
+	<key>Drivers</key>
+	<dict>
+		<key>Install</key>
+		<dict>
+			<key>Local</key>
+			<array>
+				<dict>
+					<key>Author</key>
+					<string>acidanthera</string>
+					<key>Repo</key>
+					<string>VirtualSMC</string>
+					<key>Repo-type</key>
+					<string>GitHub</string>
+					<key>Installations</key>
+					<array>
+						<dict>
+							<key>Name</key>
+							<string>VirtualSmc.efi</string>
 						</dict>
 					</array>
 				</dict>
