@@ -1,4 +1,6 @@
 ### TSCAdjustReset.kext
+> 最后同步于：[[3456c2e]](https://github.com/interferenc/TSCAdjustReset/tree/3456c2ea16a6e4e40cdf7dd5374f22b8103538e8)
+>
 > 此处的 kext 是已编译完成的，并由 `Tools/set_tsc.sh` 自动完成设置正确的 IOCPUNumber。  
 > 以下只是对此 kext 的源码编译和修改的具体步骤。
 
@@ -31,6 +33,8 @@ xcodebuild
 ### AGPMEnabler.kext
 启用 AGPM，前往查看（tonymacx86）https://bit.ly/2yo8oBb
 
+> 最后同步于：2018-06-13T02:24:24+0100
+>
 > AppleGraphicsPowerManagement.kext 无需修改，将 AGPMEnabler.kext 放至 Clover。  
 > 受 iMacPro 和 Toleda 的启发，实际并没有很大帮助。  
 > 不需要 device-id、vendor-id，仅仅需要显卡在 Mac-7BA5B2D9E42DDD94（iMac Pro）下 GFX0 的位置。

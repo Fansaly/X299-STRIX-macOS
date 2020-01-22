@@ -1,4 +1,6 @@
 ### TSCAdjustReset.kext
+> Last sync: [[3456c2e]](https://github.com/interferenc/TSCAdjustReset/tree/3456c2ea16a6e4e40cdf7dd5374f22b8103538e8)
+>
 > The kext here is compiled and the correct IOCPUNumber is set automatically by `Tools/set_tsc.sh`.  
 > The following are the specific steps to compile and modify the source code for this kext.
 
@@ -31,6 +33,8 @@ So, the correct IOCPUNumber for the 6-core i7-7800X should be 11 (12 threads -1)
 ### AGPMEnabler.kext
 Enable AGPM, Learn more (tonymacx86): https://bit.ly/2yo8oBb
 
+> Last sync: 2018-06-13T02:24:24+0100
+>
 > "AppleGraphicsPowerManagement.kext" is unchanged, plus the "AGPMEnabler.kext" in Clover.  
 > Inspired by the iMacPro and Toleda, actually no big deal.  
 > No "device-id", no "vendor-id", just graphics card is "GFX0" in "Mac-7BA5B2D9E42DDD94" (iMac Pro).
