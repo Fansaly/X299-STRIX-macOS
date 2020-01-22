@@ -69,6 +69,12 @@ CPU | INTEL® CORE™ i7-7800X
   - OS Type: **Other OS**
 
 ### 完成安装后
+0. 打开 Terminal，安装开发者工具：
+```sh
+xcode-select --install
+```
+> 此时会收到系统会提示，根据提示完成安装
+
 1. 下载此项目：
 ```sh
 git clone https://github.com/Fansaly/X299-STRIX-macOS
@@ -87,11 +93,11 @@ make unarchive
 ```sh
 make
 ```
-5. 安装 DSDT/SSDT aml 和 kexts：
+5. 安装 DSDT/SSDT aml、kexts 和 drivers：
 ```sh
 make install
 ```
-> 可输入 `make install-aml` `make install-kexts` 分别单独安装
+> 可输入 `make install-aml` `make install-kexts` `make install-drivers` 分别单独安装
 6. 手动替换 Clover 的 config.plist（可选）：
 ```sh
 efi_dir=$(make mount)
@@ -121,7 +127,7 @@ make download-WebDriver # 下载最新的 NVIDIA Web Driver
   - Memory fix
     - **AptioMemoryFix.efi**
   - Custom
-    - **VirtualSmc.efi** `由 Makefile commands 自动安装和更新（无需额外操作）`
+    - **VirtualSmc.efi** `由 make install-drivers 安装（无需额外操作）`
 
 &nbsp;
 

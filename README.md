@@ -72,6 +72,12 @@ Case | JONSBO UMX4
   - OS Type: **Other OS**
 
 ### POST INSTALLATION
+0. open Terminal, install developer tools:
+```sh
+xcode-select --install
+```
+> you will be prompted to install the developer tools, complete the installation.
+
 1. clone this repo:
 ```sh
 git clone https://github.com/Fansaly/X299-STRIX-macOS
@@ -90,11 +96,11 @@ make unarchive
 ```sh
 make
 ```
-5. install DSDT/SSDT aml and kexts:
+5. install DSDT/SSDT aml, kexts and drivers:
 ```sh
 make install
 ```
-> type `make install-aml` `make install-kexts` to install separately
+> type `make install-aml` `make install-kexts` `make install-drivers` to install separately
 6. manually replace config.plist for Clover (optional):
 ```sh
 efi_dir=$(make mount)
@@ -124,7 +130,7 @@ make download-WebDriver # Download the latest NVIDIA Web Driver
   - Memory fix
     - **AptioMemoryFix.efi**
   - Custom
-    - **VirtualSmc.efi** `by Makefile commands automatically install and update (No need to worry)`
+    - **VirtualSmc.efi** `install by make install-drivers (No need to worry)`
 
 &nbsp;
 
