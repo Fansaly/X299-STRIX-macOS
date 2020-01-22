@@ -162,43 +162,45 @@ function getLocalKextsInfo() {
     for (( i = 0; i < $total; i++ )); do
       kext_entry="${web_site}.${i}"
       xmlCtx=$(getValue "$xmlRoot" "$kext_entry")
+
+      # kext main info
       author=$(getSpecificValue "$xmlCtx" "Author")
       repo=$(getSpecificValue "$xmlCtx" "Repo")
       partial_name=$(getSpecificValue "$xmlCtx" "Name")
 
-      _total=$(getValue "$xmlCtx" "Installations" | count "//array/dict")
+      # the first one kext
+      kext=$(getSpecificValue "$xmlCtx" "Installations.0.Name")
+      kext_path=$(findItem "$kext" "$kexts_dir")
+      name=$(echo "$kext" | sed -e 's/\.kext//')
 
-      for (( j = 0; j < $_total; j++ )); do
-        _xmlCtx=$(getValue "$xmlCtx" "Installations.${j}")
-        name=$(getSpecificValue "$_xmlCtx" "Name")
-        kext=$(findItem "$name" "$kexts_dir")
-
-        if [[ $j -gt 0 || -z "$kext" ]]; then continue; fi
-
-        name=$(basename "$kext" | sed -e 's/\.kext//')
-        info_plist=${kext}/Contents/Info.plist
+      if [[ -z "$kext_path" ]]; then
+        curr="<null>"
+      else
+        info_plist=${kext_path}/Contents/Info.plist
 
         if [[ "$web_site" == "GitHub" ]]; then
           curr=$(getSpecificValue "$info_plist" "CFBundleVersion")
         else
           curr=$(echo "$info_plist" | perl -pe 's/.*-(\d*-\d*)\/.*/\1/')
         fi
+      fi
 
-        [[ ${max_len[0]} -lt ${#author} ]] && max_len[0]=${#author}
-        [[ ${max_len[1]} -lt ${#repo}   ]] && max_len[1]=${#repo}
-        [[ ${max_len[2]} -lt ${#name}   ]] && max_len[2]=${#name}
-        [[ ${max_len[3]} -lt ${#curr}   ]] && max_len[3]=${#curr}
+      # length
+      [[ ${max_len[0]} -lt ${#author} ]] && max_len[0]=${#author}
+      [[ ${max_len[1]} -lt ${#repo}   ]] && max_len[1]=${#repo}
+      [[ ${max_len[2]} -lt ${#name}   ]] && max_len[2]=${#name}
+      [[ ${max_len[3]} -lt ${#curr}   ]] && max_len[3]=${#curr}
 
-        kextsInfo[$idx]+=$web_site
-        kextsInfo[$idx]+=\|$author
-        kextsInfo[$idx]+=\|$repo
-        kextsInfo[$idx]+=\|$partial_name/
-        kextsInfo[$idx]+=\|$name
-        kextsInfo[$idx]+=\|$curr
-        kextsInfo[$idx]+=\|$kext_entry
+      # to get updates
+      kextsInfo[$idx]+=$web_site
+      kextsInfo[$idx]+=\|$author
+      kextsInfo[$idx]+=\|$repo
+      kextsInfo[$idx]+=\|$partial_name/
+      kextsInfo[$idx]+=\|$name
+      kextsInfo[$idx]+=\|$curr
+      kextsInfo[$idx]+=\|$kext_entry
 
-        (( idx++ ))
-      done
+      (( idx++ ))
     done
   done
 
