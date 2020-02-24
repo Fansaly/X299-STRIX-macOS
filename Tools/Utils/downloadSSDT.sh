@@ -21,4 +21,11 @@ function downloadSSDT() {
 
   printDownloadMsg "$index" "$name" "$output_dir"
   curl -#L "${hotpatch_url}/${name}" -o "${output_dir}/${name}"
+
+  local code=$?
+
+  if [[ $code -ne 0 ]]; then
+    printDownloadMsg "$index" "$name" "$output_dir" "ERROR" "newline"
+    return $code
+  fi
 }

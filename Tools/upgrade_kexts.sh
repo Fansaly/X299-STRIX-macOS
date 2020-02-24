@@ -9,7 +9,6 @@ source "${UtilsDIR}/getValue.sh"
 source "${UtilsDIR}/getRemoteKextInfo.sh"
 source "${UtilsDIR}/download.sh"
 source "${UtilsDIR}/findItem.sh"
-source "${UtilsDIR}/printMsg.sh"
 source "${UtilsDIR}/installItem.sh"
 source "${UtilsDIR}/updateKextCache.sh"
 
@@ -97,14 +96,8 @@ function getUpgrades() {
       find "$d_kexts_dir" \( -maxdepth 1 -iname "$file_regex*" \) -exec rm -Rf {} \;
 
       download "$((index++)),$total" "$web_site" "$author" "$repo" "$d_kexts_dir" "$partial_name"
-      _code_=$?
 
-      if [[ $_code_ -eq 100 ]]; then
-        continue
-      elif [[ $_code_ -ne 0 ]]; then
-        printDownloadMsg "$index,$total" "${author}/${repo}" "$d_kexts_dir" "ERROR"
-        continue
-      fi
+      if [[ $? -ne 0 ]]; then continue; fi
 
       unarchive "$d_kexts_dir" "$file_regex"
 

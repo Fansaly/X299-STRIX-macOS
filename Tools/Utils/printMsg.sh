@@ -6,6 +6,7 @@ function printMsg() {
   local text_prev="$3"
   local text_next="$4"
   local status="$5"
+  local newline="$6"
   local text_lead idx total sign
 
   idx=$(echo "$index" | awk -F, '{ print $1 }')
@@ -30,12 +31,16 @@ function printMsg() {
   fi
 
   echo -e "${sign}\033[0;37m${text_lead} \033[0;35m${text_prev} \033[0;37mto \033[0;96m${text_next}\033[0m${status}"
+
+  if [[ -n "$newline" ]]; then
+    echo -en "\n"
+  fi
 }
 
 function printDownloadMsg() {
-  printMsg "$1" "download" "$2" "$3" "$4"
+  printMsg "$1" "download" "$2" "$3" "$4" "$5"
 }
 
 function printInstallMsg() {
-  printMsg "0,-1" "install" "$1" "$2" "$3"
+  printMsg "0,-1" "install" "$1" "$2" "$3" "$4"
 }

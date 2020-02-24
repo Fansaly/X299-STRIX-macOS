@@ -32,7 +32,7 @@ function download() {
   scrape_url=$(getScrapeURL "$web_site" "$author" "$repo" "$partial_name")
 
   if [[ -z "$scrape_url" ]]; then
-    printDownloadMsg "$index" "${author}/${repo}" "$output_dir" "ERROR"
+    printDownloadMsg "$index" "${author}/${repo}" "$output_dir" "ERROR" "newline"
     return 100 # CURL code is one of 0~96
   fi
 
@@ -49,4 +49,11 @@ function download() {
 
   printDownloadMsg "$index" "$file_name" "$output_dir"
   curl -#L "$url" -o "${output_dir}/${file_name}"
+
+  local code=$?
+
+  if [[ $code -ne 0 ]]; then
+    printDownloadMsg "$index" "${author}/${repo}" "$output_dir" "ERROR" "newline"
+    return $code
+  fi
 }
