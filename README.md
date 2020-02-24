@@ -87,7 +87,7 @@ cd X299-STRIX-macOS
 ```sh
 make download
 ```
-> type `make download-tools` `make download-kexts` `make download-hotpatch` to download separately
+> type `make download-tools` `make download-kexts` `make download-hotpatch-bplan` to download separately
 3. uncompress files of previous step:
 ```sh
 make unarchive

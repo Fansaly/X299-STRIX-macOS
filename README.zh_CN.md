@@ -84,7 +84,7 @@ cd X299-STRIX-macOS
 ```sh
 make download
 ```
-> 可输入 `make download-tools` `make download-kexts` `make download-hotpatch` 分别单独下载
+> 可输入 `make download-tools` `make download-kexts` `make download-hotpatch-bplan` 分别单独下载
 3. 解压缩上一步下载的文件：
 ```sh
 make unarchive
