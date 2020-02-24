@@ -5,6 +5,7 @@ UtilsDIR=${DIR}/Utils
 
 source "${UtilsDIR}/count.sh"
 source "${UtilsDIR}/getValue.sh"
+source "${UtilsDIR}/printMsg.sh"
 source "${UtilsDIR}/download.sh"
 source "${UtilsDIR}/downloadSSDT.sh"
 
@@ -13,6 +14,7 @@ function help() {
   echo "-c,  Kexts config file."
   echo "-d,  Download directory."
   echo "-t,  Download type, oneof Tools, Kexts, Hotpatch."
+  echo "-p,  Another download solution, optional."
   echo "-h,  Show this help message."
   echo
   echo "Usage: $(basename $0) [-c <config file>] [-d <download directory>] [-t <download type>]"
@@ -20,7 +22,7 @@ function help() {
   echo
 }
 
-while getopts c:d:t:h option; do
+while getopts c:d:t:p:h option; do
   case $option in
     c )
       config_plist=$OPTARG
@@ -30,6 +32,9 @@ while getopts c:d:t:h option; do
       ;;
     t )
       downloads_type=$OPTARG
+      ;;
+    p )
+      plan=$OPTARG
       ;;
     h )
       help
@@ -51,13 +56,43 @@ function downloadHotpatch() {
   config_plist="$1"
   output_dir="$2"
   type=$3
+  plan=$4
 
   xmlCtx=$(getValue "$config_plist" "${type}.SSDT")
   total=$(count "$xmlCtx" "//array/string")
 
+  repo="OS-X-Clover-Laptop-Config"
+  repo_dir="/tmp/${repo}"
+  repo_url="https://github.com/RehabMan/${repo}"
+  hotpatch_url="${repo_url}/raw/master/hotpatch"
+
+  if [[ -n "$plan" ]]; then
+    rm -rf "$repo_dir"
+    printDownloadMsg "0,-1" "Hotpatch" "$repo_dir"
+    git clone --quiet --depth 1 "$repo_url" "$repo_dir" 2>/dev/null
+
+    if [[ $? -ne 0 ]]; then
+      printDownloadMsg "0,-1" "Hotpatch" "$output_dir" "ERROR" "newline"
+      return 1
+    fi
+
+    echo -en "\n"
+  fi
+
   for (( i = 0; i < $total; i++ )); do
     ssdt=$(getSpecificValue "$xmlCtx" "$i")
-    downloadSSDT "$((i+1)),$total" "$ssdt" "$output_dir"
+    index=$(( $i + 1 ))
+
+    if [[ -n "$plan" ]]; then
+      printCopyMsg "$index,$total" "$ssdt" "$output_dir"
+      cp "$repo_dir/hotpatch/${ssdt}" "$output_dir"
+
+      if [[ $? -ne 0 ]]; then
+        printCopyMsg "$index,$total" "$ssdt" "$output_dir" "ERROR" "newline"
+      fi
+    else
+      downloadSSDT "$index,$total" "$hotpatch_url" "$ssdt" "$output_dir"
+    fi
   done
 }
 
@@ -117,7 +152,7 @@ case ${downloads_type} in
     ;;
   Hotpatch )
     recreateDir "$downloads_dir"
-    downloadHotpatch "$config_plist" "$downloads_dir" "$downloads_type"
+    downloadHotpatch "$config_plist" "$downloads_dir" "$downloads_type" "$plan"
     ;;
   * )
     help

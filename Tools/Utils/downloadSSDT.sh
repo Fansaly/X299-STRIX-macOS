@@ -7,16 +7,17 @@ source "${UtilsDIR}/printMsg.sh"
 
 function downloadSSDT() {
 # $1: Index
-# $2: SSDT name
-# $3: Output directory (optional)
-  local index name output_dir hotpatch_url
+# $2: Hotpatch URL
+# $5: SSDT name
+# $4: Output directory (optional)
+  local index hotpatch_url name output_dir
   index="$1"
-  name="$2"
+  hotpatch_url="$2"
+  name="$3"
   output_dir=${UtilsDIR}/../../Downloads/Hotpatch
-  hotpatch_url="https://github.com/RehabMan/OS-X-Clover-Laptop-Config/raw/master/hotpatch"
 
-  if [[ -d "$3" ]]; then
-    output_dir="$3"
+  if [[ -d "$4" ]]; then
+    output_dir="$4"
   fi
 
   printDownloadMsg "$index" "$name" "$output_dir"

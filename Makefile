@@ -44,7 +44,7 @@ download:
 	@ echo "\n\\033[38;5;128;48;5;248m Downloading Kexts ... \\033[0m"
 	@ make download-kexts
 	@ echo "\n\\033[38;5;128;48;5;248m Downloading Hotpatch ... \\033[0m"
-	@ make download-hotpatch
+	@ make download-hotpatch-bplan
 
 .PHONY: download-tools
 download-tools:
@@ -57,6 +57,10 @@ download-kexts:
 .PHONY: download-hotpatch
 download-hotpatch:
 	@ $(L_TOOLS_DIR)/download.sh -c "$(CONFIG_PLIST)" -d "$(D_HOTPATCH)" -t "Hotpatch"
+
+.PHONY: download-hotpatch-bplan
+download-hotpatch-bplan:
+	@ $(L_TOOLS_DIR)/download.sh -c "$(CONFIG_PLIST)" -d "$(D_HOTPATCH)" -t "Hotpatch" -p "copy"
 
 
 # Install AML/Kexts/Drivers

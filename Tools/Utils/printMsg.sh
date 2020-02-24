@@ -26,8 +26,10 @@ function printMsg() {
 
   if [[ "$action" = "download" ]]; then
     text_lead=Downloading
-  else
+  elif [[ "$action" = "install" ]]; then
     text_lead=Installing
+  elif [[ "$action" = "copy" ]]; then
+    text_lead=Copying
   fi
 
   echo -e "${sign}\033[0;37m${text_lead} \033[0;35m${text_prev} \033[0;37mto \033[0;96m${text_next}\033[0m${status}"
@@ -35,6 +37,10 @@ function printMsg() {
   if [[ -n "$newline" ]]; then
     echo -en "\n"
   fi
+}
+
+function printCopyMsg() {
+  printMsg "$1" "copy" "$2" "$3" "$4" "$5"
 }
 
 function printDownloadMsg() {
