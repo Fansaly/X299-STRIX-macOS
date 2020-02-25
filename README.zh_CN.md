@@ -69,7 +69,7 @@ CPU | INTEL® CORE™ i7-7800X
   - OS Type: **Other OS**
 
 ### 完成安装后
-> 参见 `Config` 目录中的 **README**，配置合适的 工具、kext 和 hotpatch。
+> 工具、kext 和 hotpatch 的下载、安装由 `Config/config.plist` 控制。
 
 0. 打开 Terminal，安装开发者工具：
 ```sh

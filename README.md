@@ -72,7 +72,7 @@ Case | JONSBO UMX4
   - OS Type: **Other OS**
 
 ### POST INSTALLATION
-> See the **README** in the `Config` directory to configure the appropriate tools, kext, and hotpatch.
+> The download and installation of tools, kexts and hotpatch are controlled by `Config/config.plist`.
 
 0. open Terminal, install developer tools:
 ```sh
