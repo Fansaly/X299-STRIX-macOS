@@ -72,6 +72,8 @@ Case | JONSBO UMX4
   - OS Type: **Other OS**
 
 ### POST INSTALLATION
+> See the **README** in the `Config` directory to configure the appropriate tools, kext, and hotpatch.
+
 0. open Terminal, install developer tools:
 ```sh
 xcode-select --install
