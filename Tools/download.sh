@@ -58,13 +58,20 @@ function downloadHotpatch() {
   type=$3
   plan=$4
 
-  xmlCtx=$(getValue "$config_plist" "${type}.SSDT")
-  total=$(count "$xmlCtx" "//array/string")
+  xmlCtx=$(getValue "$config_plist" "$type")
+  xmlSSDT=$(getValue "$xmlCtx" "SSDT")
+  total=$(count "$xmlSSDT" "//array/string")
 
-  repo="OS-X-Clover-Laptop-Config"
+  author=$(getSpecificValue "$xmlCtx" "Author")
+  repo=$(getSpecificValue "$xmlCtx" "Repo")
+  path=$(getSpecificValue "$xmlCtx" "Path")
+
   repo_dir="/tmp/${repo}"
-  repo_url="https://github.com/RehabMan/${repo}"
-  hotpatch_url="${repo_url}/raw/master/hotpatch"
+  repo_url="https://github.com/${author}/${repo}"
+  hotpatch_url="${repo_url}/raw/master/${path}"
+  hotpatch_dir="${repo_dir}/${path}"
+  hotpatch_url="${hotpatch_url%/}"
+  hotpatch_dir="${hotpatch_dir%/}"
 
   if [[ -n "$plan" ]]; then
     rm -rf "$repo_dir"
@@ -80,12 +87,12 @@ function downloadHotpatch() {
   fi
 
   for (( i = 0; i < $total; i++ )); do
-    ssdt=$(getSpecificValue "$xmlCtx" "$i")
+    ssdt=$(getSpecificValue "$xmlSSDT" "$i")
     index=$(( $i + 1 ))
 
     if [[ -n "$plan" ]]; then
       printCopyMsg "$index,$total" "$ssdt" "$output_dir"
-      cp "$repo_dir/hotpatch/${ssdt}" "$output_dir"
+      cp "${hotpatch_dir}/${ssdt}" "$output_dir"
 
       if [[ $? -ne 0 ]]; then
         printCopyMsg "$index,$total" "$ssdt" "$output_dir" "ERROR" "newline"
