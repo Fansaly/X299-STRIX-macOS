@@ -72,8 +72,6 @@ Case | JONSBO UMX4
   - OS Type: **Other OS**
 
 ### POST INSTALLATION
-> The download and installation of tools, kexts and hotpatch are controlled by `Config/config.plist`.
-
 0. open Terminal, install developer tools:
 ```sh
 xcode-select --install
@@ -109,6 +107,8 @@ efi_dir=$(make mount)
 cp config.plist ${efi_dir}/EFI/ClOVER
 ```
 > after the replacement, you should customize **Serial Number**, **Board Serial Number**, **SmUUID** in **SMBIOS** section, and etc.
+
+Downloads, installations, updates, etc. depend on `Config/config.plist`.
 
 ### Other features of Makefile:
 ```sh

@@ -69,8 +69,6 @@ CPU | INTEL® CORE™ i7-7800X
   - OS Type: **Other OS**
 
 ### 完成安装后
-> 工具、kext 和 hotpatch 的下载、安装由 `Config/config.plist` 控制。
-
 0. 打开 Terminal，安装开发者工具：
 ```sh
 xcode-select --install
@@ -106,6 +104,8 @@ efi_dir=$(make mount)
 cp config.plist ${efi_dir}/EFI/ClOVER
 ```
 > 替换完成后，应该自定义 **SMBIOS** 中的 **Serial Number**、**Board Serial Number**、**SmUUID**，等等。
+
+下载、安装、更新等依赖于 `Config/config.plist`。
 
 ### Makefile 其它功能：
 ```sh
