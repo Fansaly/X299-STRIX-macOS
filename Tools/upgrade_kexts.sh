@@ -60,15 +60,13 @@ function unarchive() {
 }
 
 function getUpgrades() {
-  updates_plist="$1"
-  d_kexts_dir="$2"
+  local updates_plist="$1"
+  local d_kexts_dir="$2"
 
-  xmlRoot=$(cat "$updates_plist")
+  local xmlRoot=$(cat "$updates_plist")
 
-  total=$(getSpecificValue "$xmlRoot" "Total")
-  unupgraded_total=$total
-  index=1
-  web_sites=(
+  local total=$(getSpecificValue "$xmlRoot" "Total")
+  local web_sites=(
     "GitHub"
     "Bitbucket"
   )
@@ -76,6 +74,13 @@ function getUpgrades() {
   if [[ $total -lt 1 ]]; then
     return
   fi
+
+  local web_site _total
+  local kext_entry xmlCtx author repo partial_name updates file_regex
+  local __total _xmlCtx name item extension essential
+  local STATUS EFI_DIR install_dir _install_dir_ _code_
+  local unupgraded_total=$total
+  local index=1
 
   for web_site in "${web_sites[@]}"; do
     _total=$(getValue "$xmlRoot" "$web_site" | count "//array/dict/array")
@@ -93,10 +98,11 @@ function getUpgrades() {
       [[ $index -gt 1 ]] && echo -en "\n"
 
       file_regex=$(getFileRegex "$web_site" "$author" "$repo" "$partial_name")
+      if [[ -z "$file_regex" ]]; then continue; fi
+
       find "$d_kexts_dir" \( -maxdepth 1 -iname "$file_regex*" \) -exec rm -Rf {} \;
 
       download "$((index++)),$total" "$web_site" "$author" "$repo" "$d_kexts_dir" "$partial_name"
-
       if [[ $? -ne 0 ]]; then continue; fi
 
       unarchive "$d_kexts_dir" "$file_regex"

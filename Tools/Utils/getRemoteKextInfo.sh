@@ -26,6 +26,8 @@ function getRemoteKextInfo() {
       result="${author}-${repo}"
     else
       curl -sL "https://github.com/${author}/${repo}/releases" -o "$tmpfile"
+      if [[ $? -ne 0 ]]; then return 1; fi
+
       if [[ -n "$partial_name" ]]; then
         scrape_url=$( \
           cat "$tmpfile" | \
@@ -51,13 +53,15 @@ function getRemoteKextInfo() {
 
   elif [[ "$web_site" = "bitbucket" ]]; then
     curl -sL "https://bitbucket.org/${author}/${repo}/downloads/" -o "$tmpfile"
+    if [[ $? -ne 0 ]]; then return 1; fi
+
     scrape_url=$( \
       cat "$tmpfile" | \
       grep -o -m 1 "${author}/${repo}/downloads/${partial_name}.*\.zip" 2>/dev/null | \
       sed 's/".*//' \
     )
     version=$(echo "$scrape_url" | perl -pe 's/.*-(\d*-\d*)\..*/\1/')
-    regex=$(echo "$scrape" | perl -pe 's/.*\/(.*)-(\d*-\d*)\..*/\1/')
+    regex=$(echo "$scrape_url" | perl -pe 's/.*\/(.*)-(\d*-\d*)\..*/\1/')
 
     if [[ "$type" = "url" ]]; then
       result="$scrape_url"

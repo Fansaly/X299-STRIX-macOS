@@ -48,14 +48,14 @@ fi
 
 
 function printKextInfo() {
-  _format_="$1"
-  UNKNOWN="$2"
-  author="$3"
-  name="$4"
-  curr="$5"
-  remote="$6"
-  _uChar_S_=✓ # ✓✔✗
-  _uChar_F_=✗ # ✓✔✗
+  local _format_="$1"
+  local UNKNOWN="$2"
+  local author="$3"
+  local name="$4"
+  local curr="$5"
+  local remote="$6"
+  local _uChar_S_=✓ # ✓✔✗
+  local _uChar_F_=✗ # ✓✔✗
 
   if [[ $remote = $UNKNOWN ]]; then
     name="$name $_uChar_F_"
@@ -63,6 +63,7 @@ function printKextInfo() {
     name="$name $_uChar_S_"
   fi
 
+  local s
   s="$(printf "$_format_" "$name" "$author" "$remote" "$curr")"
   s=$(echo "$s" | sed -e 's/'"$_uChar_S_"'/\\033[0;92m'"$_uChar_S_"'\\033[0m  /')
   s=$(echo "$s" | sed -e 's/'"$_uChar_F_"'/\\033[0;93m'"$_uChar_F_"'\\033[0m  /')
@@ -71,42 +72,45 @@ function printKextInfo() {
 }
 
 function getRemoteKextsInfo() {
-  UNKNOWN="<unknown>"
-  _format_=
-  _line_=
+  local config_plist="$1"
+  local kexts_dir="$2"
+  local updates_plist="$3"
 
-  a=2
-  b=$(( $1 + 1 ))
-  c=$(( $b + 1 ))
+  local max_len_cells=$4
+  local max_len_index=4
+  local max_len=(${@:($max_len_index + 1):$max_len_cells})
+  local kextsInfo=(${@:($max_len_index + $max_len_cells + 1)})
 
-  max_len=(${@:$a:$b})
-  kextsInfo="${@:$c}"
+  local len_author=$(( ${max_len[0]} + 5 ))
+  local len_repo=$((   ${max_len[1]} + 5 ))
+  local len_name=$((   ${max_len[2]} + 5 ))
+  local len_curr=$((   ${max_len[3]} + 5 ))
+  local len_remote=${len_curr}
+  local len=$(( $len_author + $len_name + $len_curr + $len_remote ))
 
-  len_author=$(( ${max_len[0]} + 5 ))
-  len_repo=$((   ${max_len[1]} + 5 ))
-  len_name=$((   ${max_len[2]} + 5 ))
-  len_curr=$((   ${max_len[3]} + 5 ))
-  len_remote=${len_curr}
-  len=$(( $len_author + $len_name + $len_curr + $len_remote ))
+  local _format_="%-${len_name}s %-${len_author}s %-${len_remote}s %-${len_curr}s"
 
-  _format_="%-${len_name}s %-${len_author}s %-${len_remote}s %-${len_curr}s"
-
-  pad=$(printf '%*s' "$len")
+  local pad=$(printf '%*s' "$len")
   pad=${pad// /-}
-  _line_=$(printf '%*.*s' 0 $len "$pad")
+  local _line_=$(printf '%*.*s' 0 $len "$pad")
 
   echo -e "\033[0;94mkexts \033[0;37m=> \033[0;96m${kexts_dir}\033[0m"
   echo -e "\033[0;37m${_line_}\033[0m"
   echo -e "$(printf "${_format_}" "Kexts" "Author" "Remote" "Local")"
   echo -e "\033[0;37m${_line_}\033[0m"
 
-  xmlRoot=$( \
+  local xmlRoot=$( \
     getValue "$config_plist" "Kexts.Install" | \
     plutil -remove "Local" -o - - \
   )
-  total=0
 
-  for info in "${kextsInfo[@]}"; do
+  local info arr web_site
+  local author repo partial_name name
+  local curr remote kext_entry xmlCtx
+  local UNKNOWN="<unknown>"
+  local total=0
+
+  for info in ${kextsInfo[@]}; do
     arr=($(echo "$info" | sed -e 's/|/ /g'))
 
     web_site="${arr[0]}"
@@ -146,15 +150,25 @@ function getRemoteKextsInfo() {
 }
 
 function getLocalKextsInfo() {
-  kextsInfo=()
-  max_len=()
+  local config_plist="$1"
+  local kexts_dir="$2"
+  local updates_plist="$3"
 
-  xmlRoot=$(getValue "$config_plist" "Kexts.Install")
+  local xmlRoot=$(getValue "$config_plist" "Kexts.Install")
 
-  web_sites=(
+  local web_sites=(
     "GitHub"
     "Bitbucket"
   )
+
+  local web_site total
+  local kext_entry xmlCtx
+  local author repo partial_name
+  local kext kext_path name
+  local curr info_plist
+  local kextsInfo=()
+  local max_len=()
+  local idx=0
 
   for web_site in "${web_sites[@]}"; do
     total=$(getValue "$xmlRoot" "$web_site" | count "//array/dict/array")
@@ -207,8 +221,10 @@ function getLocalKextsInfo() {
   if [[ ${#kextsInfo[@]} -eq 0 ]]; then
     echo -e "\033[0;95mNo kexts \033[0;37min \033[0;96m${kexts_dir}\033[0m"
   else
-    getRemoteKextsInfo ${#max_len[@]} "${max_len[@]}" "${kextsInfo[@]}"
+    getRemoteKextsInfo \
+      "$config_plist" "$kexts_dir" "$updates_plist" \
+      "${#max_len[@]}" "${max_len[@]}" "${kextsInfo[@]}"
   fi
 }
 
-getLocalKextsInfo
+getLocalKextsInfo "$config_plist" "$kexts_dir" "$updates_plist"

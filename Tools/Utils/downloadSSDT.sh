@@ -8,13 +8,12 @@ source "${UtilsDIR}/printMsg.sh"
 function downloadSSDT() {
 # $1: Index
 # $2: Hotpatch URL
-# $5: SSDT name
+# $3: SSDT name
 # $4: Output directory (optional)
-  local index hotpatch_url name output_dir
-  index="$1"
-  hotpatch_url="$2"
-  name="$3"
-  output_dir=${UtilsDIR}/../../Downloads/Hotpatch
+  local index="$1"
+  local hotpatch_url="$2"
+  local name="$3"
+  local output_dir=${UtilsDIR}/../../Downloads/Hotpatch
 
   if [[ -d "$4" ]]; then
     output_dir="$4"

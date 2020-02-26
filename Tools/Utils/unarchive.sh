@@ -32,7 +32,7 @@ function findArchive() {
 
 function unarchive() {
 # $1: Zip file
-  filePath=${1/.zip/}
+  local filePath=${1/.zip/}
   rm -Rf "$filePath"
   unzip -q $1 -d "$filePath"
   rm -Rf "${filePath}/__MACOSX"

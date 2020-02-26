@@ -67,11 +67,12 @@ fi
 
 
 function install() {
-  config_plist="$1"
-  install_type="$2"
-  install_dir="$3"
-  d_dir="$4"
-  l_dir="$5"
+  local config_plist="$1"
+  local install_type="$2"
+  local install_dir="$3"
+  local d_dir="$4"
+  local l_dir="$5"
+  local type_entry
 
   if [[ "$install_type" = "kext" ]]; then
     type_entry=Kexts
@@ -79,13 +80,16 @@ function install() {
     type_entry=Drivers
   fi
 
-  xmlRoot=$(getValue "$config_plist" "${type_entry}.Install")
+  local xmlRoot=$(getValue "$config_plist" "${type_entry}.Install")
 
-  entries=(
+  local entries=(
     "GitHub"
     "Bitbucket"
     "Local"
   )
+
+  local entry total kext_entry _total
+  local xmlCtx name item extension essential _install_dir_
 
   for entry in "${entries[@]}"; do
     total=$(getValue "$xmlRoot" "$entry" | count "//array/dict/array")

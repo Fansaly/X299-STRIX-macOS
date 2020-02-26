@@ -53,23 +53,23 @@ fi
 
 
 function downloadHotpatch() {
-  config_plist="$1"
-  output_dir="$2"
-  type=$3
-  plan=$4
+  local config_plist="$1"
+  local output_dir="$2"
+  local type=$3
+  local plan=$4
 
-  xmlCtx=$(getValue "$config_plist" "$type")
-  xmlSSDT=$(getValue "$xmlCtx" "SSDT")
-  total=$(count "$xmlSSDT" "//array/string")
+  local xmlCtx=$(getValue "$config_plist" "$type")
+  local xmlSSDT=$(getValue "$xmlCtx" "SSDT")
+  local total=$(count "$xmlSSDT" "//array/string")
 
-  author=$(getSpecificValue "$xmlCtx" "Author")
-  repo=$(getSpecificValue "$xmlCtx" "Repo")
-  path=$(getSpecificValue "$xmlCtx" "Path")
+  local author=$(getSpecificValue "$xmlCtx" "Author")
+  local repo=$(getSpecificValue "$xmlCtx" "Repo")
+  local path=$(getSpecificValue "$xmlCtx" "Path")
 
-  repo_dir="/tmp/${repo}"
-  repo_url="https://github.com/${author}/${repo}"
-  hotpatch_url="${repo_url}/raw/master/${path}"
-  hotpatch_dir="${repo_dir}/${path}"
+  local repo_dir="/tmp/${repo}"
+  local repo_url="https://github.com/${author}/${repo}"
+  local hotpatch_url="${repo_url}/raw/master/${path}"
+  local hotpatch_dir="${repo_dir}/${path}"
   hotpatch_url="${hotpatch_url%/}"
   hotpatch_dir="${hotpatch_dir%/}"
 
@@ -86,6 +86,7 @@ function downloadHotpatch() {
     echo -en "\n"
   fi
 
+  local ssdt index
   for (( i = 0; i < $total; i++ )); do
     ssdt=$(getSpecificValue "$xmlSSDT" "$i")
     index=$(( $i + 1 ))
@@ -104,9 +105,10 @@ function downloadHotpatch() {
 }
 
 function getDownloads() {
-  config_plist="$1"
-  output_dir="$2"
-  type=$3
+  local config_plist="$1"
+  local output_dir="$2"
+  local type=$3
+  local entry
 
   if [[ "$type" == "Kexts" ]]; then
     entry=${type}.Install
@@ -114,6 +116,7 @@ function getDownloads() {
     entry=$type
   fi
 
+  local xmlRoot total total_local
   xmlRoot=$(getValue "$config_plist" "$entry")
 
   total=$(count "$xmlRoot" "//array/dict/array")
@@ -122,12 +125,15 @@ function getDownloads() {
     count "//array/dict/array" \
   )
   total=$(($total - $total_local))
-  index=1
 
-  web_sites=(
+  local web_sites=(
     "GitHub"
     "Bitbucket"
   )
+
+  local index=1
+  local web_site _total
+  local kext_entry xmlCtx author repo partial_name
 
   for web_site in "${web_sites[@]}"; do
     _total=$(getValue "$xmlRoot" "$web_site" | count "//array/dict/array")

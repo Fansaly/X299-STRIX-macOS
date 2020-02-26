@@ -55,7 +55,7 @@ function installItem() {
   # save default expand aliases status,
   # and enable it if it isn't enabled.
   # you can enable it directly, without consider anything.
-  default_expand_aliases_enabled=$(getExpandAliasesStatus)
+  local default_expand_aliases_enabled=$(getExpandAliasesStatus)
 
   if [[ ! "$default_expand_aliases_enabled" ]]; then
     shopt -s expand_aliases
@@ -74,7 +74,7 @@ function installItem() {
 
   # restore expand aliases status
   # actually it has no effect
-  current_expand_aliases_enabled=$(getExpandAliasesStatus)
+  local current_expand_aliases_enabled=$(getExpandAliasesStatus)
 
   if [[ "$current_expand_aliases_enabled" != "$default_expand_aliases_enabled" ]]; then
     if [[ "$default_expand_aliases_enabled" ]]; then

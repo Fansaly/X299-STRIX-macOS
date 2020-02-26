@@ -43,6 +43,8 @@ fi
 
 
 function getCPUKind() {
+  local PROCESSOR CPUKind
+
   PROCESSOR=$(sysctl -n machdep.cpu.brand_string)
 
   PROCESSOR=$(printf "$PROCESSOR" | perl -pe 's/\s+cpu//i')
