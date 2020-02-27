@@ -2,13 +2,13 @@
 
 function printMsg() {
   local index="$1"
-  local action="$2"
-  local text_prev="$3"
-  local text_next="$4"
+  local type="$2"
+  local msg_name="$3"
+  local msg_path="$4"
   local status="$5"
   local newline="$6"
-  local text_lead idx total sign
 
+  local idx total sign
   idx=$(echo "$index" | awk -F, '{ print $1 }')
   total=$(echo "$index" | awk -F, '{ print $2 }' | bc)
 
@@ -20,27 +20,43 @@ function printMsg() {
     fi
   fi
 
-  if [[ -n "$status" ]]; then
-    status=" \\033[0;31mFAILED\\033[0m"
+  local lead_doing=(
+    "Downloading"
+    "Installing"
+    "Copying"
+  )
+  local lead_failed=(
+    "download"
+    "install"
+    "copy"
+  )
+
+  local lead
+  if [[ -z "$status" ]]; then
+    lead=(${lead_doing[@]})
+  else
+    lead=(${lead_failed[@]})
+    status="\\033[0;31mFailed \\033[0;37mto\\033[0m "
   fi
 
-  if [[ "$action" = "download" ]]; then
-    text_lead=Downloading
-  elif [[ "$action" = "install" ]]; then
-    text_lead=Installing
-  elif [[ "$action" = "copy" ]]; then
-    text_lead=Copying
+  local msg_type
+  if [[ "$type" = "download" ]]; then
+    msg_type=${lead[0]}
+  elif [[ "$type" = "install" ]]; then
+    msg_type=${lead[1]}
+  elif [[ "$type" = "copy" ]]; then
+    msg_type=${lead[2]}
   fi
 
-  echo -e "${sign}\033[0;37m${text_lead} \033[0;35m${text_prev} \033[0;37mto \033[0;96m${text_next}\033[0m${status}"
+  if [[ -z "$status" ]]; then
+    echo -e "${sign}\033[0;37m${msg_type} \033[0;35m${msg_name} \033[0;37mto \033[0;96m${msg_path}\033[0m"
+  else
+    echo -e "${sign}${status}\033[0;37m${msg_type} \033[0;35m${msg_name}\033[0m"
+  fi
 
   if [[ -n "$newline" ]]; then
     echo -en "\n"
   fi
-}
-
-function printCopyMsg() {
-  printMsg "$1" "copy" "$2" "$3" "$4" "$5"
 }
 
 function printDownloadMsg() {
@@ -49,4 +65,8 @@ function printDownloadMsg() {
 
 function printInstallMsg() {
   printMsg "0,-1" "install" "$1" "$2" "$3" "$4"
+}
+
+function printCopyMsg() {
+  printMsg "$1" "copy" "$2" "$3" "$4" "$5"
 }

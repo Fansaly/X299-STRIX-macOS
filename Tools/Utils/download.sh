@@ -53,7 +53,7 @@ function download() {
   local code=$?
 
   if [[ $code -ne 0 ]]; then
-    printDownloadMsg "$index" "${author}/${repo}" "$output_dir" "ERROR" "newline"
+    printDownloadMsg "$index" "$file_name" "$output_dir" "ERROR" "newline"
     return $code
   fi
 }
