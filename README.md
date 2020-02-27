@@ -54,7 +54,7 @@ Case | JONSBO UMX4
   - PEG - ASMP: **Disabled**
 
 - **Advanced/System Agent Configuration**
-  - Intel VT for Directed I/O (VT-d): **Disabled/Enabled**
+  - Intel VT for Directed I/O (VT-d): **Enabled/Disabled**
 
 - **Boot**
   - Fast Boot: **Disabled**
@@ -66,7 +66,7 @@ Case | JONSBO UMX4
   - Setup Mode: **Advanced**
 
 - **Boot/Compatibility Support Module**
-  - Launch CSM: **Disabled/Auto**
+  - Launch CSM: **Disabled/Auto/Enabled**
 
 - **Boot/Secure Boot**
   - OS Type: **Other OS**
@@ -77,7 +77,6 @@ Case | JONSBO UMX4
 xcode-select --install
 ```
 > you will be prompted to install the developer tools, complete the installation.
-
 1. clone this repo:
 ```sh
 git clone https://github.com/Fansaly/X299-STRIX-macOS
@@ -108,9 +107,9 @@ cp config.plist ${efi_dir}/EFI/ClOVER
 ```
 > after the replacement, you should customize **Serial Number**, **Board Serial Number**, **SmUUID** in **SMBIOS** section, and etc.
 
-Downloads, installations, updates, etc. depend on `Config/config.plist`.
+Downloads, installations and updates, depend on `Config/config.plist`.
 
-### Other features of Makefile:
+### Other features of Makefile
 ```sh
 make mount              # Mount EFI partition
 make backup             # Backup EFI/CLOVER

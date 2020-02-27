@@ -51,7 +51,7 @@ CPU | INTEL® CORE™ i7-7800X
   - PEG - ASMP: **Disabled**
 
 - **Advanced/System Agent Configuration**
-  - Intel VT for Directed I/O (VT-d): **Disabled/Enabled**
+  - Intel VT for Directed I/O (VT-d): **Enabled/Disabled**
 
 - **Boot**
   - Fast Boot: **Disabled**
@@ -63,7 +63,7 @@ CPU | INTEL® CORE™ i7-7800X
   - Setup Mode: **Advanced**
 
 - **Boot/Compatibility Support Module**
-  - Launch CSM: **Disabled/Auto**
+  - Launch CSM: **Disabled/Auto/Enabled**
 
 - **Boot/Secure Boot**
   - OS Type: **Other OS**
@@ -74,7 +74,6 @@ CPU | INTEL® CORE™ i7-7800X
 xcode-select --install
 ```
 > 此时会收到系统会提示，根据提示完成安装
-
 1. 下载此项目：
 ```sh
 git clone https://github.com/Fansaly/X299-STRIX-macOS
@@ -105,9 +104,9 @@ cp config.plist ${efi_dir}/EFI/ClOVER
 ```
 > 替换完成后，应该自定义 **SMBIOS** 中的 **Serial Number**、**Board Serial Number**、**SmUUID**，等等。
 
-下载、安装、更新等依赖于 `Config/config.plist`。
+下载、安装和更新，依赖于 `Config/config.plist`。
 
-### Makefile 其它功能：
+### Makefile 其它功能
 ```sh
 make mount              # 挂载 EFI 分区
 make backup             # 备份 EFI/CLOVER
