@@ -19,12 +19,12 @@ Refer to the following usage and `config.template.plist` to configure the approp
   </array>
 </dict>
 ```
-| Name   | Type     | Requirement | Description |
-| :--    | :--      | :--         | :-- |
-| Author | `string` | yes         | Remote repo owner. |
-| Repo   | `string` | yes         | Remote repo name. |
-| Name   | `string` | optional    | Wildcard of download file name. |
-| Installations | `array` | no    | |
+| Property | Type     | Necessity | Description |
+| :--      | :--      | :--       | :-- |
+| Author   | `String` | Required  | Remote repo owner. |
+| Repo     | `String` | Required  | Remote repo name. |
+| Name     | `String` | Optional  | Wildcard of download file name. |
+| Installations | `Array` | Optional | |
 
 
 ### Hotpatch
@@ -44,12 +44,12 @@ Refer to the following usage and `config.template.plist` to configure the approp
   </array>
 </dict>
 ```
-| Name   | Type     | Requirement | Description |
-| :--    | :--      | :--         | :-- |
-| Author | `string` | yes         | Remote repo owner. |
-| Repo   | `string` | yes         | Remote repo name. |
-| Path   | `string` | optional    | SSDT file location. |
-| SSDT   | `array`  | yes         | Group of SSDT files. |
+| Property | Type     | Necessity | Description |
+| :--      | :--      | :--       | :-- |
+| Author   | `String` | Required  | Remote repo owner. |
+| Repo     | `String` | Required  | Remote repo name. |
+| Path     | `String` | Optional  | SSDT file location. |
+| SSDT     | `Array`  | Required  | Group of SSDT files. |
 
 ### Kexts
 ```xml
@@ -107,21 +107,21 @@ Refer to the following usage and `config.template.plist` to configure the approp
   <array/>
 </dict>
 ```
-| Name          | Type         | Requirement | Description |
-| :--           | :--          | :--         | :-- |
-| Install       | `dictionary` | yes         | Kexts to install. |
-| Deprecated    | `array`      | no          | Kexts to remove. |
-| &nbsp; | &nbsp; | &nbsp; | &nbsp; |
-| GitHub        | `array`      | optional    | Kexts of GitHub. |
-| Bitbucket     | `array`      | optional    | Kexts of Bitbucket. |
-| Local         | `array`      | optional    | Kexts of Local. <br/> `Author` `Repo` `Repo-type` is just for tagging, you can use any value you like. |
-| &nbsp; | &nbsp; | &nbsp; | &nbsp; |
-| Author        | `string`     | yes         | Remote repo owner. |
-| Repo          | `string`     | yes         | Remote repo name. |
-| Installations | `array`      | yes         | |
-| &nbsp; | &nbsp; | &nbsp; | &nbsp; |
-| Name          | `string`     | yes         | Kext name to install. |
-| Essential     | `boolean`    | optional    | If `true`, install kext to `/L/E` of system. |
+| Property      | Type         | Necessity | Description |
+| :--           | :--          | :--       | :-- |
+| Install       | `Dictionary` | Required  | Kexts to install. |
+| Deprecated    | `Array`      | Optional  | Kexts to remove. |
+| &nbsp;        | &nbsp;       | &nbsp;    | &nbsp; |
+| GitHub        | `Array`      | Optional  | Kexts of GitHub. |
+| Bitbucket     | `Array`      | Optional  | Kexts of Bitbucket. |
+| Local         | `Array`      | Optional  | Kexts of Local. <br/> `Author` `Repo` `Repo-type` is just for tagging, you can use any value you like. |
+| &nbsp;        | &nbsp;       | &nbsp;    | &nbsp; |
+| Author        | `String`     | Required  | Remote repo owner. |
+| Repo          | `String`     | Required  | Remote repo name. |
+| Installations | `Array`      | Required  | |
+| &nbsp;        | &nbsp;       | &nbsp;    | &nbsp; |
+| Name          | `String`     | Required  | Kext name to install. |
+| Essential     | `Boolean`    | Optional  | If `true`, install kext to `/L/E` of system. |
 
 ### Drivers
 > No `Essential`, other reference **Kexts** section.
